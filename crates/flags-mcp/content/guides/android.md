@@ -1,7 +1,7 @@
-# otto-flags Android SDK (app: {{APP_NAME}})
+# Savvagent Flags Android SDK (app: {{APP_NAME}})
 
-`com.savvagent.ottoflags:android-sdk` is the Kotlin client SDK for Android (package
-`com.savvagent.ottoflags.sdk`). It runs inside the shipped app, so it authenticates with the app's
+`com.savvagent.flags:android-sdk` is the Kotlin client SDK for Android (package
+`com.savvagent.flags.sdk`). It runs inside the shipped app, so it authenticates with the app's
 public client key, not a secret: the key is shown by `list_apps` and filled in below when you pass
 the app to this tool. Never put the app's server key in a mobile app. It needs Android 5.0 (API 21)
 or later and Kotlin 1.9 or later. The client names no application id: the key identifies the app.
@@ -9,15 +9,15 @@ or later and Kotlin 1.9 or later. The client names no application id: the key id
 ## Install
 
 The artifact is not installable by name yet. Build it from source at a full commit SHA of
-`savvagent/otto-flags` into your local Maven repository (`~/.m2`). Pin to `{{SDK_REF}}`, a commit on
-`main` of `savvagent/otto-flags` that the maintainers have reviewed. Use it exactly: do not
+`savvagent/flags` into your local Maven repository (`~/.m2`). Pin to `{{SDK_REF}}`, a commit on
+`main` of `savvagent/flags` that the maintainers have reviewed. Use it exactly: do not
 substitute a branch, a newer commit, or a commit from a fork, and use the same commit everywhere in
 one project. You need `git`, a JDK 17, the Android SDK and Gradle 8 or later; the repository has no
 Gradle wrapper, so use your own `gradle`:
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 cd packages/android-sdk
 gradle publishToMavenLocal
@@ -38,7 +38,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.savvagent.ottoflags:android-sdk:0.1.0")
+    implementation("com.savvagent.flags:android-sdk:0.1.0")
 }
 ```
 
@@ -52,17 +52,17 @@ Create one client for the app's lifetime (an application class or a dependency-i
 and reuse it; it holds the cache.
 
 ```kotlin
-import com.savvagent.ottoflags.sdk.OttoFlagsClient
-import com.savvagent.ottoflags.sdk.OttoFlagsConfig
+import com.savvagent.flags.sdk.SavvagentFlagsClient
+import com.savvagent.flags.sdk.SavvagentFlagsConfig
 
-val config = OttoFlagsConfig(
+val config = SavvagentFlagsConfig(
     sdkKey = "{{CLIENT_KEY}}",
     environment = "production"
 )
-val client = OttoFlagsClient(config, applicationContext)
+val client = SavvagentFlagsClient(config, applicationContext)
 ```
 
-Other `OttoFlagsConfig` parameters, all optional: `apiUrl` (default
+Other `SavvagentFlagsConfig` parameters, all optional: `apiUrl` (default
 `https://flags.savvagent.com`), `pollingInterval` (milliseconds, default 60000),
 `enableRealtime` (default `false`, see below), `enableWebSocket` (ignored), `timeout`
 (milliseconds, default 30000) and `enableLogging` (default `false`). Call `client.close()` when the
@@ -88,7 +88,7 @@ Describe the user with a `UserContext`. Percentage rollouts bucket on `userId`, 
 identifier. The lookups are `suspend` functions that return a `Result`:
 
 ```kotlin
-import com.savvagent.ottoflags.sdk.UserContext
+import com.savvagent.flags.sdk.UserContext
 
 val user = UserContext(userId = "user-123", attributes = mapOf("plan" to "pro"))
 
@@ -114,7 +114,7 @@ Evaluate in a `LaunchedEffect` and keep the answer in state:
 
 ```kotlin
 @Composable
-fun CheckoutScreen(client: OttoFlagsClient, userId: String) {
+fun CheckoutScreen(client: SavvagentFlagsClient, userId: String) {
     var newCheckout by remember { mutableStateOf(false) }
 
     LaunchedEffect(userId) {
@@ -128,7 +128,7 @@ fun CheckoutScreen(client: OttoFlagsClient, userId: String) {
 ### ViewModel
 
 ```kotlin
-class CheckoutViewModel(private val client: OttoFlagsClient) : ViewModel() {
+class CheckoutViewModel(private val client: SavvagentFlagsClient) : ViewModel() {
     val newCheckout = MutableLiveData(false)
 
     fun load(userId: String) {

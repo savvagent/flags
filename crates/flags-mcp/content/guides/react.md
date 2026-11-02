@@ -1,7 +1,7 @@
-# otto-flags React SDK (app: {{APP_NAME}})
+# Savvagent Flags React SDK (app: {{APP_NAME}})
 
-`@otto-flags/react` provides a provider and hooks for React 16.8 or later. It wraps
-`@otto-flags/sdk`, so its install includes that package.
+`@savvagent/flags-react` provides a provider and hooks for React 16.8 or later. It wraps
+`@savvagent/flags-sdk`, so its install includes that package.
 
 The client key is public by design: it can ship in a browser bundle and sits in source control
 without harm. It can evaluate flags but cannot read targeting rules. Do not put the app's server key
@@ -11,10 +11,10 @@ browser.
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`, `@otto-flags/react`), because a package's tarball names the
+dependency order (`@savvagent/flags-sdk`, `@savvagent/flags-react`), because a package's tarball names the
 others it depends on and they cannot be resolved by name. You need `git`, Node.js and `pnpm`.
 
 On pnpm 9, `pnpm install` runs the install scripts of this repository's dependencies on your
@@ -23,24 +23,24 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/react build
-pnpm --filter @otto-flags/react pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-react build
+pnpm --filter @savvagent/flags-react pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-react-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-react-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -53,7 +53,7 @@ Wrap the app once, near the root. The provider creates the client, closes it on 
 re-creates it if `apiKey`, `baseUrl` or the default `userId` changes.
 
 ```tsx
-import { OttoFlagsProvider } from "@otto-flags/react";
+import { SavvagentFlagsProvider } from "@savvagent/flags-react";
 
 const config = {
   apiKey: "{{CLIENT_KEY}}",
@@ -64,9 +64,9 @@ const config = {
 export function Root() {
   const defaultContext = { userId: currentUser?.id };
   return (
-    <OttoFlagsProvider config={config} defaultContext={defaultContext}>
+    <SavvagentFlagsProvider config={config} defaultContext={defaultContext}>
       <App />
-    </OttoFlagsProvider>
+    </SavvagentFlagsProvider>
   );
 }
 ```
@@ -86,7 +86,7 @@ build's or deployment's configuration instead of hardcoding it.
 ## Evaluate a flag
 
 ```tsx
-import { useFlag } from "@otto-flags/react";
+import { useFlag } from "@savvagent/flags-react";
 
 export function Checkout() {
   const { value, loading, error } = useFlag("new-checkout", {
@@ -111,7 +111,7 @@ for several flags at once; `useWithFlag(key, callback)` runs a callback when a f
 `useUser()` gives `userId`, `setUserId` (call `setUserId(null)` on sign-out) and the anonymous id
 helpers; `useTrackError(key)` returns a function that reports an error against a flag, which is what
 `flag_health` and auto-rollback compare; `useEnvironment()` reads and sets the environment;
-`useOttoFlags()` returns `{ client, isReady, defaultContext }` for direct use of the core client.
+`useSavvagentFlags()` returns `{ client, isReady, defaultContext }` for direct use of the core client.
 
 ## Notes
 

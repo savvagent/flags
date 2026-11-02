@@ -1,6 +1,6 @@
-# otto-flags Go SDK (app: {{APP_NAME}})
+# Savvagent Flags Go SDK (app: {{APP_NAME}})
 
-`github.com/savvagent/otto-flags/packages/go-server` (package `ottoflags`) evaluates flags for a Go
+`github.com/savvagent/flags/packages/go-server` (package `savvagentflags`) evaluates flags for a Go
 service. This SDK accepts only the app's public client key (it refuses any other key at
 construction), so it is not a secret and can sit in configuration; it is shown by `list_apps` and
 filled in below when you pass the app to this tool. The app's server key is not used here. Go 1.21
@@ -9,12 +9,12 @@ or later.
 ## Install
 
 This module is not installable by version tag yet. Install it from source, pinned to a full commit
-SHA of `savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags`
+SHA of `savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags`
 that the maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a
 commit from a fork, and use the same commit everywhere in one project.
 
 ```bash
-go get github.com/savvagent/otto-flags/packages/go-server@{{SDK_REF}}
+go get github.com/savvagent/flags/packages/go-server@{{SDK_REF}}
 ```
 
 Go records the commit in `go.mod` as a pseudo-version, so a build is reproducible. Pin a SHA, not a
@@ -30,15 +30,15 @@ package main
 import (
     "log"
 
-    ottoflags "github.com/savvagent/otto-flags/packages/go-server"
+    savvagentflags "github.com/savvagent/flags/packages/go-server"
 )
 
 func main() {
-    client, err := ottoflags.NewClient(ottoflags.Config{
+    client, err := savvagentflags.NewClient(savvagentflags.Config{
         APIKey:        "{{CLIENT_KEY}}",
         ApplicationID: "{{APP_ID}}",
         Defaults:      map[string]bool{"new-checkout": false},
-        OnError:       func(err error) { log.Printf("otto-flags: %v", err) },
+        OnError:       func(err error) { log.Printf("savvagent-flags: %v", err) },
     })
     if err != nil {
         log.Fatal(err) // a missing or malformed key fails at start-up
@@ -58,11 +58,11 @@ build's or deployment's configuration instead of hardcoding it.
 
 ## Evaluate a flag
 
-Pass a `*ottoflags.Context` describing who the evaluation is for. Percentage rollouts bucket on
+Pass a `*savvagentflags.Context` describing who the evaluation is for. Percentage rollouts bucket on
 `UserID` (or `SessionID`), so pass a stable identifier. A nil context is allowed.
 
 ```go
-ctx := &ottoflags.Context{
+ctx := &savvagentflags.Context{
     UserID:      "user-123",
     Environment: "production",
     Attributes:  map[string]interface{}{"plan": "pro"},
@@ -94,7 +94,7 @@ cached result.
 
 ```go
 http.HandleFunc("/checkout", func(w http.ResponseWriter, r *http.Request) {
-    ctx := &ottoflags.Context{UserID: r.Header.Get("X-User-ID")}
+    ctx := &savvagentflags.Context{UserID: r.Header.Get("X-User-ID")}
     if client.IsEnabled("new-checkout", ctx) {
         w.Write([]byte("new checkout"))
         return
@@ -110,7 +110,7 @@ Build the client once in `main` and reach it from handlers:
 ```go
 r := gin.Default()
 r.GET("/checkout", func(c *gin.Context) {
-    ctx := &ottoflags.Context{UserID: c.GetHeader("X-User-ID")}
+    ctx := &savvagentflags.Context{UserID: c.GetHeader("X-User-ID")}
     c.JSON(200, gin.H{"newCheckout": client.IsEnabled("new-checkout", ctx)})
 })
 ```

@@ -1,19 +1,19 @@
-# otto-flags Node.js server SDK (app: {{APP_NAME}})
+# Savvagent Flags Node.js server SDK (app: {{APP_NAME}})
 
-`@otto-flags/node-server` is the server-side Node.js client: it evaluates flags for a backend
+`@savvagent/flags-node-server` is the server-side Node.js client: it evaluates flags for a backend
 service. It authenticates with the app's server key. That key is shown once, by `create_app` or
-`rotate_app_keys`; keep it in the app's secret store and read it from the `OTTO_FLAGS_API_KEY`
+`rotate_app_keys`; keep it in the app's secret store and read it from the `SAVVAGENT_FLAGS_API_KEY`
 environment variable. Never write it into code, a config file under version control, or a browser
-bundle. Node.js 16 or later. For code that runs in a browser use `@otto-flags/sdk` (or a framework
+bundle. Node.js 16 or later. For code that runs in a browser use `@savvagent/flags-sdk` (or a framework
 package) with the public client key instead.
 
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`, `@otto-flags/node-server`), because a package's tarball names
+dependency order (`@savvagent/flags-sdk`, `@savvagent/flags-node-server`), because a package's tarball names
 the others it depends on and they cannot be resolved by name. You need `git`, Node.js and `pnpm`.
 
 On pnpm 9, `pnpm install` runs the install scripts of this repository's dependencies on your
@@ -22,24 +22,24 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/node-server build
-pnpm --filter @otto-flags/node-server pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-node-server build
+pnpm --filter @savvagent/flags-node-server pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-node-server-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-node-server-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -52,10 +52,10 @@ Create one client per process and reuse it; it owns the cache, the telemetry que
 connection.
 
 ```typescript
-import { FlagClient } from "@otto-flags/node-server";
+import { FlagClient } from "@savvagent/flags-node-server";
 
-const apiKey = process.env.OTTO_FLAGS_API_KEY;
-if (!apiKey) throw new Error("OTTO_FLAGS_API_KEY is not set");
+const apiKey = process.env.SAVVAGENT_FLAGS_API_KEY;
+if (!apiKey) throw new Error("SAVVAGENT_FLAGS_API_KEY is not set");
 
 export const client = new FlagClient({
   apiKey,

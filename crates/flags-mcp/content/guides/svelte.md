@@ -1,7 +1,7 @@
-# otto-flags Svelte SDK (app: {{APP_NAME}})
+# Savvagent Flags Svelte SDK (app: {{APP_NAME}})
 
-`@otto-flags/svelte` provides stores for Svelte 4 and 5. It wraps `@otto-flags/sdk`, so its install
-includes that package. In a SvelteKit app use `@otto-flags/sveltekit`, which adds server helpers.
+`@savvagent/flags-svelte` provides stores for Svelte 4 and 5. It wraps `@savvagent/flags-sdk`, so its install
+includes that package. In a SvelteKit app use `@savvagent/flags-sveltekit`, which adds server helpers.
 
 The client key is public by design: it can ship in a browser bundle and sits in source control
 without harm. It can evaluate flags but cannot read targeting rules. Do not put the app's server key
@@ -11,10 +11,10 @@ browser.
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`, `@otto-flags/svelte`), because a package's tarball names the
+dependency order (`@savvagent/flags-sdk`, `@savvagent/flags-svelte`), because a package's tarball names the
 others it depends on and they cannot be resolved by name. You need `git`, Node.js and `pnpm`.
 
 On pnpm 9, `pnpm install` runs the install scripts of this repository's dependencies on your
@@ -23,24 +23,24 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/svelte build
-pnpm --filter @otto-flags/svelte pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-svelte build
+pnpm --filter @savvagent/flags-svelte pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-svelte-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-svelte-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -49,15 +49,15 @@ SHA, not a branch, so a build is reproducible.
 
 ## Initialize
 
-Call `initOttoFlags` once, before any store is created, for example in the root layout's script.
+Call `initSavvagentFlags` once, before any store is created, for example in the root layout's script.
 Repeat calls are ignored.
 
 ```svelte
 <!-- +layout.svelte -->
 <script>
-  import { initOttoFlags } from "@otto-flags/svelte";
+  import { initSavvagentFlags } from "@savvagent/flags-svelte";
 
-  initOttoFlags({
+  initSavvagentFlags({
     config: {
       apiKey: "{{CLIENT_KEY}}",
       applicationId: "{{APP_ID}}",
@@ -70,7 +70,7 @@ Repeat calls are ignored.
 <slot />
 ```
 
-`initOttoFlags` also accepts the client config directly. `config` takes the core client's fields:
+`initSavvagentFlags` also accepts the client config directly. `config` takes the core client's fields:
 `baseUrl` (default `https://flags.savvagent.com`), `environment` (default `"production"`),
 `enableRealtime` (default `true`), `cacheTtl` (milliseconds, default 60000), `enableTelemetry`
 (default `true`), `defaults` and `onError`. `defaultContext` applies to every evaluation:
@@ -84,7 +84,7 @@ build's or deployment's configuration instead of hardcoding it.
 
 ```svelte
 <script>
-  import { createFlagStore } from "@otto-flags/svelte";
+  import { createFlagStore } from "@savvagent/flags-svelte";
 
   const newCheckout = createFlagStore("new-checkout", {
     context: { user_id: data.user?.id, attributes: { plan: "pro" } },
@@ -110,7 +110,7 @@ true` by default). For just the boolean, `createFlag("new-checkout")` is a store
 Other helpers: `createFlagsStore(keys, { defaultValues })` for several flags at once;
 `createUserIdStore()`, a writable store (set it to the user id on sign-in and to `null` on
 sign-out); `trackError(flagKey, error, context)` reports an error against a flag, which is what
-`flag_health` and auto-rollback compare; `setEnvironment` and `getEnvironment`; `getOttoFlags()`
+`flag_health` and auto-rollback compare; `setEnvironment` and `getEnvironment`; `getSavvagentFlags()`
 returns the core client.
 
 ## Notes

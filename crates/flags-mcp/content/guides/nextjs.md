@@ -1,8 +1,8 @@
-# otto-flags Next.js SDK (app: {{APP_NAME}})
+# Savvagent Flags Next.js SDK (app: {{APP_NAME}})
 
-`@otto-flags/nextjs` covers the App Router: Server Components, Client Components, middleware, route
-handlers and Server Actions, through separate entry points. It wraps `@otto-flags/sdk` and
-`@otto-flags/react`; its install includes both.
+`@savvagent/flags-nextjs` covers the App Router: Server Components, Client Components, middleware, route
+handlers and Server Actions, through separate entry points. It wraps `@savvagent/flags-sdk` and
+`@savvagent/flags-react`; its install includes both.
 
 The client key is public by design: it can ship in a browser bundle and sits in source control
 without harm. It can evaluate flags but cannot read targeting rules. Do not put the app's server key
@@ -11,15 +11,15 @@ browser.
 
 The server and middleware helpers use the same core client as the browser, so they also take the
 public client key, not a server key. For a Node.js service that holds a server key, use
-`@otto-flags/node-server`.
+`@savvagent/flags-node-server`.
 
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`, `@otto-flags/react`, `@otto-flags/nextjs`), because a package's
+dependency order (`@savvagent/flags-sdk`, `@savvagent/flags-react`, `@savvagent/flags-nextjs`), because a package's
 tarball names the others it depends on and they cannot be resolved by name. You need `git`, Node.js
 and `pnpm`.
 
@@ -29,27 +29,27 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/react build
-pnpm --filter @otto-flags/react pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/nextjs build
-pnpm --filter @otto-flags/nextjs pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-react build
+pnpm --filter @savvagent/flags-react pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-nextjs build
+pnpm --filter @savvagent/flags-nextjs pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-react-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-nextjs-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-react-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-nextjs-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -62,7 +62,7 @@ Server side: initialize once, from the `/server` entry point, in a module the ro
 
 ```tsx
 // app/layout.tsx
-import { initServerClient } from "@otto-flags/nextjs/server";
+import { initServerClient } from "@savvagent/flags-nextjs/server";
 
 initServerClient({
   apiKey: "{{CLIENT_KEY}}",
@@ -85,17 +85,17 @@ Client side: a provider component marked `'use client'`, from the `/client` entr
 // app/providers.tsx
 "use client";
 
-import { OttoFlagsProvider } from "@otto-flags/nextjs/client";
+import { SavvagentFlagsProvider } from "@savvagent/flags-nextjs/client";
 
 const config = { apiKey: "{{CLIENT_KEY}}", applicationId: "{{APP_ID}}" };
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <OttoFlagsProvider config={config}>{children}</OttoFlagsProvider>;
+  return <SavvagentFlagsProvider config={config}>{children}</SavvagentFlagsProvider>;
 }
 ```
 
 Render `<Providers>` inside `<body>` in the root layout. Middleware has its own client:
-`initMiddlewareClient(config)` from `@otto-flags/nextjs/middleware`. The config takes the core
+`initMiddlewareClient(config)` from `@savvagent/flags-nextjs/middleware`. The config takes the core
 client's fields: `baseUrl` (default `https://flags.savvagent.com`), `environment` (default
 `"production"`), `enableRealtime` (default `true`), `cacheTtl` (milliseconds, default 60000),
 `enableTelemetry` (default `true`), `defaults` and `onError`.
@@ -110,7 +110,7 @@ In a Server Component:
 
 ```tsx
 // app/page.tsx
-import { createServerContext, isEnabled } from "@otto-flags/nextjs/server";
+import { createServerContext, isEnabled } from "@savvagent/flags-nextjs/server";
 
 export default async function Page() {
   const context = await createServerContext({ attributes: { plan: "pro" } });
@@ -132,7 +132,7 @@ In a Client Component:
 ```tsx
 "use client";
 
-import { useFlag } from "@otto-flags/nextjs/client";
+import { useFlag } from "@savvagent/flags-nextjs/client";
 
 export function Feature() {
   const { value, loading } = useFlag("new-feature", { defaultValue: false });
@@ -141,15 +141,15 @@ export function Feature() {
 }
 ```
 
-The client entry point re-exports the hooks of `@otto-flags/react`: `OttoFlagsProvider`, `useFlag`,
-`useFlags`, `useWithFlag`, `useUser`, `useTrackError`, `useEnvironment` and `useOttoFlags`.
+The client entry point re-exports the hooks of `@savvagent/flags-react`: `SavvagentFlagsProvider`, `useFlag`,
+`useFlags`, `useWithFlag`, `useUser`, `useTrackError`, `useEnvironment` and `useSavvagentFlags`.
 
 In middleware:
 
 ```typescript
 // middleware.ts
 import { NextResponse } from "next/server";
-import { createMiddleware, initMiddlewareClient } from "@otto-flags/nextjs/middleware";
+import { createMiddleware, initMiddlewareClient } from "@savvagent/flags-nextjs/middleware";
 
 initMiddlewareClient({ apiKey: "{{CLIENT_KEY}}", applicationId: "{{APP_ID}}" });
 

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Savvagent Flags (this repository, otto-flags) is a feature flag service. Agents manage flags over MCP (`/mcp`); running apps
+Savvagent Flags (this repository, savvagent/flags) is a feature flag service. Agents manage flags over MCP (`/mcp`); running apps
 evaluate them through SDKs over REST (`/api/...`). The server is at
 https://flags.savvagent.com.
 
@@ -22,7 +22,7 @@ Pick the first route that works:
 ## Install from a pinned commit
 
 SDKs are installed from a commit of this repository, never from a floating branch. The commit is
-`7212a8233fc2823f305073e88840a600a2083a66`, a commit on `main` of `savvagent/otto-flags` that the
+`4f19a3650baa87a093d8bafa43e81296643d0833`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed; `sdk_guide` pins its installs to the same commit. Use it exactly: do not
 substitute a branch, a newer commit, or a commit from a fork, and use the same commit everywhere in
 one project. Where a package README shows a placeholder commit, use this commit.

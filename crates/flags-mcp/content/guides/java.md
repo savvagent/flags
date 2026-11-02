@@ -1,7 +1,7 @@
-# otto-flags Java SDK (app: {{APP_NAME}})
+# Savvagent Flags Java SDK (app: {{APP_NAME}})
 
-`com.savvagent.ottoflags:otto-flags-java-server-sdk` evaluates flags for a JVM service
-(package `com.savvagent.ottoflags.sdk`). This SDK accepts only the app's public client key (it
+`com.savvagent.flags:savvagent-flags-java-server-sdk` evaluates flags for a JVM service
+(package `com.savvagent.flags.sdk`). This SDK accepts only the app's public client key (it
 rejects any other key when the config is built), so it is not a secret; it is shown by `list_apps`
 and filled in below when you pass the app to this tool. The app's server key is not used here.
 Java 11 or later.
@@ -9,14 +9,14 @@ Java 11 or later.
 ## Install
 
 The artifact is not installable by name yet. Build it from source at a full commit SHA of
-`savvagent/otto-flags` into your local Maven repository (`~/.m2`). Pin to `{{SDK_REF}}`, a commit on
-`main` of `savvagent/otto-flags` that the maintainers have reviewed. Use it exactly: do not
+`savvagent/flags` into your local Maven repository (`~/.m2`). Pin to `{{SDK_REF}}`, a commit on
+`main` of `savvagent/flags` that the maintainers have reviewed. Use it exactly: do not
 substitute a branch, a newer commit, or a commit from a fork, and use the same commit everywhere in
 one project. You need `git`, a JDK and Maven:
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 cd packages/java-server
 mvn -B install -DskipTests -Dmaven.javadoc.skip=true
@@ -27,8 +27,8 @@ machine that ran the build:
 
 ```xml
 <dependency>
-    <groupId>com.savvagent.ottoflags</groupId>
-    <artifactId>otto-flags-java-server-sdk</artifactId>
+    <groupId>com.savvagent.flags</groupId>
+    <artifactId>savvagent-flags-java-server-sdk</artifactId>
     <version>0.1.0</version>
 </dependency>
 ```
@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.savvagent.ottoflags:otto-flags-java-server-sdk:0.1.0'
+    implementation 'com.savvagent.flags:savvagent-flags-java-server-sdk:0.1.0'
 }
 ```
 
@@ -56,15 +56,15 @@ Create one client per process and reuse it (a Spring `@Bean`, for example) and c
 shutdown.
 
 ```java
-import com.savvagent.ottoflags.sdk.FlagClient;
-import com.savvagent.ottoflags.sdk.FlagClientConfig;
+import com.savvagent.flags.sdk.FlagClient;
+import com.savvagent.flags.sdk.FlagClientConfig;
 
 import java.util.Map;
 
 FlagClientConfig config = FlagClientConfig.builder("{{CLIENT_KEY}}")
     .applicationId("{{APP_ID}}")
     .defaults(Map.of("new-checkout", false))
-    .onError(error -> logger.warn("otto-flags error", error))
+    .onError(error -> logger.warn("savvagent-flags error", error))
     .build();
 
 FlagClient client = new FlagClient(config);
@@ -88,8 +88,8 @@ Pass a `FlagContext` describing who the evaluation is for. Percentage rollouts b
 (or session id), so pass a stable identifier.
 
 ```java
-import com.savvagent.ottoflags.sdk.FlagContext;
-import com.savvagent.ottoflags.sdk.FlagEvaluationResult;
+import com.savvagent.flags.sdk.FlagContext;
+import com.savvagent.flags.sdk.FlagEvaluationResult;
 
 FlagContext context = FlagContext.builder()
     .userId("user-123")
@@ -120,11 +120,11 @@ a cached result.
 
 ```java
 @Configuration
-public class OttoFlagsConfig {
+public class SavvagentFlagsConfig {
     @Bean(destroyMethod = "close")
     public FlagClient flagClient(
-            @Value("${ottoFlags.client-key}") String clientKey,
-            @Value("${ottoFlags.app-id}") String appId) {
+            @Value("${savvagentFlags.client-key}") String clientKey,
+            @Value("${savvagentFlags.app-id}") String appId) {
         return new FlagClient(FlagClientConfig.builder(clientKey).applicationId(appId).build());
     }
 }
