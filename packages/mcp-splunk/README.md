@@ -1,6 +1,6 @@
-# @otto-flags/mcp-splunk
+# @savvagent/flags-mcp-splunk
 
-Splunk MCP integration for Otto Flags. Exposes Splunk log analytics via MCP tools using StreamableHTTP transport.
+Splunk MCP integration for Savvagent Flags. Exposes Splunk log analytics via MCP tools using StreamableHTTP transport.
 
 ## Features
 
@@ -16,14 +16,14 @@ Splunk MCP integration for Otto Flags. Exposes Splunk log analytics via MCP tool
 ## Installation
 
 ```bash
-npm install @otto-flags/mcp-splunk
+npm install @savvagent/flags-mcp-splunk
 ```
 
 ## Quick Start
 
 ```typescript
-import { SplunkMCPServer } from '@otto-flags/mcp-splunk';
-import { createHttpHandler } from '@otto-flags/mcp-sdk';
+import { SplunkMCPServer } from '@savvagent/flags-mcp-splunk';
+import { createHttpHandler } from '@savvagent/flags-mcp-sdk';
 import express from 'express';
 
 const server = new SplunkMCPServer(

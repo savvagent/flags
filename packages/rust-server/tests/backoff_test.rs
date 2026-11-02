@@ -2,7 +2,7 @@
 //! without a request, the first one after it reaches the server, `Retry-After` lengthens the
 //! window, a 404 cools down only its own flag, and an oversized body is a failed lookup.
 
-use otto_flags::{Config, FlagClient};
+use savvagent_flags::{Config, FlagClient};
 use serde_json::json;
 use std::time::Duration;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -335,7 +335,7 @@ async fn an_oversized_context_is_refused_without_a_request_or_a_window() {
     .await;
     let client = client(server.uri(), Duration::from_secs(30), &["a"]);
 
-    let big = otto_flags::Context::new().with_attribute("note", json!("x".repeat(600 * 1024)));
+    let big = savvagent_flags::Context::new().with_attribute("note", json!("x".repeat(600 * 1024)));
     let r = client.evaluate("a", Some(big)).await.unwrap();
     assert_eq!(r.reason, "error");
     assert!(r.value, "the default");

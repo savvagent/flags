@@ -1,12 +1,12 @@
-# Otto Flags React Example
+# Savvagent Flags React Example
 
-Example React application demonstrating how to use the Otto Flags React SDK with hooks.
+Example React application demonstrating how to use the Savvagent Flags React SDK with hooks.
 
 ## Features
 
 - React 18 with Vite
 - TypeScript
-- Otto Flags React hooks (`useFeatureFlag`, `useOttoFlags`)
+- Savvagent Flags React hooks (`useFeatureFlag`, `useSavvagentFlags`)
 - Real-time feature flag updates
 - Hot module replacement
 
@@ -24,8 +24,8 @@ Example React application demonstrating how to use the Otto Flags React SDK with
 
    Edit `.env.local`:
    ```bash
-   VITE_OTTO_FLAGS_API_URL=http://localhost:8080
-   VITE_OTTO_FLAGS_SDK_KEY=your-sdk-key-here
+   VITE_SAVVAGENT_FLAGS_API_URL=http://localhost:8080
+   VITE_SAVVAGENT_FLAGS_SDK_KEY=your-sdk-key-here
    ```
 
 3. **Run the development server:**
@@ -40,7 +40,7 @@ Example React application demonstrating how to use the Otto Flags React SDK with
 ### Using the React Hook
 
 ```typescript
-import { useFeatureFlag } from '@otto-flags/react';
+import { useFeatureFlag } from '@savvagent/flags-react';
 
 function MyComponent() {
   const { isEnabled, loading } = useFeatureFlag('new-feature', {
@@ -60,16 +60,16 @@ function MyComponent() {
 ### Using the Provider
 
 ```typescript
-import { OttoFlagsProvider } from '@otto-flags/react';
+import { SavvagentFlagsProvider } from '@savvagent/flags-react';
 
 function App() {
   return (
-    <OttoFlagsProvider
-      apiUrl={import.meta.env.VITE_OTTO_FLAGS_API_URL}
-      sdkKey={import.meta.env.VITE_OTTO_FLAGS_SDK_KEY}
+    <SavvagentFlagsProvider
+      apiUrl={import.meta.env.VITE_SAVVAGENT_FLAGS_API_URL}
+      sdkKey={import.meta.env.VITE_SAVVAGENT_FLAGS_SDK_KEY}
     >
       <MyApp />
-    </OttoFlagsProvider>
+    </SavvagentFlagsProvider>
   );
 }
 ```
@@ -77,5 +77,5 @@ function App() {
 ## Learn More
 
 - [React Documentation](https://react.dev)
-- [Otto Flags React SDK Documentation](../../packages/react/README.md)
+- [Savvagent Flags React SDK Documentation](../../packages/react/README.md)
 - [SDK Integration Guide](../../docs/SDK-INTEGRATION.md)

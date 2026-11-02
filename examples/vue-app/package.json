@@ -2,7 +2,7 @@
   "name": "vue-example",
   "version": "0.0.3",
   "private": true,
-  "description": "Example Vue app using Otto Flags SDK",
+  "description": "Example Vue app using Savvagent Flags SDK",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@otto-flags/vue": "workspace:*",
-    "@otto-flags/sdk": "workspace:*",
+    "@savvagent/flags-vue": "workspace:*",
+    "@savvagent/flags-sdk": "workspace:*",
     "vue": "^3.4.0"
   },
   "devDependencies": {

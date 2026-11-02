@@ -1,11 +1,11 @@
-# @otto-flags/sveltekit
+# @savvagent/flags-sveltekit
 
-SvelteKit SDK for Otto Flags with server-side load functions and client-side stores.
+SvelteKit SDK for Savvagent Flags with server-side load functions and client-side stores.
 
 ## Installation
 
 ```bash
-npm install @otto-flags/sveltekit
+npm install @savvagent/flags-sveltekit
 ```
 
 ## Quick Start
@@ -14,16 +14,16 @@ npm install @otto-flags/sveltekit
 
 ```ts
 // src/hooks.server.ts
-import { initSvelteKitServer } from '@otto-flags/sveltekit/server';
+import { initSvelteKitServer } from '@savvagent/flags-sveltekit/server';
 
 initSvelteKitServer({
-  apiKey: process.env.OTTO_FLAGS_API_KEY!,
+  apiKey: process.env.SAVVAGENT_FLAGS_API_KEY!,
 });
 ```
 
 ```ts
 // +page.server.ts
-import { isEnabled } from '@otto-flags/sveltekit/server';
+import { isEnabled } from '@savvagent/flags-sveltekit/server';
 
 export async function load({ cookies }) {
   const enabled = await isEnabled('new-feature', {
@@ -39,10 +39,10 @@ export async function load({ cookies }) {
 ```svelte
 <!-- +layout.svelte -->
 <script>
-import { initOttoFlags } from '@otto-flags/sveltekit';
+import { initSavvagentFlags } from '@savvagent/flags-sveltekit';
 
-initOttoFlags({
-  apiKey: import.meta.env.VITE_OTTO_FLAGS_API_KEY,
+initSavvagentFlags({
+  apiKey: import.meta.env.VITE_SAVVAGENT_FLAGS_API_KEY,
 });
 </script>
 ```
@@ -50,7 +50,7 @@ initOttoFlags({
 ```svelte
 <!-- +page.svelte -->
 <script>
-import { createFlag } from '@otto-flags/sveltekit';
+import { createFlag } from '@savvagent/flags-sveltekit';
 
 const isEnabled = createFlag('client-feature');
 </script>
@@ -62,7 +62,7 @@ const isEnabled = createFlag('client-feature');
 
 ## API Reference
 
-### Server-Side (`@otto-flags/sveltekit/server`)
+### Server-Side (`@savvagent/flags-sveltekit/server`)
 
 - `initSvelteKitServer(config)` - Initialize server client
 - `isEnabled(flagKey, context?)` - Check if flag is enabled
@@ -73,7 +73,7 @@ const isEnabled = createFlag('client-feature');
 
 ### Client-Side
 
-All stores and functions from `@otto-flags/svelte` are available.
+All stores and functions from `@savvagent/flags-svelte` are available.
 
 ## License
 

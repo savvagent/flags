@@ -4,5 +4,5 @@
   "lib": {
     "entryFile": "src/index.ts"
   },
-  "allowedNonPeerDependencies": ["@otto-flags/sdk", "tslib"]
+  "allowedNonPeerDependencies": ["@savvagent/flags-sdk", "tslib"]
 }

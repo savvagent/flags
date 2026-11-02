@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useOttoFlags } from '@otto-flags/nextjs/client';
-import type { FlagDefinition } from '@otto-flags/nextjs/client';
+import { useSavvagentFlags } from '@savvagent/flags-nextjs/client';
+import type { FlagDefinition } from '@savvagent/flags-nextjs/client';
 
-const STORAGE_KEY = 'otto_flags_local_overrides';
+const STORAGE_KEY = 'savvagent_flags_local_overrides';
 
 /**
  * Flag Override Panel
@@ -15,7 +15,7 @@ const STORAGE_KEY = 'otto_flags_local_overrides';
  * which are applied at the evaluation level (before cache/API).
  */
 export function FlagOverridePanel() {
-  const { client, isReady } = useOttoFlags();
+  const { client, isReady } = useSavvagentFlags();
   const [isOpen, setIsOpen] = useState(false);
   const [flags, setFlags] = useState<FlagDefinition[]>([]);
   const [overrides, setOverrides] = useState<Record<string, boolean>>({});

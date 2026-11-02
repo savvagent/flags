@@ -10,7 +10,7 @@ async function globalSetup(config: FullConfig) {
   }
 
   console.log('Playwright E2E Tests - Global Setup');
-  console.log('Running against Otto Flags beta environment');
+  console.log('Running against Savvagent Flags beta environment');
 }
 
 export default globalSetup;

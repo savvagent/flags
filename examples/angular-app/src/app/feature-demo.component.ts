@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { OttoFlagsService, FlagObservableResult, FlagEvaluationResult } from '@otto-flags/angular';
+import { SavvagentFlagsService, FlagObservableResult, FlagEvaluationResult } from '@savvagent/flags-angular';
 
 /**
  * Feature Demo Component
- * Demonstrates best practices for using Otto Flags Angular SDK
+ * Demonstrates best practices for using Savvagent Flags Angular SDK
  *
  * Uses the flag$ observable for reactive flag evaluation with automatic updates.
  */
@@ -16,7 +16,7 @@ import { OttoFlagsService, FlagObservableResult, FlagEvaluationResult } from '@o
   imports: [CommonModule],
   template: `
     <div class="container">
-      <h1>Otto Flags Angular Example</h1>
+      <h1>Savvagent Flags Angular Example</h1>
       <p class="subtitle">SDK Developer Guide Best Practices Demo</p>
 
       <ng-container *ngIf="loading; else content">
@@ -138,42 +138,42 @@ export class FeatureDemoComponent implements OnInit, OnDestroy {
   // User ID
   currentUserId: string | null = null;
 
-  constructor(private ottoFlags: OttoFlagsService) {}
+  constructor(private savvagentFlags: SavvagentFlagsService) {}
 
   ngOnInit(): void {
     // Subscribe to new-feature flag
-    this.ottoFlags
+    this.savvagentFlags
       .flag$('new-feature', { defaultValue: false, realtime: true })
       .pipe(takeUntil(this.destroy$))
       .subscribe((result: FlagObservableResult) => {
         this.newFeatureEnabled = result.value;
         this.newFeatureResult = result.result;
         this.loading = result.loading;
-        this.isNewFeatureOverridden = this.ottoFlags.hasOverride('new-feature');
+        this.isNewFeatureOverridden = this.savvagentFlags.hasOverride('new-feature');
       });
 
     // Subscribe to beta-feature flag
-    this.ottoFlags
+    this.savvagentFlags
       .flag$('beta-feature', { defaultValue: false, realtime: true })
       .pipe(takeUntil(this.destroy$))
       .subscribe((result: FlagObservableResult) => {
         this.betaFeatureEnabled = result.value;
         this.betaFeatureResult = result.result;
-        this.isBetaFeatureOverridden = this.ottoFlags.hasOverride('beta-feature');
+        this.isBetaFeatureOverridden = this.savvagentFlags.hasOverride('beta-feature');
       });
 
     // Subscribe to enterprise-one flag
-    this.ottoFlags
+    this.savvagentFlags
       .flag$('enterprise-one', { defaultValue: false, realtime: true })
       .pipe(takeUntil(this.destroy$))
       .subscribe((result: FlagObservableResult) => {
         this.enterpriseOneEnabled = result.value;
         this.enterpriseOneResult = result.result;
-        this.isEnterpriseOneOverridden = this.ottoFlags.hasOverride('enterprise-one');
+        this.isEnterpriseOneOverridden = this.savvagentFlags.hasOverride('enterprise-one');
       });
 
     // Get initial user ID
-    this.currentUserId = this.ottoFlags.getUserId();
+    this.currentUserId = this.savvagentFlags.getUserId();
   }
 
   ngOnDestroy(): void {
@@ -190,7 +190,7 @@ export class FeatureDemoComponent implements OnInit, OnDestroy {
       throw new Error('Example error for demonstration');
     } catch (error) {
       // Track errors for AI-powered correlation
-      this.ottoFlags.trackError('new-feature', error as Error);
+      this.savvagentFlags.trackError('new-feature', error as Error);
       console.error('Action failed:', error);
     }
   }
@@ -200,7 +200,7 @@ export class FeatureDemoComponent implements OnInit, OnDestroy {
    */
   setRandomUserId(): void {
     const userId = 'user-' + Date.now();
-    this.ottoFlags.setUserId(userId);
+    this.savvagentFlags.setUserId(userId);
     this.currentUserId = userId;
   }
 
@@ -208,7 +208,7 @@ export class FeatureDemoComponent implements OnInit, OnDestroy {
    * Clear the user ID
    */
   clearUserId(): void {
-    this.ottoFlags.setUserId(null);
+    this.savvagentFlags.setUserId(null);
     this.currentUserId = null;
   }
 }

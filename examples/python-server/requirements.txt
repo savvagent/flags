@@ -1,7 +1,7 @@
-# Otto Flags SDK - install from local package:
+# Savvagent Flags SDK - install from local package:
 #   pip install -e ../../packages/python-server
 # Or when published to PyPI:
-#   pip install ottoFlags
+#   pip install savvagentFlags
 
 # FastAPI example dependencies
 fastapi>=0.100.0

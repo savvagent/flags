@@ -37,7 +37,7 @@ kill_timeout = "15s"
   # still answers (health checks, debugging). The legacy otto-flags.savvagent.com
   # is no longer listed: it is a redirect host (below).
   FLAGS_ALLOWED_HOSTS = "otto-flags.fly.dev"
-  # Hosts that only redirect (savvagent/otto-platform#135): every path but /api/
+  # Hosts that only redirect (savvagent/platform#135): every path but /api/
   # answers 308 to FLAGS_PUBLIC_URL with the path and query kept. /api/ (the
   # SDKs) is served as usual, because SDK builds made before the rebrand default
   # to this host and do not follow redirects. Must not overlap

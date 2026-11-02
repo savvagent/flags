@@ -1,5 +1,5 @@
 {
-  "name": "otto-flags-examples",
+  "name": "savvagent-flags-examples",
   "private": true,
   "scripts": {
     "test:e2e": "playwright test",

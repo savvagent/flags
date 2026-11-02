@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { OttoFlagsService, OTTO_FLAGS_CONFIG, OttoFlagsConfig } from './service';
-import { FlagClient, FlagEvaluationResult } from '@otto-flags/sdk';
+import { SavvagentFlagsService, SAVVAGENT_FLAGS_CONFIG, SavvagentFlagsConfig } from './service';
+import { FlagClient, FlagEvaluationResult } from '@savvagent/flags-sdk';
 import { firstValueFrom, take, toArray } from 'rxjs';
 
 // Mock FlagClient
-jest.mock('@otto-flags/sdk', () => ({
+jest.mock('@savvagent/flags-sdk', () => ({
   FlagClient: jest.fn().mockImplementation(() => ({
     evaluate: jest.fn(),
     isEnabled: jest.fn(),
@@ -31,11 +31,11 @@ jest.mock('@otto-flags/sdk', () => ({
   })),
 }));
 
-describe('OttoFlagsService', () => {
-  let service: OttoFlagsService;
+describe('SavvagentFlagsService', () => {
+  let service: SavvagentFlagsService;
   let mockClient: jest.Mocked<FlagClient>;
 
-  const mockConfig: OttoFlagsConfig = {
+  const mockConfig: SavvagentFlagsConfig = {
     config: {
       apiKey: 'test_api_key',
       baseUrl: 'https://api.test.com',
@@ -51,9 +51,9 @@ describe('OttoFlagsService', () => {
     jest.clearAllMocks();
     TestBed.configureTestingModule({
       providers: [
-        OttoFlagsService,
+        SavvagentFlagsService,
         {
-          provide: OTTO_FLAGS_CONFIG,
+          provide: SAVVAGENT_FLAGS_CONFIG,
           useValue: mockConfig,
         },
       ],
@@ -66,12 +66,12 @@ describe('OttoFlagsService', () => {
 
   describe('Initialization', () => {
     it('should be created', () => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       expect(service).toBeTruthy();
     });
 
     it('should initialize with config from injection token', () => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       expect(FlagClient).toHaveBeenCalledWith(mockConfig.config);
       expect(service.isReady).toBe(true);
     });
@@ -79,28 +79,28 @@ describe('OttoFlagsService', () => {
     it('should not initialize without config', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       expect(service.isReady).toBe(false);
     });
 
     it('should allow manual initialization', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       service.initialize(mockConfig);
       expect(service.isReady).toBe(true);
     });
 
     it('should warn when reinitializing', () => {
       const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       service.initialize(mockConfig);
       expect(consoleSpy).toHaveBeenCalledWith(
-        '[Otto Flags] Client already initialized. Call close() first to reinitialize.'
+        '[Savvagent Flags] Client already initialized. Call close() first to reinitialize.'
       );
       consoleSpy.mockRestore();
     });
@@ -116,24 +116,24 @@ describe('OttoFlagsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          OttoFlagsService,
+          SavvagentFlagsService,
           {
-            provide: OTTO_FLAGS_CONFIG,
+            provide: SAVVAGENT_FLAGS_CONFIG,
             useValue: {
               config: { apiKey: 'test', onError },
             },
           },
         ],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
-      expect(consoleSpy).toHaveBeenCalledWith('[Otto Flags] Failed to initialize client:', error);
+      expect(consoleSpy).toHaveBeenCalledWith('[Savvagent Flags] Failed to initialize client:', error);
       expect(onError).toHaveBeenCalledWith(error);
       consoleSpy.mockRestore();
     });
 
     it('should set up override change listener', () => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
       expect(mockClient.onOverrideChange).toHaveBeenCalled();
     });
@@ -141,7 +141,7 @@ describe('OttoFlagsService', () => {
 
   describe('Ready State', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -161,7 +161,7 @@ describe('OttoFlagsService', () => {
 
   describe('Context Merging', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -209,9 +209,9 @@ describe('OttoFlagsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          OttoFlagsService,
+          SavvagentFlagsService,
           {
-            provide: OTTO_FLAGS_CONFIG,
+            provide: SAVVAGENT_FLAGS_CONFIG,
             useValue: {
               config: { apiKey: 'test' },
               defaultContext: {
@@ -221,7 +221,7 @@ describe('OttoFlagsService', () => {
           },
         ],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
       mockClient.evaluate.mockResolvedValue({
         key: 'test-flag',
@@ -252,7 +252,7 @@ describe('OttoFlagsService', () => {
 
   describe('flag$ - Reactive Flag Evaluation', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -310,14 +310,14 @@ describe('OttoFlagsService', () => {
     it('should return error when client not initialized', async () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
       const flag$ = service.flag$('test-flag');
       const value = await firstValueFrom(flag$);
 
-      expect(value.error?.message).toBe('Otto Flags client not initialized');
+      expect(value.error?.message).toBe('Savvagent Flags client not initialized');
       expect(value.value).toBe(false);
     }, 10000);
 
@@ -400,7 +400,7 @@ describe('OttoFlagsService', () => {
 
   describe('flagValue$ - Simple Boolean Observable', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -439,7 +439,7 @@ describe('OttoFlagsService', () => {
 
   describe('evaluate - One-time Evaluation', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -458,12 +458,12 @@ describe('OttoFlagsService', () => {
     it('should throw when client not initialized', async () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
       await expect(service.evaluate('test-flag')).rejects.toThrow(
-        'Otto Flags client not initialized'
+        'Savvagent Flags client not initialized'
       );
     });
 
@@ -486,7 +486,7 @@ describe('OttoFlagsService', () => {
 
   describe('isEnabled - Boolean Check', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -505,9 +505,9 @@ describe('OttoFlagsService', () => {
     it('should return false when client not initialized', async () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
       const result = await service.isEnabled('test-flag');
       expect(result).toBe(false);
@@ -516,7 +516,7 @@ describe('OttoFlagsService', () => {
 
   describe('withFlag - Conditional Execution', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -531,9 +531,9 @@ describe('OttoFlagsService', () => {
     it('should return null when client not initialized', async () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
       const callback = jest.fn();
       const result = await service.withFlag('test-flag', callback);
@@ -557,7 +557,7 @@ describe('OttoFlagsService', () => {
 
   describe('User ID Management', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -575,9 +575,9 @@ describe('OttoFlagsService', () => {
     it('should return null when client not initialized', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
       expect(service.getUserId()).toBeNull();
     });
@@ -585,7 +585,7 @@ describe('OttoFlagsService', () => {
 
   describe('Anonymous ID Management', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -603,9 +603,9 @@ describe('OttoFlagsService', () => {
     it('should return null when client not initialized', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
       expect(service.getAnonymousId()).toBeNull();
     });
@@ -613,7 +613,7 @@ describe('OttoFlagsService', () => {
 
   describe('Override Management', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -660,9 +660,9 @@ describe('OttoFlagsService', () => {
     it('should return false/empty when client not initialized', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
       expect(service.hasOverride('test')).toBe(false);
       expect(service.getOverride('test')).toBeUndefined();
@@ -707,7 +707,7 @@ describe('OttoFlagsService', () => {
 
   describe('Flag Discovery', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -751,9 +751,9 @@ describe('OttoFlagsService', () => {
     it('should return empty array when client not initialized', async () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
       const flags1 = await firstValueFrom(service.getAllFlags$());
       const flags2 = await service.getAllFlags();
@@ -767,7 +767,7 @@ describe('OttoFlagsService', () => {
 
   describe('Cache & Connection', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -785,9 +785,9 @@ describe('OttoFlagsService', () => {
     it('should return false for realtime when client not initialized', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [OttoFlagsService],
+        providers: [SavvagentFlagsService],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
 
       expect(service.isRealtimeConnected()).toBe(false);
     });
@@ -795,7 +795,7 @@ describe('OttoFlagsService', () => {
 
   describe('Error Tracking', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -813,7 +813,7 @@ describe('OttoFlagsService', () => {
 
   describe('Cleanup', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -861,7 +861,7 @@ describe('OttoFlagsService', () => {
 
   describe('Edge Cases', () => {
     beforeEach(() => {
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
     });
 
@@ -889,9 +889,9 @@ describe('OttoFlagsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          OttoFlagsService,
+          SavvagentFlagsService,
           {
-            provide: OTTO_FLAGS_CONFIG,
+            provide: SAVVAGENT_FLAGS_CONFIG,
             useValue: {
               config: { apiKey: 'test' },
               defaultContext: {},
@@ -899,7 +899,7 @@ describe('OttoFlagsService', () => {
           },
         ],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
       mockClient.evaluate.mockResolvedValue({
         key: 'test-flag',
@@ -920,16 +920,16 @@ describe('OttoFlagsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          OttoFlagsService,
+          SavvagentFlagsService,
           {
-            provide: OTTO_FLAGS_CONFIG,
+            provide: SAVVAGENT_FLAGS_CONFIG,
             useValue: {
               config: { apiKey: 'test' },
             },
           },
         ],
       });
-      service = TestBed.inject(OttoFlagsService);
+      service = TestBed.inject(SavvagentFlagsService);
       mockClient = (service as any).client;
       mockClient.evaluate.mockResolvedValue({
         key: 'test-flag',

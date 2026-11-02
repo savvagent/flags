@@ -1,4 +1,4 @@
-"""Shared test fixtures for Otto Flags SDK tests."""
+"""Shared test fixtures for Savvagent Flags SDK tests."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import httpx
 import pytest
 import respx
 
-from otto_flags import AsyncFlagClient, FlagClient, FlagClientConfig
+from savvagent_flags import AsyncFlagClient, FlagClient, FlagClientConfig
 
 
 @pytest.fixture

@@ -116,7 +116,7 @@ platform call.
 
 ## Savvagent rebrand (phase 3, #194)
 
-Part of savvagent/otto-platform#128. Every step is human-run (Rob). Already done before the
+Part of savvagent/platform#128. Every step is human-run (Rob). Already done before the
 PR merges: the platform registry lists `https://flags.savvagent.com/mcp` ("Savvagent Flags")
 as the canonical URI with `https://otto-flags.savvagent.com/mcp` as an alias until
 2027-06-30 (see `resource show`), so the platform accepts this service under either URI with
@@ -176,7 +176,7 @@ register. `FLAGS_*` variable names, the Fly app name `otto-flags`, the meter
 
 ## #135: old host redirects (except SDK API)
 
-Part of savvagent/otto-platform#128. `otto-flags.savvagent.com` is in `FLAGS_REDIRECT_HOSTS`
+Part of savvagent/platform#128. `otto-flags.savvagent.com` is in `FLAGS_REDIRECT_HOSTS`
 (and no longer in `FLAGS_ALLOWED_HOSTS`): any request on it for a path outside `/api/` gets
 `308 Permanent Redirect` to `https://flags.savvagent.com` + the same path and query, empty body.
 That covers `/mcp`, the install page, `/.well-known/...`, `/llms.txt`, the health routes and
@@ -306,9 +306,9 @@ its own commit, so an older run would deploy older code. Wait for that run to fi
 only `deploy`):
 
 ```bash
-gh run list -R savvagent/otto-flags --workflow CI --branch main --event push --limit 1 \
+gh run list -R savvagent/flags --workflow CI --branch main --event push --limit 1 \
   --json databaseId,headSha,status
-gh run rerun <databaseId> -R savvagent/otto-flags --failed
+gh run rerun <databaseId> -R savvagent/flags --failed
 ```
 
 **A transient cause** (`canceling statement due to lock timeout`, a dropped connection, a machine
@@ -481,7 +481,7 @@ server-key reports count unless a policy sets `includeClientReports` (owner or a
 `observe` records what would have happened without changing the flag.
 
 - **Plan-gated.** Every paid plan (team, business, enterprise) includes `auto_rollback` through
-  the platform's `plans.features` (otto-platform 0.5.0, savvagent/otto-platform#30); free does
+  the platform's `plans.features` (otto-platform 0.5.0, savvagent/platform#30); free does
   not. A successful answer is cached for 60 s by the platform client; a failed lookup is
   remembered for 10 s, so an outage costs one 2 s timeout per org per 10 s. It fails closed: a
   timeout or platform error means no rollback, recorded as `entitlement_unknown`. Creating or

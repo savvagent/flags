@@ -1,13 +1,13 @@
-# Otto Flags SolidJS Example
+# Savvagent Flags SolidJS Example
 
-Example SolidJS application demonstrating how to use the Otto Flags Solid SDK with reactive primitives.
+Example SolidJS application demonstrating how to use the Savvagent Flags Solid SDK with reactive primitives.
 
 ## Features
 
 - SolidJS with fine-grained reactivity
 - TypeScript
 - Vite for fast development
-- Otto Flags Solid primitives (`createFeatureFlag`, `OttoFlagsProvider`)
+- Savvagent Flags Solid primitives (`createFeatureFlag`, `SavvagentFlagsProvider`)
 - Real-time feature flag updates
 - Hot module replacement
 
@@ -25,8 +25,8 @@ Example SolidJS application demonstrating how to use the Otto Flags Solid SDK wi
 
    Edit `.env.local`:
    ```bash
-   VITE_OTTO_FLAGS_API_URL=http://localhost:8080
-   VITE_OTTO_FLAGS_SDK_KEY=your-sdk-key-here
+   VITE_SAVVAGENT_FLAGS_API_URL=http://localhost:8080
+   VITE_SAVVAGENT_FLAGS_SDK_KEY=your-sdk-key-here
    ```
 
 3. **Run the development server:**
@@ -41,7 +41,7 @@ Example SolidJS application demonstrating how to use the Otto Flags Solid SDK wi
 ### Using the Solid Primitive
 
 ```typescript
-import { createFeatureFlag } from '@otto-flags/solid';
+import { createFeatureFlag } from '@savvagent/flags-solid';
 
 function MyComponent() {
   const [isEnabled, { loading }] = createFeatureFlag('new-feature', {
@@ -66,17 +66,17 @@ function MyComponent() {
 
 ```typescript
 import { render } from 'solid-js/web';
-import { OttoFlagsProvider } from '@otto-flags/solid';
+import { SavvagentFlagsProvider } from '@savvagent/flags-solid';
 import App from './App';
 
 render(
   () => (
-    <OttoFlagsProvider
-      apiUrl={import.meta.env.VITE_OTTO_FLAGS_API_URL}
-      sdkKey={import.meta.env.VITE_OTTO_FLAGS_SDK_KEY}
+    <SavvagentFlagsProvider
+      apiUrl={import.meta.env.VITE_SAVVAGENT_FLAGS_API_URL}
+      sdkKey={import.meta.env.VITE_SAVVAGENT_FLAGS_SDK_KEY}
     >
       <App />
-    </OttoFlagsProvider>
+    </SavvagentFlagsProvider>
   ),
   document.getElementById('root')!
 );
@@ -85,5 +85,5 @@ render(
 ## Learn More
 
 - [SolidJS Documentation](https://www.solidjs.com/)
-- [Otto Flags Solid SDK Documentation](../../packages/solid/README.md)
+- [Savvagent Flags Solid SDK Documentation](../../packages/solid/README.md)
 - [SDK Integration Guide](../../docs/SDK-INTEGRATION.md)

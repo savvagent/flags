@@ -1,13 +1,13 @@
 import express from 'express';
-import { OttoFlagsClient } from '@otto-flags/sdk';
+import { SavvagentFlagsClient } from '@savvagent/flags-sdk';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Initialize Otto Flags client
-const ottoFlags = new OttoFlagsClient({
-  apiUrl: process.env.OTTO_FLAGS_API_URL || 'http://localhost:8080',
-  sdkKey: process.env.OTTO_FLAGS_SDK_KEY || 'your-sdk-key',
+// Initialize Savvagent Flags client
+const savvagentFlags = new SavvagentFlagsClient({
+  apiUrl: process.env.SAVVAGENT_FLAGS_API_URL || 'http://localhost:8080',
+  sdkKey: process.env.SAVVAGENT_FLAGS_SDK_KEY || 'your-sdk-key',
   environment: 'development',
   cache: {
     enabled: true,
@@ -29,14 +29,14 @@ app.get('/api/features/:userId', async (req, res) => {
 
     // Check multiple feature flags
     const [newUIEnabled, betaFeaturesEnabled, advancedAnalytics] = await Promise.all([
-      ottoFlags.isEnabled('new-ui', {
+      savvagentFlags.isEnabled('new-ui', {
         userId,
         attributes: {
           userAgent: req.headers['user-agent'],
         },
       }),
-      ottoFlags.isEnabled('beta-features', { userId }),
-      ottoFlags.isEnabled('advanced-analytics', { userId }),
+      savvagentFlags.isEnabled('beta-features', { userId }),
+      savvagentFlags.isEnabled('advanced-analytics', { userId }),
     ]);
 
     res.json({
@@ -59,7 +59,7 @@ app.post('/api/data', async (req, res) => {
     const userId = req.body.userId || 'anonymous';
 
     // Check if advanced processing is enabled
-    const advancedProcessing = await ottoFlags.isEnabled('advanced-processing', {
+    const advancedProcessing = await savvagentFlags.isEnabled('advanced-processing', {
       userId,
       attributes: {
         endpoint: '/api/data',
@@ -92,5 +92,5 @@ app.post('/api/data', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
-  console.log(`Otto Flags API URL: ${ottoFlags.config.apiUrl}`);
+  console.log(`Savvagent Flags API URL: ${savvagentFlags.config.apiUrl}`);
 });

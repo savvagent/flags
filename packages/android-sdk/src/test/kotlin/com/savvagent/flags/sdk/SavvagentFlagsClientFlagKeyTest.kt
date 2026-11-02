@@ -1,0 +1,104 @@
+package com.savvagent.flags.sdk
+
+import kotlinx.coroutines.test.runTest
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import org.junit.Assert.*
+
+/**
+ * Flag keys are interpolated into the request URL, so a key outside the server's rule
+ * must be rejected before any request (and the SDK key) leaves the device (#107).
+ *
+ * Logging is off on purpose: nothing here needs the log output.
+ */
+class SavvagentFlagsClientFlagKeyTest {
+
+    private lateinit var mockWebServer: MockWebServer
+    private lateinit var client: SavvagentFlagsClient
+
+    private val invalidKeys = listOf(
+        "a/b", "a?b", "a#b", ".", "..", "", "bad key", "a".repeat(129)
+    )
+
+    @Before
+    fun setUp() {
+        mockWebServer = MockWebServer()
+        mockWebServer.start()
+
+        client = SavvagentFlagsClient(
+            SavvagentFlagsConfig(
+                apiUrl = mockWebServer.url("/").toString().removeSuffix("/"),
+                sdkKey = "test-key",
+                environment = "test",
+                enableWebSocket = false,
+                pollingInterval = 0,
+                enableLogging = false
+            )
+        )
+    }
+
+    @After
+    fun tearDown() {
+        client.close()
+        mockWebServer.shutdown()
+    }
+
+    @Test
+    fun evaluateRejectsInvalidKeysWithoutARequest() = runTest {
+        val context = UserContext(userId = "user-123")
+        for (key in invalidKeys) {
+            val result = client.evaluate(key, context)
+            assertTrue("expected failure for key of length ${key.length}", result.isFailure)
+            assertTrue(result.exceptionOrNull() is SavvagentFlagsException)
+        }
+        assertEquals(0, mockWebServer.requestCount)
+    }
+
+    @Test
+    fun keyRuleBoundaries() {
+        assertTrue(SavvagentFlagsClient.isValidFlagKey("a".repeat(128)))
+        assertFalse(SavvagentFlagsClient.isValidFlagKey("a".repeat(129)))
+        assertTrue(SavvagentFlagsClient.isValidFlagKey("..."))
+        assertFalse(SavvagentFlagsClient.isValidFlagKey(" flag"))
+        assertFalse(SavvagentFlagsClient.isValidFlagKey("flag "))
+        assertFalse(SavvagentFlagsClient.isValidFlagKey("fl\u00e9g"))
+        assertFalse(SavvagentFlagsClient.isValidFlagKey("\u0661"))
+    }
+
+    // Without the guard a request would reach the mock server, so the request count is what
+    // tells the fix from no fix here.
+    @Test
+    fun getVariationReturnsDefaultForInvalidKeysWithoutARequest() = runTest {
+        val context = UserContext(userId = "user-123")
+        for (key in invalidKeys) {
+            assertEquals("fallback", client.getVariation(key, context, "fallback"))
+        }
+        assertEquals(0, mockWebServer.requestCount)
+    }
+
+    @Test
+    fun invalidKeyMessageEscapesAndTruncatesTheKey() = runTest {
+        val key = "a\"b\\c\u0000é" + "x".repeat(200)
+        val failure = client.evaluate(key, UserContext(userId = "u")).exceptionOrNull()
+        assertTrue(failure is SavvagentFlagsException)
+        val message = failure!!.message!!
+        assertTrue(message, message.startsWith("Invalid flag key \"a\\u0022b\\u005cc\\u0000\\u00e9"))
+        assertTrue(message, message.endsWith("(${key.length} characters); not evaluated"))
+        assertFalse(message, message.contains('\u0000'))
+    }
+
+    // Checked on the URL builder directly: the path is all this test is about.
+    @Test
+    fun validKeyUsesTheDocumentedEvaluatePath() {
+        assertEquals(
+            "/api/flags/new-checkout.v2_b/evaluate",
+            client.evaluateUrl("new-checkout.v2_b").encodedPath
+        )
+        assertEquals(
+            "/api/flags/.../evaluate",
+            client.evaluateUrl("...").encodedPath
+        )
+    }
+}

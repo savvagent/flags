@@ -1,7 +1,7 @@
 {
-  "name": "@otto-flags/mcp-sentry",
+  "name": "@savvagent/flags-mcp-sentry",
   "version": "1.0.1",
-  "description": "Otto Flags Sentry MCP integration - Connect feature flags with Sentry error tracking",
+  "description": "Savvagent Flags Sentry MCP integration - Connect feature flags with Sentry error tracking",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -27,7 +27,7 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "otto-flags",
+    "savvagent-flags",
     "sentry",
     "mcp",
     "error-tracking",
@@ -38,13 +38,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/savvagent/otto-flags",
+    "url": "https://github.com/savvagent/flags",
     "directory": "packages/mcp-sentry"
   },
   "bugs": {
-    "url": "https://github.com/savvagent/otto-flags/issues"
+    "url": "https://github.com/savvagent/flags/issues"
   },
-  "homepage": "https://github.com/savvagent/otto-flags/tree/main/packages/mcp-sentry#readme",
+  "homepage": "https://github.com/savvagent/flags/tree/main/packages/mcp-sentry#readme",
   "publishConfig": {
     "access": "public"
   },
@@ -64,7 +64,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@otto-flags/mcp-sdk": "workspace:*",
+    "@savvagent/flags-mcp-sdk": "workspace:*",
     "axios": "^1.13.2"
   },
   "engines": {

@@ -1,5 +1,5 @@
 /**
- * Otto Flags Node.js Server SDK
+ * Savvagent Flags Node.js Server SDK
  * AI-powered feature flags for Node.js backend applications
  */
 
@@ -21,4 +21,4 @@ export type {
 } from './types';
 
 // Re-export generated API types from the main SDK for advanced users
-export type { components, components as ApiTypes } from '@otto-flags/sdk';
+export type { components, components as ApiTypes } from '@savvagent/flags-sdk';

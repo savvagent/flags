@@ -1,8 +1,8 @@
-//! The SDK against a mock otto-flags server speaking the documented contract
+//! The SDK against a mock savvagent-flags server speaking the documented contract
 //! (`docs/SDK-DEVELOPER-GUIDE.md`, Flag Evaluation): `POST /api/flags/{key}/evaluate`
 //! with `Authorization: Bearer <key>` and `{"context": ...}`, answered with `enabled`.
 
-use otto_flags::{Config, Context, FlagClient, OttoFlagsError, VariationResult};
+use savvagent_flags::{Config, Context, FlagClient, SavvagentFlagsError, VariationResult};
 use serde_json::json;
 use std::time::Duration;
 use wiremock::matchers::{any, body_partial_json, header, method, path};
@@ -329,7 +329,7 @@ fn client_accepts_a_server_key() {
 
 #[test]
 fn the_invalid_key_error_names_both_key_kinds() {
-    let message = OttoFlagsError::InvalidApiKey.to_string();
+    let message = SavvagentFlagsError::InvalidApiKey.to_string();
     assert!(message.contains("sdk_"), "{message}");
     assert!(message.contains("srv_"), "{message}");
 }
@@ -338,7 +338,7 @@ fn the_invalid_key_error_names_both_key_kinds() {
 fn client_rejects_a_key_without_the_sdk_prefix() {
     assert!(matches!(
         FlagClient::new(Config::new("not-an-sdk-key")),
-        Err(OttoFlagsError::InvalidApiKey)
+        Err(SavvagentFlagsError::InvalidApiKey)
     ));
 }
 

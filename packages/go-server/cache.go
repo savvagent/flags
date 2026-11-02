@@ -1,4 +1,4 @@
-package ottoflags
+package savvagentflags
 
 import (
 	"sync"

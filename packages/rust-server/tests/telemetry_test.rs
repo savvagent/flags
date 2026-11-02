@@ -2,7 +2,7 @@
 //! (`docs/SDK-DEVELOPER-GUIDE.md`, Telemetry): `POST /api/telemetry/evaluations` and
 //! `/api/telemetry/errors` with the client's key, batched (#93).
 
-use otto_flags::{Config, Context, ErrorReport, FlagClient};
+use savvagent_flags::{Config, Context, ErrorReport, FlagClient};
 use serde_json::{json, Value};
 use std::collections::BTreeSet;
 use std::time::Duration;

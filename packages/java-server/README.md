@@ -1,6 +1,6 @@
-# Otto Flags Java Server SDK
+# Savvagent Flags Java Server SDK
 
-Official Java Server SDK for Otto Flags - AI-powered feature flags with automatic error detection.
+Official Java Server SDK for Savvagent Flags - AI-powered feature flags with automatic error detection.
 
 ## Features
 
@@ -22,8 +22,8 @@ Official Java Server SDK for Otto Flags - AI-powered feature flags with automati
 
 ```xml
 <dependency>
-    <groupId>com.savvagent.ottoflags</groupId>
-    <artifactId>otto-flags-java-server-sdk</artifactId>
+    <groupId>com.savvagent.flags</groupId>
+    <artifactId>savvagent-flags-java-server-sdk</artifactId>
     <version>0.1.0</version>
 </dependency>
 ```
@@ -31,13 +31,13 @@ Official Java Server SDK for Otto Flags - AI-powered feature flags with automati
 ### Gradle
 
 ```gradle
-implementation 'com.savvagent.ottoflags:otto-flags-java-server-sdk:0.1.0'
+implementation 'com.savvagent.flags:savvagent-flags-java-server-sdk:0.1.0'
 ```
 
 ## Quick Start
 
 ```java
-import com.savvagent.ottoflags.sdk.*;
+import com.savvagent.flags.sdk.*;
 
 // Initialize the client
 FlagClientConfig config = FlagClientConfig.builder("sdk_your_api_key_here")
@@ -77,7 +77,7 @@ FlagClientConfig config = FlagClientConfig.builder("sdk_your_api_key_here")
         "feature-b", true
     ))
     .onError(error -> {
-        logger.error("Otto Flags error", error);
+        logger.error("Savvagent Flags error", error);
     })
     .build();
 
@@ -106,14 +106,14 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.annotation.PreDestroy;
 
 @Configuration
-public class OttoFlagsConfig {
+public class SavvagentFlagsConfig {
 
     private FlagClient flagClient;
 
     @Bean
     public FlagClient flagClient(
-        @Value("${ottoFlags.api-key}") String apiKey,
-        @Value("${ottoFlags.app-id}") String appId
+        @Value("${savvagentFlags.api-key}") String apiKey,
+        @Value("${savvagentFlags.app-id}") String appId
     ) {
         FlagClientConfig config = FlagClientConfig.builder(apiKey)
             .applicationId(appId)
@@ -262,7 +262,7 @@ result.getMetadata().getScope();   // String: the evaluation scope, e.g. "applic
 ```
 
 `getVersion()` and `getScope()` are null when the server sent none or a malformed value.
-`getFlagId()`, `getDescription()` and `getVariant()` are not sent by the otto-flags server and
+`getFlagId()`, `getDescription()` and `getVariant()` are not sent by the savvagent-flags server and
 stay null. A result with reason `cached` carries the same version and scope as the evaluation
 it came from; a result with reason `error` has null metadata.
 
@@ -321,7 +321,7 @@ The SDK uses SLF4J for logging. Configure your logging framework accordingly:
 
 ```xml
 <!-- Logback example -->
-<logger name="com.savvagent.ottoflags.sdk" level="INFO"/>
+<logger name="com.savvagent.flags.sdk" level="INFO"/>
 ```
 
 ## Build from Source
@@ -336,6 +336,6 @@ MIT
 
 ## Support
 
-- Documentation: https://github.com/savvagent/otto-flags#readme
-- Issues: https://github.com/savvagent/otto-flags/issues
+- Documentation: https://github.com/savvagent/flags#readme
+- Issues: https://github.com/savvagent/flags/issues
 - Email: support@savvagent.com

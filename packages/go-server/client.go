@@ -1,4 +1,4 @@
-package ottoflags
+package savvagentflags
 
 import (
 	"bytes"
@@ -55,7 +55,7 @@ func newClient(config Config, streamOpts realtimeOptions) (*FlagClient, error) {
 	}
 	if config.OnError == nil {
 		config.OnError = func(err error) {
-			fmt.Printf("[Otto Flags] Error: %v\n", err)
+			fmt.Printf("[Savvagent Flags] Error: %v\n", err)
 		}
 	}
 
@@ -184,7 +184,7 @@ func (c *FlagClient) Evaluate(flagKey string, ctx *Context) (*EvaluationResult, 
 		Version       json.RawMessage        `json:"version"`
 		Scope         json.RawMessage        `json:"scope"`
 
-		// Never sent by the otto-flags server; still read for compatibility.
+		// Never sent by the savvagent-flags server; still read for compatibility.
 		FlagID      json.RawMessage `json:"flag_id"`
 		Description json.RawMessage `json:"description"`
 		Variant     json.RawMessage `json:"variant"`

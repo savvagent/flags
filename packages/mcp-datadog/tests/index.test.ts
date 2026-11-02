@@ -4,7 +4,7 @@
 
 import { DatadogMCPServer, DatadogConfig } from '../src';
 
-describe('@otto-flags/mcp-datadog exports', () => {
+describe('@savvagent/flags-mcp-datadog exports', () => {
   it('should export DatadogMCPServer', () => {
     expect(DatadogMCPServer).toBeDefined();
   });

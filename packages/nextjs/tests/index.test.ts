@@ -90,8 +90,8 @@ describe('Index Module (Main Entry Point)', () => {
       const indexModule = require('../src/index');
 
       const clientOnlyExports = [
-        'OttoFlagsProvider',
-        'useOttoFlags',
+        'SavvagentFlagsProvider',
+        'useSavvagentFlags',
         'useFlag',
         'useFlags',
         'useWithFlag',
@@ -211,7 +211,7 @@ describe('Index Module (Main Entry Point)', () => {
 
       // Verify that the file has JSDoc comments
       expect(fileContent).toContain('@packageDocumentation');
-      expect(fileContent).toContain('Next.js SDK for Otto Flags');
+      expect(fileContent).toContain('Next.js SDK for Savvagent Flags');
     });
 
     it('should provide usage examples in comments', () => {
@@ -221,9 +221,9 @@ describe('Index Module (Main Entry Point)', () => {
       const fileContent = fs.readFileSync(indexFilePath, 'utf-8');
 
       // Verify that usage examples are documented
-      expect(fileContent).toContain('@otto-flags/nextjs/client');
-      expect(fileContent).toContain('@otto-flags/nextjs/server');
-      expect(fileContent).toContain('@otto-flags/nextjs/middleware');
+      expect(fileContent).toContain('@savvagent/flags-nextjs/client');
+      expect(fileContent).toContain('@savvagent/flags-nextjs/server');
+      expect(fileContent).toContain('@savvagent/flags-nextjs/middleware');
     });
   });
 
@@ -240,8 +240,8 @@ describe('Index Module (Main Entry Point)', () => {
       const packageJson = require('../package.json');
 
       expect(packageJson.dependencies).toBeDefined();
-      expect(packageJson.dependencies['@otto-flags/sdk']).toBeDefined();
-      expect(packageJson.dependencies['@otto-flags/react']).toBeDefined();
+      expect(packageJson.dependencies['@savvagent/flags-sdk']).toBeDefined();
+      expect(packageJson.dependencies['@savvagent/flags-react']).toBeDefined();
     });
   });
 

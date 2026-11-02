@@ -1,19 +1,19 @@
 /**
- * @otto-flags/angular - Angular SDK for Otto Flags feature flags
+ * @savvagent/flags-angular - Angular SDK for Savvagent Flags feature flags
  *
  * This package provides Angular services and modules for easy integration
- * of Otto Flags feature flags into Angular applications.
+ * of Savvagent Flags feature flags into Angular applications.
  *
  * @packageDocumentation
  */
 
 // Module
-export { OttoFlagsModule } from './module';
+export { SavvagentFlagsModule } from './module';
 
 // Service and types
-export { OttoFlagsService, OTTO_FLAGS_CONFIG } from './service';
+export { SavvagentFlagsService, SAVVAGENT_FLAGS_CONFIG } from './service';
 export type {
-  OttoFlagsConfig,
+  SavvagentFlagsConfig,
   DefaultFlagContext,
   FlagObservableResult,
   FlagOptions,
@@ -32,7 +32,7 @@ export type {
   // Generated API types for advanced users
   ApiTypes,
   components,
-} from '@otto-flags/sdk';
+} from '@savvagent/flags-sdk';
 
 // Re-export FlagClient for advanced use cases
-export { FlagClient } from '@otto-flags/sdk';
+export { FlagClient } from '@savvagent/flags-sdk';

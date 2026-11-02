@@ -1,6 +1,6 @@
 //! Env-derived defaults, the synchronous cached read and the static client (#159).
 
-use otto_flags::{Config, Context, FlagClient};
+use savvagent_flags::{Config, Context, FlagClient};
 use serde_json::json;
 use std::time::Duration;
 use wiremock::matchers::{method, path};

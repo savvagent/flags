@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
-import { useOttoFlags } from '@otto-flags/vue';
-import type { FlagDefinition } from '@otto-flags/sdk';
+import { useSavvagentFlags } from '@savvagent/flags-vue';
+import type { FlagDefinition } from '@savvagent/flags-sdk';
 
-const STORAGE_KEY = 'otto_flags_local_overrides';
+const STORAGE_KEY = 'savvagent_flags_local_overrides';
 
 /**
  * Flag Override Panel
@@ -14,7 +14,7 @@ const STORAGE_KEY = 'otto_flags_local_overrides';
  * which are applied at the evaluation level (before cache/API).
  */
 
-const { client, isReady } = useOttoFlags();
+const { client, isReady } = useSavvagentFlags();
 const isOpen = ref(false);
 const flags = ref<FlagDefinition[]>([]);
 const overrides = ref<Record<string, boolean>>({});

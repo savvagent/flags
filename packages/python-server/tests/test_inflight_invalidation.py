@@ -6,8 +6,8 @@ import httpx
 import pytest
 import respx
 
-from otto_flags import AsyncFlagClient, FlagClient, FlagClientConfig
-from otto_flags.cache import AsyncFlagCache, FlagCache
+from savvagent_flags import AsyncFlagClient, FlagClient, FlagClientConfig
+from savvagent_flags.cache import AsyncFlagCache, FlagCache
 from tests.conftest import server_body
 
 URL = "https://flags.savvagent.com/api/flags/kill/evaluate"

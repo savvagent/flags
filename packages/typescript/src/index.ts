@@ -1,5 +1,5 @@
 /**
- * Otto Flags JavaScript/TypeScript SDK
+ * Savvagent Flags JavaScript/TypeScript SDK
  * AI-powered feature flags with automatic error detection
  */
 

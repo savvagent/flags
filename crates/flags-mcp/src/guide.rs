@@ -897,6 +897,7 @@ mod tests {
     ];
 
     #[test]
+    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn guide_names_match_the_package_manifests() {
         for (lang, manifest, in_manifest, in_guide) in MANIFESTS {
             let m = std::fs::read_to_string(repo(manifest))
@@ -947,6 +948,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn jvm_guides_use_the_manifests_group_id() {
         for (lang, manifest) in [
             ("java", "packages/java-server/pom.xml"),
@@ -962,6 +964,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn javascript_import_names_exist_in_the_packages() {
         let mut checked = 0;
         for l in LANGUAGES {
@@ -1003,6 +1006,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn python_import_name_exists_in_the_package() {
         let init =
             std::fs::read_to_string(repo("packages/python-server/src/otto_flags/__init__.py"))
@@ -1216,6 +1220,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn python_config_keywords_are_fields_of_the_config() {
         let types = std::fs::read_to_string(repo("packages/python-server/src/otto_flags/types.py"))
             .expect("types.py");

@@ -233,7 +233,7 @@ export type * as ApiTypes from './generated/api-types';
 
 **Usage by SDK consumers**:
 ```typescript
-import { FlagClient, ApiTypes } from '@otto-flags/sdk';
+import { FlagClient, ApiTypes } from '@savvagent/flags-sdk';
 
 // Advanced: Direct API response type
 function processApiResponse(response: ApiTypes.components['schemas']['FlagEvaluationResponse']) {

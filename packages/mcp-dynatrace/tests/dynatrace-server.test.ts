@@ -3,7 +3,7 @@
  */
 
 import { DynatraceMCPServer, DynatraceConfig } from '../src/dynatrace-server';
-import { JsonRpcRequest } from '@otto-flags/mcp-sdk';
+import { JsonRpcRequest } from '@savvagent/flags-mcp-sdk';
 
 jest.mock('axios', () => ({
   create: jest.fn(() => ({

@@ -2,7 +2,7 @@
   "name": "angular-example",
   "version": "0.0.3",
   "private": true,
-  "description": "Example Angular app using Otto Flags SDK",
+  "description": "Example Angular app using Savvagent Flags SDK",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -20,8 +20,8 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
-    "@otto-flags/angular": "workspace:*",
-    "@otto-flags/sdk": "workspace:*",
+    "@savvagent/flags-angular": "workspace:*",
+    "@savvagent/flags-sdk": "workspace:*",
     "rxjs": "~7.8.0",
     "tslib": "^2.6.0",
     "zone.js": "~0.14.0"

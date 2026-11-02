@@ -1,13 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createApp } from 'vue';
 import {
-  OttoFlagsPlugin,
+  SavvagentFlagsPlugin,
   getOverriddenValue,
 } from './index';
-import type { FlagClientConfig } from '@otto-flags/sdk';
+import type { FlagClientConfig } from '@savvagent/flags-sdk';
 
 // Mock FlagClient
-vi.mock('@otto-flags/sdk', () => {
+vi.mock('@savvagent/flags-sdk', () => {
   class MockFlagClient {
     config: any;
     private mockSubscribers = new Map<string, Set<() => void>>();
@@ -92,13 +92,13 @@ describe('Vue SDK', () => {
     vi.clearAllMocks();
   });
 
-  describe('OttoFlagsPlugin', () => {
+  describe('SavvagentFlagsPlugin', () => {
     it('should install plugin with config only', () => {
       const app = createApp({});
-      OttoFlagsPlugin.install(app, mockConfig);
+      SavvagentFlagsPlugin.install(app, mockConfig);
 
-      expect(app.config.globalProperties.$ottoFlags).toBeDefined();
-      expect(app.config.globalProperties.$ottoFlags.config).toEqual(mockConfig);
+      expect(app.config.globalProperties.$savvagentFlags).toBeDefined();
+      expect(app.config.globalProperties.$savvagentFlags.config).toEqual(mockConfig);
     });
 
     it('should install plugin with full options format', () => {
@@ -108,25 +108,25 @@ describe('Vue SDK', () => {
         userId: 'user-123',
       };
 
-      OttoFlagsPlugin.install(app, {
+      SavvagentFlagsPlugin.install(app, {
         config: mockConfig,
         defaultContext,
       });
 
-      expect(app.config.globalProperties.$ottoFlags).toBeDefined();
-      expect(app.config.globalProperties.$ottoFlags.config).toEqual(mockConfig);
+      expect(app.config.globalProperties.$savvagentFlags).toBeDefined();
+      expect(app.config.globalProperties.$savvagentFlags.config).toEqual(mockConfig);
     });
 
     it('should support legacy format (config only)', () => {
       const app = createApp({});
-      OttoFlagsPlugin.install(app, mockConfig);
+      SavvagentFlagsPlugin.install(app, mockConfig);
 
-      expect(app.config.globalProperties.$ottoFlags).toBeDefined();
+      expect(app.config.globalProperties.$savvagentFlags).toBeDefined();
     });
 
     it('should support new format with default context', () => {
       const app = createApp({});
-      OttoFlagsPlugin.install(app, {
+      SavvagentFlagsPlugin.install(app, {
         config: mockConfig,
         defaultContext: {
           environment: 'production',
@@ -134,7 +134,7 @@ describe('Vue SDK', () => {
         },
       });
 
-      expect(app.config.globalProperties.$ottoFlags).toBeDefined();
+      expect(app.config.globalProperties.$savvagentFlags).toBeDefined();
     });
   });
 
@@ -190,7 +190,7 @@ describe('Vue SDK', () => {
     it('should export all required types', () => {
       // This test verifies that the exports are properly typed
       // TypeScript will fail to compile if types are missing
-      expect(OttoFlagsPlugin).toBeDefined();
+      expect(SavvagentFlagsPlugin).toBeDefined();
       expect(getOverriddenValue).toBeDefined();
     });
   });
@@ -200,9 +200,9 @@ describe('Vue SDK Integration', () => {
   it('should be importable without errors', async () => {
     const module = await import('./index');
 
-    expect(module.OttoFlagsPlugin).toBeDefined();
-    expect(module.provideOttoFlags).toBeDefined();
-    expect(module.useOttoFlags).toBeDefined();
+    expect(module.SavvagentFlagsPlugin).toBeDefined();
+    expect(module.provideSavvagentFlags).toBeDefined();
+    expect(module.useSavvagentFlags).toBeDefined();
     expect(module.useFlag).toBeDefined();
     expect(module.useFlags).toBeDefined();
     expect(module.useWithFlag).toBeDefined();
@@ -218,9 +218,9 @@ describe('Vue SDK Integration', () => {
     const exports = Object.keys(module);
 
     // Verify we have the main exports
-    expect(exports).toContain('OttoFlagsPlugin');
-    expect(exports).toContain('provideOttoFlags');
-    expect(exports).toContain('useOttoFlags');
+    expect(exports).toContain('SavvagentFlagsPlugin');
+    expect(exports).toContain('provideSavvagentFlags');
+    expect(exports).toContain('useSavvagentFlags');
     expect(exports).toContain('useFlag');
     expect(exports).toContain('useFlags');
     expect(exports).toContain('useWithFlag');

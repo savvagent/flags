@@ -1,11 +1,11 @@
 """
-FastAPI Example for Otto Flags SDK
+FastAPI Example for Savvagent Flags SDK
 
-This example demonstrates how to use the Otto Flags SDK with FastAPI,
+This example demonstrates how to use the Savvagent Flags SDK with FastAPI,
 including dependency injection, lifespan management, and async evaluation.
 
 Requirements:
-    pip install otto_flags fastapi uvicorn
+    pip install savvagent_flags fastapi uvicorn
 
 Run:
     uvicorn examples.fastapi_example:app --reload
@@ -19,7 +19,7 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI, Request
 
-from otto_flags import AsyncFlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import AsyncFlagClient, FlagClientConfig, FlagContext
 
 # Global client instance
 client: AsyncFlagClient | None = None
@@ -27,12 +27,12 @@ client: AsyncFlagClient | None = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Manage the Otto Flags client lifecycle."""
+    """Manage the Savvagent Flags client lifecycle."""
     global client
 
     config = FlagClientConfig(
-        api_key=os.getenv("OTTO_FLAGS_API_KEY", "sdk_your_key_here"),
-        application_id=os.getenv("OTTO_FLAGS_APP_ID"),
+        api_key=os.getenv("SAVVAGENT_FLAGS_API_KEY", "sdk_your_key_here"),
+        application_id=os.getenv("SAVVAGENT_FLAGS_APP_ID"),
         enable_realtime=True,
     )
 
@@ -45,15 +45,15 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Otto Flags FastAPI Example",
+    title="Savvagent Flags FastAPI Example",
     lifespan=lifespan,
 )
 
 
 def get_client() -> AsyncFlagClient:
-    """Dependency to get the Otto Flags client."""
+    """Dependency to get the Savvagent Flags client."""
     if client is None:
-        raise RuntimeError("Otto Flags client not initialized")
+        raise RuntimeError("Savvagent Flags client not initialized")
     return client
 
 
@@ -69,20 +69,20 @@ def get_flag_context(request: Request) -> FlagContext:
 
 
 # Type aliases for dependencies
-OttoFlagsClient = Annotated[AsyncFlagClient, Depends(get_client)]
+SavvagentFlagsClient = Annotated[AsyncFlagClient, Depends(get_client)]
 RequestContext = Annotated[FlagContext, Depends(get_flag_context)]
 
 
 @app.get("/")
 async def root():
     """Health check endpoint."""
-    return {"status": "ok", "service": "otto-flags-fastapi-example"}
+    return {"status": "ok", "service": "savvagent-flags-fastapi-example"}
 
 
 @app.get("/api/features/{user_id}")
 async def get_features(
     user_id: str,
-    otto_flags: OttoFlagsClient,
+    savvagent_flags: SavvagentFlagsClient,
     context: RequestContext,
 ):
     """Get feature flags for a user."""
@@ -90,9 +90,9 @@ async def get_features(
     context.user_id = user_id
 
     # Check multiple flags concurrently
-    new_ui = await otto_flags.is_enabled("new-ui", context)
-    beta_features = await otto_flags.is_enabled("beta-features", context)
-    dark_mode = await otto_flags.is_enabled("dark-mode", context)
+    new_ui = await savvagent_flags.is_enabled("new-ui", context)
+    beta_features = await savvagent_flags.is_enabled("beta-features", context)
+    dark_mode = await savvagent_flags.is_enabled("dark-mode", context)
 
     return {
         "user_id": user_id,
@@ -106,12 +106,12 @@ async def get_features(
 
 @app.get("/api/settings")
 async def get_settings(
-    otto_flags: OttoFlagsClient,
+    savvagent_flags: SavvagentFlagsClient,
     context: RequestContext,
 ):
     """Get dynamic configuration from a feature flag."""
     # Get configuration with a default fallback
-    processing_config = await otto_flags.get_config(
+    processing_config = await savvagent_flags.get_config(
         "processing-settings",
         context,
         default={"method": "basic", "timeout": 30, "retry_count": 3},
@@ -124,11 +124,11 @@ async def get_settings(
 
 @app.get("/api/experiment")
 async def get_experiment(
-    otto_flags: OttoFlagsClient,
+    savvagent_flags: SavvagentFlagsClient,
     context: RequestContext,
 ):
     """Get A/B test variation for a user."""
-    variation = await otto_flags.get_variation("checkout-experiment", context)
+    variation = await savvagent_flags.get_variation("checkout-experiment", context)
 
     return {
         "experiment": "checkout-experiment",
@@ -141,11 +141,11 @@ async def get_experiment(
 @app.post("/api/process")
 async def process_data(
     request: Request,
-    otto_flags: OttoFlagsClient,
+    savvagent_flags: SavvagentFlagsClient,
     context: RequestContext,
 ):
     """Process data with feature flag controlled behavior."""
-    use_new_processor = await otto_flags.is_enabled("new-processor", context)
+    use_new_processor = await savvagent_flags.is_enabled("new-processor", context)
 
     try:
         if use_new_processor:
@@ -159,7 +159,7 @@ async def process_data(
 
     except Exception as e:
         # Track errors correlated with the feature flag
-        await otto_flags.track_error("new-processor", e, context)
+        await savvagent_flags.track_error("new-processor", e, context)
         raise
 
 

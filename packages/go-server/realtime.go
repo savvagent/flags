@@ -1,4 +1,4 @@
-package ottoflags
+package savvagentflags
 
 // The flag-change stream, GET /api/flags/stream (docs/SDK-DEVELOPER-GUIDE.md, Real-time
 // Updates), which invalidates cached evaluations so a flag change, a kill switch above all,

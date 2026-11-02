@@ -1,6 +1,6 @@
 import { NewRelicMCPServer, NewRelicConfig } from '../src';
 
-describe('@otto-flags/mcp-newrelic exports', () => {
+describe('@savvagent/flags-mcp-newrelic exports', () => {
   it('should export NewRelicMCPServer', () => {
     expect(NewRelicMCPServer).toBeDefined();
     expect(typeof NewRelicMCPServer).toBe('function');

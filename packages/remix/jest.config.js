@@ -7,6 +7,6 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
   moduleNameMapper: {
-    '^@otto-flags/sdk$': '<rootDir>/__mocks__/@otto-flags/sdk.ts',
+    '^@savvagent/flags-sdk$': '<rootDir>/__mocks__/@savvagent/flags-sdk.ts',
   },
 };

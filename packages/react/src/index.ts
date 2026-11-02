@@ -1,15 +1,15 @@
 /**
- * @otto-flags/react - React SDK for Otto Flags feature flags
+ * @savvagent/flags-react - React SDK for Savvagent Flags feature flags
  *
  * This package provides React hooks and components for easy integration
- * of Otto Flags feature flags into React applications.
+ * of Savvagent Flags feature flags into React applications.
  *
  * @packageDocumentation
  */
 
 // Context and Provider
-export { OttoFlagsProvider, useOttoFlags } from './context';
-export type { OttoFlagsProviderProps, DefaultFlagContext } from './context';
+export { SavvagentFlagsProvider, useSavvagentFlags } from './context';
+export type { SavvagentFlagsProviderProps, DefaultFlagContext } from './context';
 
 // Hooks
 export {
@@ -40,7 +40,7 @@ export type {
   // Generated API types for advanced users
   ApiTypes,
   components,
-} from '@otto-flags/sdk';
+} from '@savvagent/flags-sdk';
 
 // Re-export FlagClient for advanced use cases
-export { FlagClient } from '@otto-flags/sdk';
+export { FlagClient } from '@savvagent/flags-sdk';

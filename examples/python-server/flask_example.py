@@ -1,7 +1,7 @@
 """
-Otto Flags Python Server Example - Flask
+Savvagent Flags Python Server Example - Flask
 
-This example demonstrates how to use the Otto Flags Python SDK with Flask
+This example demonstrates how to use the Savvagent Flags Python SDK with Flask
 for feature-gated API endpoints using the synchronous client.
 """
 
@@ -10,15 +10,15 @@ import os
 
 from flask import Flask, g, jsonify, request
 
-from ottoFlags import FlagClient, FlagClientConfig, FlagContext
+from savvagentFlags import FlagClient, FlagClientConfig, FlagContext
 
 app = Flask(__name__)
 
-# Initialize Otto Flags client
+# Initialize Savvagent Flags client
 config = FlagClientConfig(
-    api_key=os.environ.get("OTTO_FLAGS_API_KEY", "sdk_your_key_here"),
-    application_id=os.environ.get("OTTO_FLAGS_APP_ID", "python-server-example"),
-    base_url=os.environ.get("OTTO_FLAGS_API_URL", "http://localhost:8080"),
+    api_key=os.environ.get("SAVVAGENT_FLAGS_API_KEY", "sdk_your_key_here"),
+    application_id=os.environ.get("SAVVAGENT_FLAGS_APP_ID", "python-server-example"),
+    base_url=os.environ.get("SAVVAGENT_FLAGS_API_URL", "http://localhost:8080"),
     enable_realtime=True,
     cache_ttl=60,
     enable_telemetry=True,
@@ -27,7 +27,7 @@ config = FlagClientConfig(
 client = FlagClient(config)
 atexit.register(client.close)
 
-print(f"Otto Flags client initialized - API URL: {config.base_url}")
+print(f"Savvagent Flags client initialized - API URL: {config.base_url}")
 
 
 @app.before_request

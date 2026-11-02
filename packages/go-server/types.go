@@ -1,4 +1,4 @@
-package ottoflags
+package savvagentflags
 
 import "time"
 
@@ -10,7 +10,7 @@ type Config struct {
 	// ApplicationID for application-scoped flags (optional)
 	ApplicationID string
 
-	// BaseURL is the Otto Flags API base URL (default: https://flags.savvagent.com)
+	// BaseURL is the Savvagent Flags API base URL (default: https://flags.savvagent.com)
 	BaseURL string
 
 	// EnableRealtime opens the flag-change stream (GET /api/flags/stream, server-sent
@@ -86,13 +86,13 @@ type EvaluationResult struct {
 
 // Metadata contains additional information about a flag
 type Metadata struct {
-	// FlagID is not sent by the otto-flags server, so it is empty.
+	// FlagID is not sent by the savvagent-flags server, so it is empty.
 	FlagID string `json:"flag_id,omitempty"`
 
-	// Description is not sent by the otto-flags server, so it is empty.
+	// Description is not sent by the savvagent-flags server, so it is empty.
 	Description string `json:"description,omitempty"`
 
-	// Variant is not sent by the otto-flags server, so it is empty.
+	// Variant is not sent by the savvagent-flags server, so it is empty.
 	Variant string `json:"variant,omitempty"`
 
 	// Version is the flag version that produced the result; 0 when the server sent none.

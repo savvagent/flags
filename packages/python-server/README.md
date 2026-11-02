@@ -1,6 +1,6 @@
-# otto-flags
+# savvagent-flags
 
-Official Python Server SDK for Otto Flags - AI-powered feature flags with automatic error detection.
+Official Python Server SDK for Savvagent Flags - AI-powered feature flags with automatic error detection.
 
 ## Features
 
@@ -17,25 +17,25 @@ Official Python Server SDK for Otto Flags - AI-powered feature flags with automa
 The package is not published to PyPI yet. Install it from the repository, pinned to a commit:
 
 ```bash
-pip install "otto-flags @ git+https://github.com/savvagent/otto-flags@<commit>#subdirectory=packages/python-server"
+pip install "savvagent-flags @ git+https://github.com/savvagent/flags@<commit>#subdirectory=packages/python-server"
 ```
 
 or in `pyproject.toml`:
 
 ```toml
 dependencies = [
-    "otto-flags @ git+https://github.com/savvagent/otto-flags@<commit>#subdirectory=packages/python-server",
+    "savvagent-flags @ git+https://github.com/savvagent/flags@<commit>#subdirectory=packages/python-server",
 ]
 ```
 
-The distribution is `otto-flags`; the import name is `otto_flags`.
+The distribution is `savvagent-flags`; the import name is `savvagent_flags`.
 
 ## Quick Start
 
 ### Synchronous Usage
 
 ```python
-from otto_flags import FlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import FlagClient, FlagClientConfig, FlagContext
 
 # Initialize the client
 config = FlagClientConfig(
@@ -59,7 +59,7 @@ with FlagClient(config) as client:
 ### Asynchronous Usage
 
 ```python
-from otto_flags import AsyncFlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import AsyncFlagClient, FlagClientConfig, FlagContext
 
 config = FlagClientConfig(api_key="sdk_your_api_key_here")
 
@@ -71,7 +71,7 @@ async with AsyncFlagClient(config) as client:
 ## Configuration
 
 ```python
-from otto_flags import FlagClientConfig
+from savvagent_flags import FlagClientConfig
 
 config = FlagClientConfig(
     api_key="sdk_your_api_key_here",
@@ -85,7 +85,7 @@ config = FlagClientConfig(
         "feature-a": False,
         "feature-b": True,
     },
-    on_error=lambda e: print(f"Otto Flags error: {e}"),
+    on_error=lambda e: print(f"Savvagent Flags error: {e}"),
 )
 ```
 
@@ -168,7 +168,7 @@ atexit.register(client.close)
 ### Configuration Overrides (Testing)
 
 ```python
-from otto_flags import ConfigOverrideOptions
+from savvagent_flags import ConfigOverrideOptions
 
 # Override configuration for testing
 client.set_config_override("ui-settings", {"theme": "dark", "new_feature": True})
@@ -194,7 +194,7 @@ client.clear_all_overrides()
 ```python
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, Request
-from otto_flags import AsyncFlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import AsyncFlagClient, FlagClientConfig, FlagContext
 
 client: AsyncFlagClient | None = None
 
@@ -227,7 +227,7 @@ async def get_feature(user_id: str, context: FlagContext = Depends(get_flag_cont
 ```python
 import atexit
 from flask import Flask, g, request
-from otto_flags import FlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import FlagClient, FlagClientConfig, FlagContext
 
 app = Flask(__name__)
 
@@ -253,7 +253,7 @@ def get_feature(user_id: str):
 
 ```python
 # middleware.py
-from otto_flags import FlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import FlagClient, FlagClientConfig, FlagContext
 
 _client = None
 
@@ -262,16 +262,16 @@ def get_client():
     if _client is None:
         from django.conf import settings
         _client = FlagClient(FlagClientConfig(
-            api_key=settings.OTTO_FLAGS_API_KEY,
+            api_key=settings.SAVVAGENT_FLAGS_API_KEY,
         ))
     return _client
 
-class OttoFlagsMiddleware:
+class SavvagentFlagsMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        request.otto_flags = get_client()
+        request.savvagent_flags = get_client()
         request.flag_context = FlagContext(
             user_id=str(request.user.id) if request.user.is_authenticated else None,
             ip_address=request.META.get("REMOTE_ADDR"),
@@ -280,7 +280,7 @@ class OttoFlagsMiddleware:
 
 # views.py
 def my_view(request):
-    enabled = request.otto_flags.is_enabled("new-feature", request.flag_context)
+    enabled = request.savvagent_flags.is_enabled("new-feature", request.flag_context)
     return JsonResponse({"enabled": enabled})
 ```
 
@@ -309,7 +309,7 @@ result = client.evaluate("my-flag", FlagContext(user_id="123"))
 `result.metadata.version` is the flag version that produced the result (an `int`) and
 `result.metadata.scope` is `"application"` or `"enterprise"`; both are also set on `cached`
 results, and are `None` if the server omits them or sends the wrong type. `flag_id`,
-`description` and `variant` are not sent by the otto-flags server and are always `None` from it.
+`description` and `variant` are not sent by the savvagent-flags server and are always `None` from it.
 
 ##### is_enabled(flag_key, context?) → bool
 
@@ -411,6 +411,6 @@ MIT
 
 ## Support
 
-- Documentation: https://github.com/savvagent/otto-flags#readme
-- Issues: https://github.com/savvagent/otto-flags/issues
+- Documentation: https://github.com/savvagent/flags#readme
+- Issues: https://github.com/savvagent/flags/issues
 - Email: support@savvagent.com

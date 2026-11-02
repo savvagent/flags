@@ -1,6 +1,6 @@
-# @otto-flags/typescript
+# @savvagent/flags-typescript
 
-Official TypeScript/JavaScript SDK for Otto Flags - AI-powered feature flags with automatic error detection.
+Official TypeScript/JavaScript SDK for Savvagent Flags - AI-powered feature flags with automatic error detection.
 
 ## Features
 
@@ -14,17 +14,17 @@ Official TypeScript/JavaScript SDK for Otto Flags - AI-powered feature flags wit
 ## Installation
 
 ```bash
-npm install @otto-flags/typescript
+npm install @savvagent/flags-typescript
 # or
-yarn add @otto-flags/typescript
+yarn add @savvagent/flags-typescript
 # or
-pnpm add @otto-flags/typescript
+pnpm add @savvagent/flags-typescript
 ```
 
 ## Quick Start
 
 ```typescript
-import { FlagClient } from '@otto-flags/typescript';
+import { FlagClient } from '@savvagent/flags-typescript';
 
 // Initialize the client
 const client = new FlagClient({
@@ -158,7 +158,7 @@ interface FlagClientConfig {
   /** SDK API key (required, starts with sdk_) */
   apiKey: string;
 
-  /** Base URL for the Otto Flags API (default: production) */
+  /** Base URL for the Savvagent Flags API (default: production) */
   baseUrl?: string;
 
   /** Environment for flag evaluation (default: 'production') */
@@ -196,7 +196,7 @@ const client = new FlagClient({
     'experimental-feature': false,
   },
   onError: (error) => {
-    console.error('Otto Flags error:', error);
+    console.error('Savvagent Flags error:', error);
     // Send to your error tracking service
   },
 });
@@ -248,7 +248,7 @@ Note: Changing the environment clears the cache since flag values may differ bet
 ### React
 
 ```typescript
-import { FlagClient } from '@otto-flags/client-web';
+import { FlagClient } from '@savvagent/flags-client-web';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 // Create context
@@ -259,7 +259,7 @@ export function FlagProvider({ children }: { children: React.ReactNode }) {
   const [client] = useState(
     () =>
       new FlagClient({
-        apiKey: process.env.NEXT_PUBLIC_OTTO_FLAGS_KEY!,
+        apiKey: process.env.NEXT_PUBLIC_SAVVAGENT_FLAGS_KEY!,
       })
   );
 
@@ -300,11 +300,11 @@ function MyComponent() {
 ### Vue 3
 
 ```typescript
-import { FlagClient } from '@otto-flags/client-web';
+import { FlagClient } from '@savvagent/flags-client-web';
 import { ref, onMounted, onUnmounted } from 'vue';
 
 const client = new FlagClient({
-  apiKey: import.meta.env.VITE_OTTO_FLAGS_KEY,
+  apiKey: import.meta.env.VITE_SAVVAGENT_FLAGS_KEY,
 });
 
 export function useFlag(flagKey: string, context?: any) {
@@ -330,11 +330,11 @@ export function useFlag(flagKey: string, context?: any) {
 ### Svelte
 
 ```typescript
-import { FlagClient } from '@otto-flags/client-web';
+import { FlagClient } from '@savvagent/flags-client-web';
 import { writable } from 'svelte/store';
 
 const client = new FlagClient({
-  apiKey: import.meta.env.VITE_OTTO_FLAGS_KEY,
+  apiKey: import.meta.env.VITE_SAVVAGENT_FLAGS_KEY,
 });
 
 export function flagStore(flagKey: string, context?: any) {
@@ -365,7 +365,7 @@ Create a single client instance and reuse it throughout your application:
 ```typescript
 // flags.ts
 export const flagClient = new FlagClient({
-  apiKey: process.env.OTTO_FLAGS_API_KEY!,
+  apiKey: process.env.SAVVAGENT_FLAGS_API_KEY!,
 });
 
 // other-file.ts
@@ -469,7 +469,7 @@ const client = new FlagClient({
 ### Flags always return false
 
 - Check your API key is correct and starts with `sdk_`
-- Verify the baseUrl points to your Otto Flags instance
+- Verify the baseUrl points to your Savvagent Flags instance
 - Check network requests in browser DevTools
 
 ### Real-time updates not working
@@ -481,7 +481,7 @@ const client = new FlagClient({
 ### TypeScript errors
 
 - Ensure TypeScript version >= 5.0
-- Check that `@otto-flags/client-web` types are installed
+- Check that `@savvagent/flags-client-web` types are installed
 
 ## License
 
@@ -489,6 +489,6 @@ MIT
 
 ## Support
 
-- Documentation: https://github.com/savvagent/otto-flags#readme
-- Issues: https://github.com/yourusername/ottoFlags/issues
+- Documentation: https://github.com/savvagent/flags#readme
+- Issues: https://github.com/savvagent/flags/issues
 - Email: support@savvagent.com

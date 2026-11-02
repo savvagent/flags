@@ -3,7 +3,7 @@
  */
 
 import express from 'express';
-import { createHttpHandler } from '@otto-flags/mcp-sdk';
+import { createHttpHandler } from '@savvagent/flags-mcp-sdk';
 import { SplunkMCPServer } from './src/splunk-server';
 
 const CONFIG = {
