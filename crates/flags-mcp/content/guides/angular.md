@@ -1,7 +1,7 @@
-# otto-flags Angular SDK (app: {{APP_NAME}})
+# Savvagent Flags Angular SDK (app: {{APP_NAME}})
 
-`@otto-flags/angular` provides a module and an injectable service that exposes flags as RxJS
-observables, for Angular 14 or later. It wraps `@otto-flags/sdk`, so its install includes that
+`@savvagent/flags-angular` provides a module and an injectable service that exposes flags as RxJS
+observables, for Angular 14 or later. It wraps `@savvagent/flags-sdk`, so its install includes that
 package.
 
 The client key is public by design: it can ship in a browser bundle and sits in source control
@@ -12,10 +12,10 @@ browser.
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`, `@otto-flags/angular`), because a package's tarball names the
+dependency order (`@savvagent/flags-sdk`, `@savvagent/flags-angular`), because a package's tarball names the
 others it depends on and they cannot be resolved by name. You need `git`, Node.js and `pnpm`.
 
 On pnpm 9, `pnpm install` runs the install scripts of this repository's dependencies on your
@@ -24,24 +24,24 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/angular build
-pnpm --filter @otto-flags/angular pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-angular build
+pnpm --filter @savvagent/flags-angular pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-angular-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-angular-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -55,11 +55,11 @@ Import the module once in the root module with `forRoot`:
 ```typescript
 // app.module.ts
 import { NgModule } from "@angular/core";
-import { OttoFlagsModule } from "@otto-flags/angular";
+import { SavvagentFlagsModule } from "@savvagent/flags-angular";
 
 @NgModule({
   imports: [
-    OttoFlagsModule.forRoot({
+    SavvagentFlagsModule.forRoot({
       config: {
         apiKey: "{{CLIENT_KEY}}",
         applicationId: "{{APP_ID}}",
@@ -78,12 +78,12 @@ In an app with standalone components, bring the module's providers in with `impo
 // main.ts
 import { importProvidersFrom } from "@angular/core";
 import { bootstrapApplication } from "@angular/platform-browser";
-import { OttoFlagsModule } from "@otto-flags/angular";
+import { SavvagentFlagsModule } from "@savvagent/flags-angular";
 
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      OttoFlagsModule.forRoot({
+      SavvagentFlagsModule.forRoot({
         config: { apiKey: "{{CLIENT_KEY}}", applicationId: "{{APP_ID}}" },
       }),
     ),
@@ -96,7 +96,7 @@ bootstrapApplication(AppComponent, {
 default 60000), `enableTelemetry` (default `true`), `defaults` and `onError`. `defaultContext`
 applies to every evaluation: `applicationId`, `environment`, `organizationId`, `userId`,
 `anonymousId`, `sessionId`, `language` and `attributes`. To configure at run time instead, inject
-`OttoFlagsService` and call `initialize({ config, defaultContext })` once.
+`SavvagentFlagsService` and call `initialize({ config, defaultContext })` once.
 
 **Environment.** The `environment` this app evaluates in, wherever this guide sets it (the client
 configuration or a context), must be one of the app's environments: {{ENVIRONMENTS}}. Read it from the
@@ -106,7 +106,7 @@ build's or deployment's configuration instead of hardcoding it.
 
 ```typescript
 import { Component } from "@angular/core";
-import { OttoFlagsService } from "@otto-flags/angular";
+import { SavvagentFlagsService } from "@savvagent/flags-angular";
 
 @Component({
   selector: "app-checkout",
@@ -119,12 +119,12 @@ import { OttoFlagsService } from "@otto-flags/angular";
   `,
 })
 export class CheckoutComponent {
-  newCheckout$ = this.ottoFlags.flag$("new-checkout", {
+  newCheckout$ = this.savvagentFlags.flag$("new-checkout", {
     context: { user_id: "user-123", attributes: { plan: "pro" } },
     defaultValue: false,
   });
 
-  constructor(private ottoFlags: OttoFlagsService) {}
+  constructor(private savvagentFlags: SavvagentFlagsService) {}
 }
 ```
 

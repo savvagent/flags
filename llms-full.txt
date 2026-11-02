@@ -1,12 +1,12 @@
-# Otto Flags SDKs - Complete Documentation
+# Savvagent Flags SDKs - Complete Documentation
 
-> Otto Flags is an AI-powered feature flag platform that prevents production incidents. This repository contains official SDKs for TypeScript/JavaScript, React, Vue, Svelte, Next.js, Node.js, Go, Java, Rust, iOS, and Android.
+> Savvagent Flags is an AI-powered feature flag platform that prevents production incidents. This repository contains official SDKs for TypeScript/JavaScript, React, Vue, Svelte, Next.js, Node.js, Go, Java, Rust, iOS, and Android.
 
 ---
 
 ## Overview
 
-Otto Flags enables safe feature rollouts by:
+Savvagent Flags enables safe feature rollouts by:
 - **Feature Flags**: Boolean toggles that control feature visibility with targeting rules
 - **AI Error Detection**: Automatically correlates production errors with recent flag changes
 - **Real-time Updates**: Server-Sent Events push flag changes instantly to all clients
@@ -24,43 +24,43 @@ Otto Flags enables safe feature rollouts by:
 
 ### TypeScript/JavaScript (npm)
 ```bash
-npm install @otto-flags/sdk
+npm install @savvagent/flags-sdk
 # or
-pnpm add @otto-flags/sdk
+pnpm add @savvagent/flags-sdk
 # or
-yarn add @otto-flags/sdk
+yarn add @savvagent/flags-sdk
 ```
 
 ### React
 ```bash
-npm install @otto-flags/react
+npm install @savvagent/flags-react
 ```
 
 ### Vue 3
 ```bash
-npm install @otto-flags/vue
+npm install @savvagent/flags-vue
 ```
 
 ### Next.js
 ```bash
-npm install @otto-flags/nextjs
+npm install @savvagent/flags-nextjs
 ```
 
 ### Node.js Server
 ```bash
-npm install @otto-flags/node-server
+npm install @savvagent/flags-node-server
 ```
 
 ### Go
 ```bash
-go get github.com/savvagent/otto-flags/packages/go-server
+go get github.com/savvagent/flags/packages/go-server
 ```
 
 ### Java (Maven)
 ```xml
 <dependency>
-  <groupId>com.savvagent.ottoflags</groupId>
-  <artifactId>otto-flags-java-server-sdk</artifactId>
+  <groupId>com.savvagent.flags</groupId>
+  <artifactId>savvagent-flags-java-server-sdk</artifactId>
   <version>0.1.0</version>
 </dependency>
 ```
@@ -68,17 +68,17 @@ go get github.com/savvagent/otto-flags/packages/go-server
 ### Rust
 ```toml
 [dependencies]
-ottoFlags = "0.1.0"
+savvagentFlags = "0.1.0"
 ```
 
 ### iOS (Swift Package Manager)
 ```swift
-.package(url: "https://github.com/savvagent/otto-flags-ios-sdk.git", from: "0.1.0")
+.package(url: "https://github.com/savvagent/flags-ios-sdk.git", from: "0.1.0")
 ```
 
 ### Android (Gradle)
 ```kotlin
-implementation("com.savvagent.ottoflags:otto-flags-android-sdk:0.1.0")
+implementation("com.savvagent.flags:savvagent-flags-android-sdk:0.1.0")
 ```
 
 ---
@@ -88,7 +88,7 @@ implementation("com.savvagent.ottoflags:otto-flags-android-sdk:0.1.0")
 ### TypeScript/JavaScript
 
 ```typescript
-import { FlagClient } from '@otto-flags/sdk';
+import { FlagClient } from '@savvagent/flags-sdk';
 
 // Initialize the client
 const client = new FlagClient({
@@ -136,19 +136,19 @@ client.close();
 ### React
 
 ```tsx
-import { OttoFlagsProvider, useFlag } from '@otto-flags/react';
+import { SavvagentFlagsProvider, useFlag } from '@savvagent/flags-react';
 
 // 1. Wrap your app with the provider
 function App() {
   return (
-    <OttoFlagsProvider
+    <SavvagentFlagsProvider
       config={{
         apiKey: 'sdk_your_api_key_here',
         enableRealtime: true,
       }}
     >
       <YourApp />
-    </OttoFlagsProvider>
+    </SavvagentFlagsProvider>
   );
 }
 
@@ -187,7 +187,7 @@ function ExperimentalFeature() {
 
 ```vue
 <script setup lang="ts">
-import { useFlag, useOttoFlags } from '@otto-flags/vue';
+import { useFlag, useSavvagentFlags } from '@savvagent/flags-vue';
 
 const { value: isEnabled, loading } = useFlag('new-feature', {
   defaultValue: false,
@@ -205,19 +205,19 @@ const { value: isEnabled, loading } = useFlag('new-feature', {
 
 ```tsx
 // app/layout.tsx - Server-side initialization
-import { OttoFlagsProvider } from '@otto-flags/nextjs/server';
+import { SavvagentFlagsProvider } from '@savvagent/flags-nextjs/server';
 
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <OttoFlagsProvider
+        <SavvagentFlagsProvider
           config={{
-            apiKey: process.env.OTTO_FLAGS_SDK_KEY!,
+            apiKey: process.env.SAVVAGENT_FLAGS_SDK_KEY!,
           }}
         >
           {children}
-        </OttoFlagsProvider>
+        </SavvagentFlagsProvider>
       </body>
     </html>
   );
@@ -225,7 +225,7 @@ export default function RootLayout({ children }) {
 
 // components/Feature.tsx - Client component
 'use client';
-import { useFlag } from '@otto-flags/nextjs/client';
+import { useFlag } from '@savvagent/flags-nextjs/client';
 
 export function Feature() {
   const { value } = useFlag('new-feature');
@@ -237,11 +237,11 @@ export function Feature() {
 
 ```typescript
 import express from 'express';
-import { FlagClient } from '@otto-flags/node-server';
+import { FlagClient } from '@savvagent/flags-node-server';
 
 const app = express();
 const flags = new FlagClient({
-  apiKey: process.env.OTTO_FLAGS_SDK_KEY!,
+  apiKey: process.env.SAVVAGENT_FLAGS_SDK_KEY!,
   cache: { enabled: true, ttl: 60000 },
 });
 
@@ -266,11 +266,11 @@ package main
 
 import (
     "context"
-    ottoFlags "github.com/savvagent/otto-flags/packages/go-server"
+    savvagentFlags "github.com/savvagent/flags/packages/go-server"
 )
 
 func main() {
-    client, err := ottoFlags.NewClient(ottoFlags.Config{
+    client, err := savvagentFlags.NewClient(savvagentFlags.Config{
         APIKey:  "sdk_your_api_key",
         BaseURL: "https://flags.savvagent.com",
     })
@@ -280,7 +280,7 @@ func main() {
     defer client.Close()
 
     ctx := context.Background()
-    isEnabled, err := client.IsEnabled(ctx, "new-feature", ottoFlags.Context{
+    isEnabled, err := client.IsEnabled(ctx, "new-feature", savvagentFlags.Context{
         UserID: "user-123",
         Attributes: map[string]interface{}{
             "plan": "pro",
@@ -296,8 +296,8 @@ func main() {
 ### Java
 
 ```java
-import com.savvagent.ottoflags.sdk.FlagClient;
-import com.savvagent.ottoflags.sdk.FlagContext;
+import com.savvagent.flags.sdk.FlagClient;
+import com.savvagent.flags.sdk.FlagContext;
 
 public class Example {
     public static void main(String[] args) {
@@ -325,7 +325,7 @@ public class Example {
 ### Rust
 
 ```rust
-use ottoFlags::{FlagClient, FlagContext};
+use savvagentFlags::{FlagClient, FlagContext};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -351,7 +351,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ### iOS (Swift)
 
 ```swift
-import OttoFlagsSDK
+import SavvagentFlagsSDK
 
 // Initialize
 let client = try FlagClient(
@@ -387,8 +387,8 @@ struct FeatureView: View {
 ### Android (Kotlin)
 
 ```kotlin
-import com.savvagent.ottoflags.sdk.FlagClient
-import com.savvagent.ottoflags.sdk.FlagContext
+import com.savvagent.flags.sdk.FlagClient
+import com.savvagent.flags.sdk.FlagContext
 
 // Initialize
 val client = FlagClient(
@@ -509,7 +509,7 @@ interface EvaluationResult {
 | Hook | Description |
 |------|-------------|
 | `useFlag(flagKey, options?)` | Evaluate flag with loading/error states |
-| `useOttoFlags()` | Access underlying FlagClient instance |
+| `useSavvagentFlags()` | Access underlying FlagClient instance |
 | `useWithFlag(flagKey, callback)` | Execute callback when flag is enabled |
 | `useUser()` | Manage user identification |
 | `useTrackError(flagKey)` | Get error tracking function for a flag |
@@ -520,7 +520,7 @@ interface EvaluationResult {
 
 ### Percentage Rollouts (Sticky)
 
-Otto Flags uses consistent hashing to ensure users always see the same flag state:
+Savvagent Flags uses consistent hashing to ensure users always see the same flag state:
 
 ```typescript
 // 25% rollout - same users always in the 25%
@@ -613,7 +613,7 @@ const { value } = useFlag('feature', { realtime: true });
 
 ## Error Tracking
 
-Otto Flags's AI correlates errors with flag changes to identify problematic rollouts:
+Savvagent Flags's AI correlates errors with flag changes to identify problematic rollouts:
 
 ### Automatic Tracking (withFlag)
 
@@ -710,7 +710,7 @@ const client = new FlagClient({
 ```typescript
 // lib/flags.ts
 export const flagClient = new FlagClient({
-  apiKey: process.env.OTTO_FLAGS_SDK_KEY!,
+  apiKey: process.env.SAVVAGENT_FLAGS_SDK_KEY!,
 });
 
 // other files
@@ -784,7 +784,7 @@ const client = new FlagClient({
 
 ```typescript
 const client = new FlagClient({
-  apiKey: process.env.OTTO_FLAGS_SDK_KEY!,
+  apiKey: process.env.SAVVAGENT_FLAGS_SDK_KEY!,
   baseUrl: 'https://flags.savvagent.com',
   cache: { enabled: true, ttl: 60000 },
   enableTelemetry: true,
@@ -795,12 +795,12 @@ const client = new FlagClient({
 
 ```bash
 # .env
-OTTO_FLAGS_SDK_KEY=sdk_prod_xxx
-OTTO_FLAGS_API_URL=https://flags.savvagent.com
+SAVVAGENT_FLAGS_SDK_KEY=sdk_prod_xxx
+SAVVAGENT_FLAGS_API_URL=https://flags.savvagent.com
 
 # .env.local (client-side)
-NEXT_PUBLIC_OTTO_FLAGS_SDK_KEY=sdk_prod_xxx
-VITE_OTTO_FLAGS_SDK_KEY=sdk_prod_xxx
+NEXT_PUBLIC_SAVVAGENT_FLAGS_SDK_KEY=sdk_prod_xxx
+VITE_SAVVAGENT_FLAGS_SDK_KEY=sdk_prod_xxx
 ```
 
 ---
@@ -834,16 +834,16 @@ VITE_OTTO_FLAGS_SDK_KEY=sdk_prod_xxx
 
 | Package | npm | Status |
 |---------|-----|--------|
-| @otto-flags/sdk | [![npm](https://img.shields.io/npm/v/@otto-flags/sdk)](https://npmjs.com/package/@otto-flags/sdk) | Stable |
-| @otto-flags/react | [![npm](https://img.shields.io/npm/v/@otto-flags/react)](https://npmjs.com/package/@otto-flags/react) | Beta |
-| @otto-flags/vue | [![npm](https://img.shields.io/npm/v/@otto-flags/vue)](https://npmjs.com/package/@otto-flags/vue) | Beta |
-| @otto-flags/nextjs | [![npm](https://img.shields.io/npm/v/@otto-flags/nextjs)](https://npmjs.com/package/@otto-flags/nextjs) | Beta |
-| @otto-flags/node-server | [![npm](https://img.shields.io/npm/v/@otto-flags/node-server)](https://npmjs.com/package/@otto-flags/node-server) | Beta |
+| @savvagent/flags-sdk | [![npm](https://img.shields.io/npm/v/@savvagent/flags-sdk)](https://npmjs.com/package/@savvagent/flags-sdk) | Stable |
+| @savvagent/flags-react | [![npm](https://img.shields.io/npm/v/@savvagent/flags-react)](https://npmjs.com/package/@savvagent/flags-react) | Beta |
+| @savvagent/flags-vue | [![npm](https://img.shields.io/npm/v/@savvagent/flags-vue)](https://npmjs.com/package/@savvagent/flags-vue) | Beta |
+| @savvagent/flags-nextjs | [![npm](https://img.shields.io/npm/v/@savvagent/flags-nextjs)](https://npmjs.com/package/@savvagent/flags-nextjs) | Beta |
+| @savvagent/flags-node-server | [![npm](https://img.shields.io/npm/v/@savvagent/flags-node-server)](https://npmjs.com/package/@savvagent/flags-node-server) | Beta |
 
 ---
 
 ## Support
 
-- **Documentation**: https://github.com/savvagent/otto-flags#readme
-- **GitHub Issues**: https://github.com/savvagent/otto-flags/issues
+- **Documentation**: https://github.com/savvagent/flags#readme
+- **GitHub Issues**: https://github.com/savvagent/flags/issues
 - **Email**: support@savvagent.com

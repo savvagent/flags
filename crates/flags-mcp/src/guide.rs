@@ -1,4 +1,4 @@
-//! Per-language guides for consuming the otto-flags SDKs, rendered for the `sdk_guide` tool.
+//! Per-language guides for consuming the savvagent-flags SDKs, rendered for the `sdk_guide` tool.
 //!
 //! Content is Markdown under `content/guides/`, compiled in. Static: nothing here reads a
 //! database or the network. Install routes are commit-pinned source routes (`{{SDK_REF}}`); no
@@ -208,7 +208,7 @@ fn environments_text(app: Option<&FlagApp>) -> String {
     }
 }
 
-/// The commit of `savvagent/otto-flags` every SDK install in the guides, `AGENTS.md` and
+/// The commit of `savvagent/flags` every SDK install in the guides, `AGENTS.md` and
 /// `llms.txt` is pinned to, so a consuming developer does not have to review a SHA an agent
 /// picked: the maintainers choose it here, once.
 ///
@@ -220,7 +220,7 @@ fn environments_text(app: Option<&FlagApp>) -> String {
 /// `git merge-base --is-ancestor <new> origin/main`. Bumping means changing this constant and every
 /// literal copy in `AGENTS.md` and both `llms.txt` files; `every_full_sha_is_the_sdk_ref` fails
 /// until all agree.
-pub const SDK_REF: &str = "7212a8233fc2823f305073e88840a600a2083a66";
+pub const SDK_REF: &str = "4f19a3650baa87a093d8bafa43e81296643d0833";
 
 /// Renders the guide for `language`, filled from `app` when given, below the integration recipe.
 ///
@@ -594,7 +594,7 @@ mod tests {
             "`whoami`",
             "`list_apps`",
             "`create_app`",
-            "`OTTO_FLAGS_API_KEY`",
+            "`SAVVAGENT_FLAGS_API_KEY`",
             "`create_flag`",
             "Follow the guide below",
             "`evaluate_flag`",
@@ -617,7 +617,7 @@ mod tests {
             for needle in [
                 "Hand off the server key, then stop",
                 "ask the person to store the key",
-                "`OTTO_FLAGS_API_KEY`",
+                "`SAVVAGENT_FLAGS_API_KEY`",
                 ".env",
                 "CI secrets",
                 "deploy",
@@ -795,98 +795,98 @@ mod tests {
         (
         "python",
         "packages/python-server/pyproject.toml",
-        "name = \"otto-flags\"",
-        "otto-flags @ git+https://github.com/savvagent/otto-flags@{{SDK_REF}}#subdirectory=packages/python-server",
+        "name = \"savvagent-flags\"",
+        "savvagent-flags @ git+https://github.com/savvagent/flags@{{SDK_REF}}#subdirectory=packages/python-server",
     ),
     (
         "typescript",
         "packages/typescript/package.json",
-        "\"name\": \"@otto-flags/sdk\"",
-        "@otto-flags/sdk",
+        "\"name\": \"@savvagent/flags-sdk\"",
+        "@savvagent/flags-sdk",
     ),
     (
         "node",
         "packages/node-server/package.json",
-        "\"name\": \"@otto-flags/node-server\"",
-        "@otto-flags/node-server",
+        "\"name\": \"@savvagent/flags-node-server\"",
+        "@savvagent/flags-node-server",
     ),
     (
         "react",
         "packages/react/package.json",
-        "\"name\": \"@otto-flags/react\"",
-        "@otto-flags/react",
+        "\"name\": \"@savvagent/flags-react\"",
+        "@savvagent/flags-react",
     ),
     (
         "vue",
         "packages/vue/package.json",
-        "\"name\": \"@otto-flags/vue\"",
-        "@otto-flags/vue",
+        "\"name\": \"@savvagent/flags-vue\"",
+        "@savvagent/flags-vue",
     ),
     (
         "svelte",
         "packages/svelte/package.json",
-        "\"name\": \"@otto-flags/svelte\"",
-        "@otto-flags/svelte",
+        "\"name\": \"@savvagent/flags-svelte\"",
+        "@savvagent/flags-svelte",
     ),
     (
         "sveltekit",
         "packages/sveltekit/package.json",
-        "\"name\": \"@otto-flags/sveltekit\"",
-        "@otto-flags/sveltekit",
+        "\"name\": \"@savvagent/flags-sveltekit\"",
+        "@savvagent/flags-sveltekit",
     ),
     (
         "solid",
         "packages/solid/package.json",
-        "\"name\": \"@otto-flags/solid\"",
-        "@otto-flags/solid",
+        "\"name\": \"@savvagent/flags-solid\"",
+        "@savvagent/flags-solid",
     ),
     (
         "angular",
         "packages/angular/package.json",
-        "\"name\": \"@otto-flags/angular\"",
-        "@otto-flags/angular",
+        "\"name\": \"@savvagent/flags-angular\"",
+        "@savvagent/flags-angular",
     ),
     (
         "astro",
         "packages/astro/package.json",
-        "\"name\": \"@otto-flags/astro\"",
-        "@otto-flags/astro",
+        "\"name\": \"@savvagent/flags-astro\"",
+        "@savvagent/flags-astro",
     ),
     (
         "nextjs",
         "packages/nextjs/package.json",
-        "\"name\": \"@otto-flags/nextjs\"",
-        "@otto-flags/nextjs",
+        "\"name\": \"@savvagent/flags-nextjs\"",
+        "@savvagent/flags-nextjs",
     ),
     (
         "remix",
         "packages/remix/package.json",
-        "\"name\": \"@otto-flags/remix\"",
-        "@otto-flags/remix",
+        "\"name\": \"@savvagent/flags-remix\"",
+        "@savvagent/flags-remix",
     ),
     (
         "go",
         "packages/go-server/go.mod",
-        "module github.com/savvagent/otto-flags/packages/go-server",
-        "github.com/savvagent/otto-flags/packages/go-server@{{SDK_REF}}",
+        "module github.com/savvagent/flags/packages/go-server",
+        "github.com/savvagent/flags/packages/go-server@{{SDK_REF}}",
     ),
     (
         "rust",
         "packages/rust-server/Cargo.toml",
-        "name = \"otto-flags\"",
-        "otto-flags = { git = \"https://github.com/savvagent/otto-flags\", rev = \"{{SDK_REF}}\" }",
+        "name = \"savvagent-flags\"",
+        "savvagent-flags = { git = \"https://github.com/savvagent/flags\", rev = \"{{SDK_REF}}\" }",
     ),
     (
         "java",
         "packages/java-server/pom.xml",
-        "<artifactId>otto-flags-java-server-sdk</artifactId>",
-        "otto-flags-java-server-sdk",
+        "<artifactId>savvagent-flags-java-server-sdk</artifactId>",
+        "savvagent-flags-java-server-sdk",
     ),
     (
         "ios",
         "packages/ios-sdk/Package.swift",
-        "name: \"OttoFlagsSDK\"",
-        "OttoFlagsSDK",
+        "name: \"SavvagentFlagsSDK\"",
+        "SavvagentFlagsSDK",
     ),
     (
         "android",
@@ -897,7 +897,6 @@ mod tests {
     ];
 
     #[test]
-    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn guide_names_match_the_package_manifests() {
         for (lang, manifest, in_manifest, in_guide) in MANIFESTS {
             let m = std::fs::read_to_string(repo(manifest))
@@ -948,23 +947,21 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn jvm_guides_use_the_manifests_group_id() {
         for (lang, manifest) in [
             ("java", "packages/java-server/pom.xml"),
             ("android", "packages/android-sdk/build.gradle.kts"),
         ] {
             let m = std::fs::read_to_string(repo(manifest)).unwrap();
-            assert!(m.contains("com.savvagent.ottoflags"), "{manifest}");
+            assert!(m.contains("com.savvagent.flags"), "{manifest}");
             assert!(
-                guide(lang).contains("com.savvagent.ottoflags"),
+                guide(lang).contains("com.savvagent.flags"),
                 "{lang} guide must contain the group id"
             );
         }
     }
 
     #[test]
-    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn javascript_import_names_exist_in_the_packages() {
         let mut checked = 0;
         for l in LANGUAGES {
@@ -976,13 +973,13 @@ mod tests {
                     continue;
                 };
                 let spec = from.trim().trim_end_matches(';').trim_matches(['"', '\'']);
-                let Some(pkg) = spec.strip_prefix("@otto-flags/") else {
+                let Some(pkg) = spec.strip_prefix("@savvagent/flags-") else {
                     continue;
                 };
                 let pkg = pkg.split('/').next().unwrap();
                 let (_, manifest, _, _) = MANIFESTS
                     .iter()
-                    .find(|m| m.3 == format!("@otto-flags/{pkg}"))
+                    .find(|m| m.3 == format!("@savvagent/flags-{pkg}"))
                     .unwrap_or_else(|| panic!("{}: imports unknown package {spec}", l.name));
                 let src = repo(manifest).parent().unwrap().join("src");
                 let text = source_text(&src);
@@ -1006,28 +1003,31 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn python_import_name_exists_in_the_package() {
-        let init =
-            std::fs::read_to_string(repo("packages/python-server/src/otto_flags/__init__.py"))
-                .expect("the otto_flags package");
+        let init = std::fs::read_to_string(repo(
+            "packages/python-server/src/savvagent_flags/__init__.py",
+        ))
+        .expect("the savvagent_flags package");
         let g = guide("python");
-        assert!(g.contains("from otto_flags import"));
+        assert!(g.contains("from savvagent_flags import"));
         // Every name the guide imports from the package is one the package exports.
         let mut imported = 0;
         for line in g.lines() {
-            let Some(names) = line.trim().strip_prefix("from otto_flags import ") else {
+            let Some(names) = line.trim().strip_prefix("from savvagent_flags import ") else {
                 continue;
             };
             for name in names.split(',').map(str::trim).filter(|n| !n.is_empty()) {
                 imported += 1;
                 assert!(
                     init.contains(&format!("\"{name}\"")),
-                    "python guide imports {name}, which otto_flags does not export"
+                    "python guide imports {name}, which savvagent_flags does not export"
                 );
             }
         }
-        assert!(imported > 0, "python guide imports nothing from otto_flags");
+        assert!(
+            imported > 0,
+            "python guide imports nothing from savvagent_flags"
+        );
     }
 
     #[test]
@@ -1085,7 +1085,7 @@ mod tests {
                 if !line.contains(".tgz") {
                     problems.push(format!("npm install without a local tarball: {line}"));
                 }
-                if line.contains("@otto-flags/") {
+                if line.contains("@savvagent/flags-") {
                     problems.push(format!("npm install by package name: {line}"));
                 }
             }
@@ -1102,12 +1102,14 @@ mod tests {
             {
                 problems.push(format!("cargo add without --git and the SDK ref: {line}"));
             }
-            // A Cargo.toml dependency line for the crate (`otto-flags = ...`).
+            // A Cargo.toml dependency line for the crate (`savvagent-flags = ...`).
             let dep = line.trim_start();
-            if dep.starts_with("otto-flags =")
+            if dep.starts_with("savvagent-flags =")
                 && !(dep.contains("git = ") && dep.contains("rev = \"{{SDK_REF}}\""))
             {
-                problems.push(format!("otto-flags dependency without git and rev: {line}"));
+                problems.push(format!(
+                    "savvagent-flags dependency without git and rev: {line}"
+                ));
             }
         }
         problems
@@ -1140,7 +1142,7 @@ mod tests {
         assert!(
             logical_lines(guide("rust"))
                 .iter()
-                .any(|c| c.trim_start().starts_with("otto-flags =")),
+                .any(|c| c.trim_start().starts_with("savvagent-flags =")),
             "rust guide has no dependency line"
         );
     }
@@ -1148,34 +1150,34 @@ mod tests {
     #[test]
     fn the_install_check_rejects_registry_style_commands() {
         for bad in [
-            "pip install otto-flags",
-            "npm install @otto-flags/sdk",
-            "npm install ./a.tgz @otto-flags/sdk",
-            "npm install \\\n  @otto-flags/sdk",
-            "pnpm add @otto-flags/sdk",
-            "yarn add @otto-flags/sdk",
-            "go get github.com/savvagent/otto-flags/packages/go-server",
-            "go get github.com/savvagent/otto-flags/packages/go-server@latest",
-            "cargo add otto-flags",
-            "cargo add otto-flags --git https://x/y",
-            "cargo add otto-flags --git https://x/y --rev abc123",
-            "pip install \"otto-flags @ git+https://x/y@main\"",
+            "pip install savvagent-flags",
+            "npm install @savvagent/flags-sdk",
+            "npm install ./a.tgz @savvagent/flags-sdk",
+            "npm install \\\n  @savvagent/flags-sdk",
+            "pnpm add @savvagent/flags-sdk",
+            "yarn add @savvagent/flags-sdk",
+            "go get github.com/savvagent/flags/packages/go-server",
+            "go get github.com/savvagent/flags/packages/go-server@latest",
+            "cargo add savvagent-flags",
+            "cargo add savvagent-flags --git https://x/y",
+            "cargo add savvagent-flags --git https://x/y --rev abc123",
+            "pip install \"savvagent-flags @ git+https://x/y@main\"",
             "git checkout main",
-            "git checkout 7212a8233fc2823f305073e88840a600a2083a66",
-            "otto-flags = \"0.1\"",
-            "otto-flags = { version = \"0.1\" }",
-            "otto-flags = { git = \"https://x/y\" }",
+            "git checkout 4f19a3650baa87a093d8bafa43e81296643d0833",
+            "savvagent-flags = \"0.1\"",
+            "savvagent-flags = { version = \"0.1\" }",
+            "savvagent-flags = { git = \"https://x/y\" }",
         ] {
             assert!(!install_line_problems(bad).is_empty(), "{bad:?} passed");
         }
         for good in [
-            "pip install \"otto-flags @ git+https://x/y@{{SDK_REF}}\"",
-            "npm install \\\n  /p/otto-flags-sdk-*.tgz",
-            "pnpm add ./otto-flags-sdk-1.tgz",
-            "go get github.com/savvagent/otto-flags/packages/go-server@{{SDK_REF}}",
-            "cargo add otto-flags --git https://x/y --rev {{SDK_REF}}",
+            "pip install \"savvagent-flags @ git+https://x/y@{{SDK_REF}}\"",
+            "npm install \\\n  /p/savvagent-flags-sdk-*.tgz",
+            "pnpm add ./savvagent-flags-sdk-1.tgz",
+            "go get github.com/savvagent/flags/packages/go-server@{{SDK_REF}}",
+            "cargo add savvagent-flags --git https://x/y --rev {{SDK_REF}}",
             "git checkout {{SDK_REF}}",
-            "otto-flags = { git = \"https://x/y\", rev = \"{{SDK_REF}}\" }",
+            "savvagent-flags = { git = \"https://x/y\", rev = \"{{SDK_REF}}\" }",
         ] {
             assert!(install_line_problems(good).is_empty(), "{good:?} failed");
         }
@@ -1220,10 +1222,10 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "guide is pinned to the pre-rename SDK_REF; re-enabled when the pin moves (savvagent/otto-flags#195)"]
     fn python_config_keywords_are_fields_of_the_config() {
-        let types = std::fs::read_to_string(repo("packages/python-server/src/otto_flags/types.py"))
-            .expect("types.py");
+        let types =
+            std::fs::read_to_string(repo("packages/python-server/src/savvagent_flags/types.py"))
+                .expect("types.py");
         let class = types
             .split("class FlagClientConfig")
             .nth(1)
@@ -1284,7 +1286,7 @@ mod tests {
             );
         }
         assert!(
-            !crate::LLMS_TXT.contains("ottoFlags/"),
+            !crate::LLMS_TXT.contains("savvagentFlags/"),
             "stale org in llms.txt"
         );
         let lower = crate::LLMS_TXT.to_lowercase();

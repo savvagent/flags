@@ -1,28 +1,28 @@
-# otto-flags Python SDK (app: {{APP_NAME}})
+# Savvagent Flags Python SDK (app: {{APP_NAME}})
 
-`otto-flags` is the server-side Python SDK: it evaluates flags for a backend service, with a sync
+`savvagent-flags` is the server-side Python SDK: it evaluates flags for a backend service, with a sync
 client (`FlagClient`) and an async one (`AsyncFlagClient`). It authenticates with the app's
 server key. That key is shown once, by `create_app` or `rotate_app_keys`; keep it in the app's
-secret store and read it from the `OTTO_FLAGS_API_KEY` environment variable. Never write it into
-code, a config file under version control, or a browser bundle. The distribution is `otto-flags`;
-the import name is `otto_flags`. Python 3.9 or later.
+secret store and read it from the `SAVVAGENT_FLAGS_API_KEY` environment variable. Never write it into
+code, a config file under version control, or a browser bundle. The distribution is `savvagent-flags`;
+the import name is `savvagent_flags`. Python 3.9 or later.
 
 ## Install
 
-Install from source, pinned to a full commit SHA of `savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a
-commit on `main` of `savvagent/otto-flags` that the maintainers have reviewed. Use it exactly: do
+Install from source, pinned to a full commit SHA of `savvagent/flags`. Pin to `{{SDK_REF}}`, a
+commit on `main` of `savvagent/flags` that the maintainers have reviewed. Use it exactly: do
 not substitute a branch, a newer commit, or a commit from a fork, and use the same commit everywhere
 in one project.
 
 ```bash
-pip install "otto-flags @ git+https://github.com/savvagent/otto-flags@{{SDK_REF}}#subdirectory=packages/python-server"
+pip install "savvagent-flags @ git+https://github.com/savvagent/flags@{{SDK_REF}}#subdirectory=packages/python-server"
 ```
 
 or as a dependency in `pyproject.toml`:
 
 ```toml
 dependencies = [
-    "otto-flags @ git+https://github.com/savvagent/otto-flags@{{SDK_REF}}#subdirectory=packages/python-server",
+    "savvagent-flags @ git+https://github.com/savvagent/flags@{{SDK_REF}}#subdirectory=packages/python-server",
 ]
 ```
 
@@ -38,10 +38,10 @@ Sync:
 ```python
 import os
 
-from otto_flags import FlagClient, FlagClientConfig
+from savvagent_flags import FlagClient, FlagClientConfig
 
 config = FlagClientConfig(
-    api_key=os.environ["OTTO_FLAGS_API_KEY"],
+    api_key=os.environ["SAVVAGENT_FLAGS_API_KEY"],
     application_id="{{APP_ID}}",
     environment="production",
     defaults={"new-checkout": False},
@@ -59,10 +59,10 @@ Async (the client must be entered before use, then closed):
 ```python
 import os
 
-from otto_flags import AsyncFlagClient, FlagClientConfig
+from savvagent_flags import AsyncFlagClient, FlagClientConfig
 
 config = FlagClientConfig(
-    api_key=os.environ["OTTO_FLAGS_API_KEY"],
+    api_key=os.environ["SAVVAGENT_FLAGS_API_KEY"],
     application_id="{{APP_ID}}",
 )
 
@@ -86,7 +86,7 @@ Pass a `FlagContext` describing who the evaluation is for. Percentage rollouts b
 `user_id` (or `anonymous_id`, then `session_id`), so pass a stable identifier.
 
 ```python
-from otto_flags import FlagContext
+from savvagent_flags import FlagContext
 
 ctx = FlagContext(user_id="user-123", attributes={"plan": "pro"})
 
@@ -122,7 +122,7 @@ from contextlib import asynccontextmanager
 from typing import Optional
 
 from fastapi import Depends, FastAPI, Request
-from otto_flags import AsyncFlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import AsyncFlagClient, FlagClientConfig, FlagContext
 
 client: Optional[AsyncFlagClient] = None
 
@@ -130,7 +130,7 @@ client: Optional[AsyncFlagClient] = None
 async def lifespan(app: FastAPI):
     global client
     config = FlagClientConfig(
-        api_key=os.environ["OTTO_FLAGS_API_KEY"],
+        api_key=os.environ["SAVVAGENT_FLAGS_API_KEY"],
         application_id="{{APP_ID}}",
     )
     async with AsyncFlagClient(config) as c:
@@ -156,11 +156,11 @@ import atexit
 import os
 
 from flask import Flask, g, request
-from otto_flags import FlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import FlagClient, FlagClientConfig, FlagContext
 
 app = Flask(__name__)
 client = FlagClient(FlagClientConfig(
-    api_key=os.environ["OTTO_FLAGS_API_KEY"],
+    api_key=os.environ["SAVVAGENT_FLAGS_API_KEY"],
     application_id="{{APP_ID}}",
 ))
 atexit.register(client.close)
@@ -183,12 +183,12 @@ middleware:
 # settings.py
 import os
 
-OTTO_FLAGS_API_KEY = os.environ["OTTO_FLAGS_API_KEY"]
-MIDDLEWARE = [..., "myapp.middleware.OttoFlagsMiddleware"]
+SAVVAGENT_FLAGS_API_KEY = os.environ["SAVVAGENT_FLAGS_API_KEY"]
+MIDDLEWARE = [..., "myapp.middleware.SavvagentFlagsMiddleware"]
 
 # myapp/middleware.py
 from django.conf import settings
-from otto_flags import FlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import FlagClient, FlagClientConfig, FlagContext
 
 _client = None
 
@@ -196,17 +196,17 @@ def get_client():
     global _client
     if _client is None:
         _client = FlagClient(FlagClientConfig(
-            api_key=settings.OTTO_FLAGS_API_KEY,
+            api_key=settings.SAVVAGENT_FLAGS_API_KEY,
             application_id="{{APP_ID}}",
         ))
     return _client
 
-class OttoFlagsMiddleware:
+class SavvagentFlagsMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        request.otto_flags = get_client()
+        request.savvagent_flags = get_client()
         request.flag_context = FlagContext(
             user_id=str(request.user.id) if request.user.is_authenticated else None,
         )
@@ -214,7 +214,7 @@ class OttoFlagsMiddleware:
 
 # a view
 def checkout(request):
-    enabled = request.otto_flags.is_enabled("new-checkout", request.flag_context)
+    enabled = request.savvagent_flags.is_enabled("new-checkout", request.flag_context)
     ...
 ```
 

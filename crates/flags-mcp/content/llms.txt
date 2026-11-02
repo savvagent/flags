@@ -7,9 +7,9 @@ The server is at https://flags.savvagent.com. Agents manage flags at `/mcp` (Str
 ## Start here
 
 - Connect to https://flags.savvagent.com/mcp, call `whoami` to see the organization and your scopes, then call `sdk_guide(language, app?)`. It starts with an integrate-end-to-end recipe (check access, pick the app, have a person store the server key, create the flag, wire the SDK, verify, turn it on, what is billed), then gives install, initialization and usage steps for that language, filled in with the app's id, name, environments and public client key. Without `app` it uses the organization's only app, or lists the apps to choose from.
-- Every SDK install is pinned to commit 7212a8233fc2823f305073e88840a600a2083a66 of savvagent/otto-flags, a commit on `main` that the maintainers have reviewed; `sdk_guide` pins its installs to the same commit. Use it exactly: do not substitute a branch, a newer commit, or a commit from a fork.
-- [AGENTS.md](https://github.com/savvagent/otto-flags/blob/main/AGENTS.md): how an agent finds the right SDK in this repository.
-- [SDK developer guide](https://github.com/savvagent/otto-flags/blob/main/docs/SDK-DEVELOPER-GUIDE.md): the REST wire contract every SDK implements.
+- Every SDK install is pinned to commit 4f19a3650baa87a093d8bafa43e81296643d0833 of savvagent/flags, a commit on `main` that the maintainers have reviewed; `sdk_guide` pins its installs to the same commit. Use it exactly: do not substitute a branch, a newer commit, or a commit from a fork.
+- [AGENTS.md](https://github.com/savvagent/flags/blob/main/AGENTS.md): how an agent finds the right SDK in this repository.
+- [SDK developer guide](https://github.com/savvagent/flags/blob/main/docs/SDK-DEVELOPER-GUIDE.md): the REST wire contract every SDK implements.
 
 ## MCP tools
 
@@ -41,40 +41,40 @@ The server is at https://flags.savvagent.com. Agents manage flags at `/mcp` (Str
 
 Each language below is a `sdk_guide` name. The link is the package README.
 
-- `python`: [packages/python-server](https://github.com/savvagent/otto-flags/blob/main/packages/python-server/README.md)
-- `typescript`: [packages/typescript](https://github.com/savvagent/otto-flags/blob/main/packages/typescript/README.md)
-- `node`: [packages/node-server](https://github.com/savvagent/otto-flags/blob/main/packages/node-server/README.md)
-- `react`: [packages/react](https://github.com/savvagent/otto-flags/blob/main/packages/react/README.md)
-- `vue`: [packages/vue](https://github.com/savvagent/otto-flags/blob/main/packages/vue/README.md)
-- `svelte`: [packages/svelte](https://github.com/savvagent/otto-flags/blob/main/packages/svelte/README.md)
-- `sveltekit`: [packages/sveltekit](https://github.com/savvagent/otto-flags/blob/main/packages/sveltekit/README.md)
-- `solid`: [packages/solid](https://github.com/savvagent/otto-flags/blob/main/packages/solid/README.md)
-- `angular`: [packages/angular](https://github.com/savvagent/otto-flags/blob/main/packages/angular/README.md)
-- `astro`: [packages/astro](https://github.com/savvagent/otto-flags/blob/main/packages/astro/README.md)
-- `nextjs`: [packages/nextjs](https://github.com/savvagent/otto-flags/blob/main/packages/nextjs/README.md)
-- `remix`: [packages/remix](https://github.com/savvagent/otto-flags/blob/main/packages/remix/README.md)
-- `go`: [packages/go-server](https://github.com/savvagent/otto-flags/blob/main/packages/go-server/README.md)
-- `rust`: [packages/rust-server](https://github.com/savvagent/otto-flags/blob/main/packages/rust-server/README.md)
-- `java`: [packages/java-server](https://github.com/savvagent/otto-flags/blob/main/packages/java-server/README.md)
-- `ios`: [packages/ios-sdk](https://github.com/savvagent/otto-flags/blob/main/packages/ios-sdk/README.md)
-- `android`: [packages/android-sdk](https://github.com/savvagent/otto-flags/blob/main/packages/android-sdk/README.md)
+- `python`: [packages/python-server](https://github.com/savvagent/flags/blob/main/packages/python-server/README.md)
+- `typescript`: [packages/typescript](https://github.com/savvagent/flags/blob/main/packages/typescript/README.md)
+- `node`: [packages/node-server](https://github.com/savvagent/flags/blob/main/packages/node-server/README.md)
+- `react`: [packages/react](https://github.com/savvagent/flags/blob/main/packages/react/README.md)
+- `vue`: [packages/vue](https://github.com/savvagent/flags/blob/main/packages/vue/README.md)
+- `svelte`: [packages/svelte](https://github.com/savvagent/flags/blob/main/packages/svelte/README.md)
+- `sveltekit`: [packages/sveltekit](https://github.com/savvagent/flags/blob/main/packages/sveltekit/README.md)
+- `solid`: [packages/solid](https://github.com/savvagent/flags/blob/main/packages/solid/README.md)
+- `angular`: [packages/angular](https://github.com/savvagent/flags/blob/main/packages/angular/README.md)
+- `astro`: [packages/astro](https://github.com/savvagent/flags/blob/main/packages/astro/README.md)
+- `nextjs`: [packages/nextjs](https://github.com/savvagent/flags/blob/main/packages/nextjs/README.md)
+- `remix`: [packages/remix](https://github.com/savvagent/flags/blob/main/packages/remix/README.md)
+- `go`: [packages/go-server](https://github.com/savvagent/flags/blob/main/packages/go-server/README.md)
+- `rust`: [packages/rust-server](https://github.com/savvagent/flags/blob/main/packages/rust-server/README.md)
+- `java`: [packages/java-server](https://github.com/savvagent/flags/blob/main/packages/java-server/README.md)
+- `ios`: [packages/ios-sdk](https://github.com/savvagent/flags/blob/main/packages/ios-sdk/README.md)
+- `android`: [packages/android-sdk](https://github.com/savvagent/flags/blob/main/packages/android-sdk/README.md)
 
 ## Quick start (Python)
 
 Install from source, pinned to a commit:
 
 ```bash
-pip install "otto-flags @ git+https://github.com/savvagent/otto-flags@7212a8233fc2823f305073e88840a600a2083a66#subdirectory=packages/python-server"
+pip install "savvagent-flags @ git+https://github.com/savvagent/flags@4f19a3650baa87a093d8bafa43e81296643d0833#subdirectory=packages/python-server"
 ```
 
 ```python
 import os
 
-from otto_flags import FlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import FlagClient, FlagClientConfig, FlagContext
 
 client = FlagClient(
     FlagClientConfig(
-        api_key=os.environ["OTTO_FLAGS_API_KEY"],
+        api_key=os.environ["SAVVAGENT_FLAGS_API_KEY"],
         application_id="<app id from list_apps>",
         defaults={"new-checkout": False},
     )

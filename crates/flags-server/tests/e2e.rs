@@ -2045,7 +2045,7 @@ async fn sdk_guide_renders_a_guide_and_personalizes_it_with_the_apps_public_key(
     assert_eq!(plain["language"], "python", "{plain}");
     let text = plain["guide"].as_str().unwrap();
     assert!(text.starts_with("# Integrate end to end"), "{text}");
-    assert!(text.contains("otto_flags"), "{text}");
+    assert!(text.contains("savvagent_flags"), "{text}");
     assert!(text.contains(flags_mcp::guide::SDK_REF), "{text}");
     assert!(!text.contains("<commit>"), "{text}");
     assert!(!plain.to_string().contains("srv_"), "{plain}");

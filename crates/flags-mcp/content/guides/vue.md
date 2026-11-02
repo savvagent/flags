@@ -1,7 +1,7 @@
-# otto-flags Vue SDK (app: {{APP_NAME}})
+# Savvagent Flags Vue SDK (app: {{APP_NAME}})
 
-`@otto-flags/vue` provides a plugin and Composition API composables for Vue 3. It wraps
-`@otto-flags/sdk`, so its install includes that package.
+`@savvagent/flags-vue` provides a plugin and Composition API composables for Vue 3. It wraps
+`@savvagent/flags-sdk`, so its install includes that package.
 
 The client key is public by design: it can ship in a browser bundle and sits in source control
 without harm. It can evaluate flags but cannot read targeting rules. Do not put the app's server key
@@ -11,10 +11,10 @@ browser.
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`, `@otto-flags/vue`), because a package's tarball names the
+dependency order (`@savvagent/flags-sdk`, `@savvagent/flags-vue`), because a package's tarball names the
 others it depends on and they cannot be resolved by name. You need `git`, Node.js and `pnpm`.
 
 On pnpm 9, `pnpm install` runs the install scripts of this repository's dependencies on your
@@ -23,24 +23,24 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/vue build
-pnpm --filter @otto-flags/vue pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-vue build
+pnpm --filter @savvagent/flags-vue pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-vue-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-vue-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -54,11 +54,11 @@ with `config`, `defaultContext` and `initialOverrides`.
 
 ```typescript
 import { createApp } from "vue";
-import { OttoFlagsPlugin } from "@otto-flags/vue";
+import { SavvagentFlagsPlugin } from "@savvagent/flags-vue";
 import App from "./App.vue";
 
 createApp(App)
-  .use(OttoFlagsPlugin, {
+  .use(SavvagentFlagsPlugin, {
     config: {
       apiKey: "{{CLIENT_KEY}}",
       applicationId: "{{APP_ID}}",
@@ -74,7 +74,7 @@ createApp(App)
 default 60000), `enableTelemetry` (default `true`), `defaults` and `onError`. `defaultContext`
 applies to every evaluation: `applicationId`, `environment`, `organizationId`, `userId`,
 `anonymousId`, `sessionId`, `language` and `attributes`. Without the plugin, call
-`provideOttoFlags(config, defaultContext)` in a root component's `setup`.
+`provideSavvagentFlags(config, defaultContext)` in a root component's `setup`.
 
 **Environment.** The `environment` this app evaluates in, wherever this guide sets it (the client
 configuration or a context), must be one of the app's environments: {{ENVIRONMENTS}}. Read it from the
@@ -84,7 +84,7 @@ build's or deployment's configuration instead of hardcoding it.
 
 ```vue
 <script setup lang="ts">
-import { useFlag } from "@otto-flags/vue";
+import { useFlag } from "@savvagent/flags-vue";
 
 const { value: newCheckout, loading } = useFlag("new-checkout", {
   context: { user_id: currentUser.value?.id, attributes: { plan: "pro" } },
@@ -110,7 +110,7 @@ Other composables: `useFlags(keys, { defaultValues })` for several flags at once
 callback)` runs a callback when a flag is on; `useUser()` gives the user id helpers (call
 `setUserId(null)` on sign-out); `useTrackError(key)` returns a function that reports an error
 against a flag, which is what `flag_health` and auto-rollback compare; `useEnvironment()`; and
-`useOttoFlags()` returns `{ client, isReady, defaultContext }` for direct use of the core client.
+`useSavvagentFlags()` returns `{ client, isReady, defaultContext }` for direct use of the core client.
 
 ## Notes
 

@@ -1,11 +1,11 @@
-# otto-flags TypeScript and JavaScript SDK (app: {{APP_NAME}})
+# Savvagent Flags TypeScript and JavaScript SDK (app: {{APP_NAME}})
 
-`@otto-flags/sdk` is the core client for browsers and other JavaScript runtimes: it evaluates flags
+`@savvagent/flags-sdk` is the core client for browsers and other JavaScript runtimes: it evaluates flags
 from an app's frontend or any code that can hold the public client key, caches results, follows flag
 changes in real time and reports errors from flagged code. The framework packages
-(`@otto-flags/react`, `@otto-flags/vue`, and the rest) are built on it; use one of those when the
+(`@savvagent/flags-react`, `@savvagent/flags-vue`, and the rest) are built on it; use one of those when the
 app uses that framework. For a Node.js backend that holds the secret server key, use
-`@otto-flags/node-server` instead. The client key is public by design: it can ship in a browser
+`@savvagent/flags-node-server` instead. The client key is public by design: it can ship in a browser
 bundle and sits in source control without harm. It can evaluate flags but cannot read targeting
 rules. Do not put the app's server key in this package: its client accepts only the public client
 key, and a server key must never reach a browser.
@@ -13,10 +13,10 @@ key, and a server key must never reach a browser.
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`), because a package's tarball names the others it depends on and
+dependency order (`@savvagent/flags-sdk`), because a package's tarball names the others it depends on and
 they cannot be resolved by name. You need `git`, Node.js and `pnpm`.
 
 On pnpm 9, `pnpm install` runs the install scripts of this repository's dependencies on your
@@ -25,21 +25,21 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -52,7 +52,7 @@ Create one client per page or process and reuse it; it owns the cache, the telem
 real-time connection.
 
 ```typescript
-import { FlagClient } from "@otto-flags/sdk";
+import { FlagClient } from "@savvagent/flags-sdk";
 
 const client = new FlagClient({
   apiKey: "{{CLIENT_KEY}}",

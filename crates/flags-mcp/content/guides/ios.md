@@ -1,6 +1,6 @@
-# otto-flags iOS SDK (app: {{APP_NAME}})
+# Savvagent Flags iOS SDK (app: {{APP_NAME}})
 
-`OttoFlagsSDK` is the Swift client SDK for iOS (also macOS, tvOS and watchOS). It runs inside the
+`SavvagentFlagsSDK` is the Swift client SDK for iOS (also macOS, tvOS and watchOS). It runs inside the
 shipped app, so it authenticates with the app's public client key, not a secret: the key is shown by
 `list_apps` and filled in below when you pass the app to this tool. Never put the app's server key
 in a mobile app. It needs iOS 13 or later, Swift 5.9 and Xcode 15. The client names no application
@@ -10,28 +10,28 @@ id: the key identifies the app.
 
 The package is not installable by version from the repository yet, and Swift Package Manager cannot
 use a sub-directory of a git repository, so add it as a local package from a checkout, pinned to a
-full commit SHA of `savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of
-`savvagent/otto-flags` that the maintainers have reviewed. Use it exactly: do not substitute a
+full commit SHA of `savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of
+`savvagent/flags` that the maintainers have reviewed. Use it exactly: do not substitute a
 branch, a newer commit, or a commit from a fork, and use the same commit everywhere in one project.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 ```
 
 The package is the directory `packages/ios-sdk` of that checkout. In Xcode choose File, Add
-Package Dependencies, Add Local, and pick that directory, then add the `OttoFlagsSDK` library to
+Package Dependencies, Add Local, and pick that directory, then add the `SavvagentFlagsSDK` library to
 your app target. In a `Package.swift`, point at it by path (relative to your package):
 
 ```swift
 dependencies: [
-    .package(path: "../otto-flags/packages/ios-sdk")
+    .package(path: "../flags/packages/ios-sdk")
 ],
 targets: [
     .target(
         name: "MyApp",
-        dependencies: [.product(name: "OttoFlagsSDK", package: "ios-sdk")]
+        dependencies: [.product(name: "SavvagentFlagsSDK", package: "ios-sdk")]
     )
 ]
 ```
@@ -44,16 +44,16 @@ submodule pinned to that commit.
 Create one client for the app's lifetime and reuse it; it holds the cache.
 
 ```swift
-import OttoFlagsSDK
+import SavvagentFlagsSDK
 
-let config = OttoFlagsConfig(
+let config = SavvagentFlagsConfig(
     sdkKey: "{{CLIENT_KEY}}",
     environment: "production"
 )
-let client = OttoFlagsClient(config: config)
+let client = SavvagentFlagsClient(config: config)
 ```
 
-Other `OttoFlagsConfig` parameters, all optional: `apiUrl` (default
+Other `SavvagentFlagsConfig` parameters, all optional: `apiUrl` (default
 `https://flags.savvagent.com`), `pollingInterval` (seconds, default 60), `enableWebSocket` (ignored), `timeout` (seconds, default
 30) and `enableRealtime` (default `false`, see below). Pass them in that order. Call
 `client.close()` to stop the stream and release the client when the app no longer needs it.
@@ -115,8 +115,8 @@ let enabled = await client.getVariation(
 Share one client and evaluate in `.task`:
 
 ```swift
-let flagClient = OttoFlagsClient(
-    config: OttoFlagsConfig(sdkKey: "{{CLIENT_KEY}}")
+let flagClient = SavvagentFlagsClient(
+    config: SavvagentFlagsConfig(sdkKey: "{{CLIENT_KEY}}")
 )
 
 struct CheckoutView: View {
@@ -140,7 +140,7 @@ struct CheckoutView: View {
 ## Notes
 
 - `evaluate`, `isEnabled`, `getConfig` and `getVariationDetails` are `async throws`: a network or
-  server failure surfaces as an `OttoFlagsError`, so handle it and fall back to a safe default.
+  server failure surfaces as a `SavvagentFlagsError`, so handle it and fall back to a safe default.
   `getVariation(flagKey:context:defaultValue:)` is the variant that swallows failures.
 - Results are cached in memory per flag and per user context, so one user's result is never served
   to another. The cache has no expiry; the SDK polls the flag list every `pollingInterval` and

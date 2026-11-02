@@ -1,7 +1,7 @@
-# otto-flags Remix SDK (app: {{APP_NAME}})
+# Savvagent Flags Remix SDK (app: {{APP_NAME}})
 
-`@otto-flags/remix` provides server helpers for loaders and actions, and re-exports the hooks of
-`@otto-flags/react` for components. It wraps `@otto-flags/sdk` and `@otto-flags/react`; its install
+`@savvagent/flags-remix` provides server helpers for loaders and actions, and re-exports the hooks of
+`@savvagent/flags-react` for components. It wraps `@savvagent/flags-sdk` and `@savvagent/flags-react`; its install
 includes both.
 
 The client key is public by design: it can ship in a browser bundle and sits in source control
@@ -10,15 +10,15 @@ in this package: its client accepts only the public client key, and a server key
 browser.
 
 The server helpers use the same core client as the browser, so they also take the public client key,
-not a server key. For a Node.js service that holds a server key, use `@otto-flags/node-server`.
+not a server key. For a Node.js service that holds a server key, use `@savvagent/flags-node-server`.
 
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`, `@otto-flags/react`, `@otto-flags/remix`), because a package's
+dependency order (`@savvagent/flags-sdk`, `@savvagent/flags-react`, `@savvagent/flags-remix`), because a package's
 tarball names the others it depends on and they cannot be resolved by name. You need `git`, Node.js
 and `pnpm`.
 
@@ -28,27 +28,27 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/react build
-pnpm --filter @otto-flags/react pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/remix build
-pnpm --filter @otto-flags/remix pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-react build
+pnpm --filter @savvagent/flags-react pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-remix build
+pnpm --filter @savvagent/flags-remix pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-react-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-remix-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-react-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-remix-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -61,7 +61,7 @@ Server side: initialize once, in a module the server loads (the root route works
 
 ```tsx
 // app/root.tsx
-import { initRemixClient } from "@otto-flags/remix";
+import { initRemixClient } from "@savvagent/flags-remix";
 
 initRemixClient({
   apiKey: "{{CLIENT_KEY}}",
@@ -70,12 +70,12 @@ initRemixClient({
 });
 ```
 
-Client side: the hooks need `OttoFlagsProvider` around the app.
+Client side: the hooks need `SavvagentFlagsProvider` around the app.
 
 ```tsx
 // app/root.tsx
 import { Outlet } from "@remix-run/react";
-import { OttoFlagsProvider } from "@otto-flags/remix";
+import { SavvagentFlagsProvider } from "@savvagent/flags-remix";
 
 const config = { apiKey: "{{CLIENT_KEY}}", applicationId: "{{APP_ID}}" };
 
@@ -83,9 +83,9 @@ export default function App() {
   return (
     <html lang="en">
       <body>
-        <OttoFlagsProvider config={config}>
+        <SavvagentFlagsProvider config={config}>
           <Outlet />
-        </OttoFlagsProvider>
+        </SavvagentFlagsProvider>
       </body>
     </html>
   );
@@ -108,7 +108,7 @@ In a loader:
 // app/routes/dashboard.tsx
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { evaluateForRequest } from "@otto-flags/remix";
+import { evaluateForRequest } from "@savvagent/flags-remix";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const showNewDashboard = await evaluateForRequest(request, "new-dashboard");
@@ -122,7 +122,7 @@ export default function Dashboard() {
 ```
 
 `evaluateForRequest` builds the context from the request: `user_id` from the `user_id` cookie,
-`anonymous_id` from the `otto_flags_anonymous_id` cookie, `session_id` from the `session_id` cookie,
+`anonymous_id` from the `savvagent_flags_anonymous_id` cookie, `session_id` from the `session_id` cookie,
 and `language` from `Accept-Language`. Percentage rollouts bucket on the user id, so make sure it
 reaches the evaluation. To pass your own, use `isEnabled("new-dashboard", { user_id: ... })`;
 context fields are snake_case (`user_id`, `anonymous_id`, `session_id`, `organization_id`,
@@ -134,7 +134,7 @@ context fields are snake_case (`user_id`, `anonymous_id`, `session_id`, `organiz
 In a component, under the provider:
 
 ```tsx
-import { useFlag } from "@otto-flags/remix";
+import { useFlag } from "@savvagent/flags-remix";
 
 export function Feature() {
   const { value, loading } = useFlag("new-feature", { defaultValue: false });
@@ -143,8 +143,8 @@ export function Feature() {
 }
 ```
 
-The hooks are those of `@otto-flags/react`: `useFlag`, `useFlags`, `useWithFlag`, `useUser`,
-`useTrackError`, `useEnvironment` and `useOttoFlags`.
+The hooks are those of `@savvagent/flags-react`: `useFlag`, `useFlags`, `useWithFlag`, `useUser`,
+`useTrackError`, `useEnvironment` and `useSavvagentFlags`.
 
 ## Notes
 

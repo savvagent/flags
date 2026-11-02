@@ -1,8 +1,8 @@
-# otto-flags Rust SDK (app: {{APP_NAME}})
+# Savvagent Flags Rust SDK (app: {{APP_NAME}})
 
-`otto-flags` (imported as `otto_flags`) is the server-side Rust SDK: an async client built on Tokio
+`savvagent-flags` (imported as `savvagent_flags`) is the server-side Rust SDK: an async client built on Tokio
 and `reqwest`. It authenticates with the app's server key. That key is shown once, by `create_app`
-or `rotate_app_keys`; keep it in the app's secret store and read it from the `OTTO_FLAGS_API_KEY`
+or `rotate_app_keys`; keep it in the app's secret store and read it from the `SAVVAGENT_FLAGS_API_KEY`
 environment variable. Never write it into code, a config file under version control, or a client
 bundle. The client also accepts the public client key, but only telemetry sent with the server key
 drives auto-rollback by default. Rust 1.70 or later.
@@ -10,21 +10,21 @@ drives auto-rollback by default. Rust 1.70 or later.
 ## Install
 
 The crate is not installable by name yet. Depend on it from git, pinned to a full commit SHA of
-`savvagent/otto-flags`. The crate lives in `packages/rust-server`; Cargo finds it by its name. Pin
-to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the maintainers have reviewed.
+`savvagent/flags`. The crate lives in `packages/rust-server`; Cargo finds it by its name. Pin
+to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the maintainers have reviewed.
 Use it exactly: do not substitute a branch, a newer commit, or a commit from a fork, and use the
 same commit everywhere in one project. In `Cargo.toml`:
 
 ```toml
 [dependencies]
-otto-flags = { git = "https://github.com/savvagent/otto-flags", rev = "{{SDK_REF}}" }
+savvagent-flags = { git = "https://github.com/savvagent/flags", rev = "{{SDK_REF}}" }
 tokio = { version = "1", features = ["full"] }
 ```
 
 or from the command line:
 
 ```bash
-cargo add otto-flags --git https://github.com/savvagent/otto-flags --rev {{SDK_REF}}
+cargo add savvagent-flags --git https://github.com/savvagent/flags --rev {{SDK_REF}}
 ```
 
 Pin a `rev`, not a branch, so a build is reproducible. `Cargo.lock` then records the same commit.
@@ -35,10 +35,10 @@ Create one client per process; `FlagClient` is cheap to clone, so share it throu
 state.
 
 ```rust
-use otto_flags::{Config, FlagClient};
+use savvagent_flags::{Config, FlagClient};
 
 fn build_client() -> Result<FlagClient, Box<dyn std::error::Error>> {
-    let key = std::env::var("OTTO_FLAGS_API_KEY")?;
+    let key = std::env::var("SAVVAGENT_FLAGS_API_KEY")?;
     let config = Config::new(key)
         .with_application_id("{{APP_ID}}")
         .with_default("new-checkout", false);
@@ -67,7 +67,7 @@ Pass an optional `Context` describing who the evaluation is for. Percentage roll
 user id (or session id), so pass a stable identifier.
 
 ```rust
-use otto_flags::Context;
+use savvagent_flags::Context;
 
 let context = Context::new()
     .with_user_id("user-123")
@@ -89,7 +89,7 @@ multi-variant flags, and `track_error` to report an error raised in flagged code
 `flag_health` and auto-rollback compare:
 
 ```rust
-use otto_flags::ErrorReport;
+use savvagent_flags::ErrorReport;
 
 if let Err(e) = charge(&order).await {
     client.track_error(ErrorReport::from_error("new-checkout", enabled, &e));
@@ -127,7 +127,7 @@ Put the client in the router state:
 
 ```rust
 use axum::{extract::State, routing::get, Router};
-use otto_flags::{Context, FlagClient};
+use savvagent_flags::{Context, FlagClient};
 
 async fn checkout(State(client): State<FlagClient>) -> String {
     let ctx = Context::new().with_user_id("user-123");
@@ -140,7 +140,7 @@ async fn checkout(State(client): State<FlagClient>) -> String {
 
 #[tokio::main]
 async fn main() {
-    let client = build_client().expect("otto-flags");
+    let client = build_client().expect("savvagent-flags");
     let app = Router::new().route("/checkout", get(checkout)).with_state(client);
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
     axum::serve(listener, app).await.unwrap();

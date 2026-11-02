@@ -1,7 +1,7 @@
-# otto-flags Astro SDK (app: {{APP_NAME}})
+# Savvagent Flags Astro SDK (app: {{APP_NAME}})
 
-`@otto-flags/astro` is an Astro integration with server-side helpers and middleware. It wraps
-`@otto-flags/sdk`, so its install includes that package.
+`@savvagent/flags-astro` is an Astro integration with server-side helpers and middleware. It wraps
+`@savvagent/flags-sdk`, so its install includes that package.
 
 The client key is public by design: it can ship in a browser bundle and sits in source control
 without harm. It can evaluate flags but cannot read targeting rules. Do not put the app's server key
@@ -10,15 +10,15 @@ browser.
 
 The server helpers use the same core client as the browser packages, so they also take the public
 client key, not a server key. For a Node.js service that holds a server key, use
-`@otto-flags/node-server`.
+`@savvagent/flags-node-server`.
 
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`, `@otto-flags/astro`), because a package's tarball names the
+dependency order (`@savvagent/flags-sdk`, `@savvagent/flags-astro`), because a package's tarball names the
 others it depends on and they cannot be resolved by name. You need `git`, Node.js and `pnpm`.
 
 On pnpm 9, `pnpm install` runs the install scripts of this repository's dependencies on your
@@ -27,24 +27,24 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/astro build
-pnpm --filter @otto-flags/astro pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-astro build
+pnpm --filter @savvagent/flags-astro pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-astro-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-astro-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -58,11 +58,11 @@ Add the integration to the Astro config:
 ```typescript
 // astro.config.mjs
 import { defineConfig } from "astro/config";
-import ottoFlags from "@otto-flags/astro";
+import savvagentFlags from "@savvagent/flags-astro";
 
 export default defineConfig({
   integrations: [
-    ottoFlags({
+    savvagentFlags({
       config: {
         apiKey: "{{CLIENT_KEY}}",
         applicationId: "{{APP_ID}}",
@@ -75,13 +75,13 @@ export default defineConfig({
 
 The integration creates the client while Astro loads its configuration. For pages rendered on
 request, also initialize the client in the module that serves them, so it exists in the server
-process; `initOttoFlags` creates it once and ignores repeat calls:
+process; `initSavvagentFlags` creates it once and ignores repeat calls:
 
 ```typescript
 // src/middleware.ts
-import { initOttoFlags } from "@otto-flags/astro";
+import { initSavvagentFlags } from "@savvagent/flags-astro";
 
-initOttoFlags({ apiKey: "{{CLIENT_KEY}}", applicationId: "{{APP_ID}}" });
+initSavvagentFlags({ apiKey: "{{CLIENT_KEY}}", applicationId: "{{APP_ID}}" });
 ```
 
 The config takes the core client's fields: `baseUrl` (default `https://flags.savvagent.com`),
@@ -98,7 +98,7 @@ In an Astro component, on the server:
 
 ```astro
 ---
-import { evaluateForRequest } from "@otto-flags/astro";
+import { evaluateForRequest } from "@savvagent/flags-astro";
 
 const newLayout = await evaluateForRequest(Astro.request, "new-layout");
 ---
@@ -111,16 +111,16 @@ cookies, language from `Accept-Language`). Percentage rollouts bucket on the use
 it reaches the evaluation. To pass your own context use `isEnabled("new-layout", { user_id: ... })`.
 The other server exports are `evaluate(flagKey, context)` (full result), `withFlag(flagKey,
 callback, context)`, `trackError(flagKey, error, context)`, `getRequestContext(request, overrides)`,
-`setEnvironment`, `getEnvironment` and `getOttoFlags()`.
+`setEnvironment`, `getEnvironment` and `getSavvagentFlags()`.
 
 Route on a flag in middleware:
 
 ```typescript
 // src/middleware.ts (the same file as the initialization above)
 import { sequence } from "astro/middleware";
-import { createFlagMiddleware, initOttoFlags } from "@otto-flags/astro";
+import { createFlagMiddleware, initSavvagentFlags } from "@savvagent/flags-astro";
 
-initOttoFlags({ apiKey: "{{CLIENT_KEY}}", applicationId: "{{APP_ID}}" });
+initSavvagentFlags({ apiKey: "{{CLIENT_KEY}}", applicationId: "{{APP_ID}}" });
 
 export const onRequest = sequence(
   createFlagMiddleware({
@@ -129,8 +129,8 @@ export const onRequest = sequence(
 );
 ```
 
-For interactive islands, use the matching framework package inside the island (`@otto-flags/react`,
-`@otto-flags/vue`, `@otto-flags/svelte` or `@otto-flags/solid`) with the same public client key.
+For interactive islands, use the matching framework package inside the island (`@savvagent/flags-react`,
+`@savvagent/flags-vue`, `@savvagent/flags-svelte` or `@savvagent/flags-solid`) with the same public client key.
 
 ## Notes
 

@@ -1,8 +1,8 @@
-# otto-flags SvelteKit SDK (app: {{APP_NAME}})
+# Savvagent Flags SvelteKit SDK (app: {{APP_NAME}})
 
-`@otto-flags/sveltekit` adds server-side helpers for load functions and form actions, and re-exports
-the client-side stores of `@otto-flags/svelte`. It wraps `@otto-flags/sdk`; its install includes
-that package and `@otto-flags/svelte`.
+`@savvagent/flags-sveltekit` adds server-side helpers for load functions and form actions, and re-exports
+the client-side stores of `@savvagent/flags-svelte`. It wraps `@savvagent/flags-sdk`; its install includes
+that package and `@savvagent/flags-svelte`.
 
 The client key is public by design: it can ship in a browser bundle and sits in source control
 without harm. It can evaluate flags but cannot read targeting rules. Do not put the app's server key
@@ -11,15 +11,15 @@ browser.
 
 The server helpers use the same core client as the browser stores, so they also take the public
 client key, not a server key. For a Node.js service that holds a server key, use
-`@otto-flags/node-server`.
+`@savvagent/flags-node-server`.
 
 ## Install
 
 These packages are not installable by name yet. Install from source, pinned to a full commit SHA of
-`savvagent/otto-flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/otto-flags` that the
+`savvagent/flags`. Pin to `{{SDK_REF}}`, a commit on `main` of `savvagent/flags` that the
 maintainers have reviewed. Use it exactly: do not substitute a branch, a newer commit, or a commit
 from a fork, and use the same commit everywhere in one project. Build and pack each package in
-dependency order (`@otto-flags/sdk`, `@otto-flags/svelte`, `@otto-flags/sveltekit`), because a
+dependency order (`@savvagent/flags-sdk`, `@savvagent/flags-svelte`, `@savvagent/flags-sveltekit`), because a
 package's tarball names the others it depends on and they cannot be resolved by name. You need
 `git`, Node.js and `pnpm`.
 
@@ -29,27 +29,27 @@ what their scripts do. None of these packages needs them to build, so skip them 
 `--ignore-scripts`.
 
 ```bash
-git clone https://github.com/savvagent/otto-flags
-cd otto-flags
+git clone https://github.com/savvagent/flags
+cd flags
 git checkout {{SDK_REF}}
 pnpm install --frozen-lockfile --ignore-scripts
-mkdir -p ../otto-flags-tarballs
-pnpm --filter @otto-flags/sdk build
-pnpm --filter @otto-flags/sdk pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/svelte build
-pnpm --filter @otto-flags/svelte pack --pack-destination ../otto-flags-tarballs
-pnpm --filter @otto-flags/sveltekit build
-pnpm --filter @otto-flags/sveltekit pack --pack-destination ../otto-flags-tarballs
+mkdir -p ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sdk build
+pnpm --filter @savvagent/flags-sdk pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-svelte build
+pnpm --filter @savvagent/flags-svelte pack --pack-destination ../savvagent-flags-tarballs
+pnpm --filter @savvagent/flags-sveltekit build
+pnpm --filter @savvagent/flags-sveltekit pack --pack-destination ../savvagent-flags-tarballs
 ```
 
 Then, in your own project, install all of the tarballs in one command (use the real path to the
-`otto-flags-tarballs` directory):
+`savvagent-flags-tarballs` directory):
 
 ```bash
 npm install \
-  /path/to/otto-flags-tarballs/otto-flags-sdk-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-svelte-*.tgz \
-  /path/to/otto-flags-tarballs/otto-flags-sveltekit-*.tgz
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sdk-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-svelte-*.tgz \
+  /path/to/savvagent-flags-tarballs/savvagent-flags-sveltekit-*.tgz
 ```
 
 The tarball file names carry the package version, hence the `*`. Another package manager's
@@ -62,7 +62,7 @@ Server side: initialize once in `src/hooks.server.ts`, from the `/server` entry 
 
 ```typescript
 // src/hooks.server.ts
-import { initSvelteKitServer } from "@otto-flags/sveltekit/server";
+import { initSvelteKitServer } from "@savvagent/flags-sveltekit/server";
 
 initSvelteKitServer({
   apiKey: "{{CLIENT_KEY}}",
@@ -76,9 +76,9 @@ Client side: initialize the stores once in the root layout.
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
-  import { initOttoFlags } from "@otto-flags/sveltekit";
+  import { initSavvagentFlags } from "@savvagent/flags-sveltekit";
 
-  initOttoFlags({
+  initSavvagentFlags({
     config: {
       apiKey: "{{CLIENT_KEY}}",
       applicationId: "{{APP_ID}}",
@@ -103,7 +103,7 @@ In a load function (server side):
 
 ```typescript
 // src/routes/checkout/+page.server.ts
-import { evaluateForEvent } from "@otto-flags/sveltekit/server";
+import { evaluateForEvent } from "@savvagent/flags-sveltekit/server";
 
 export async function load(event) {
   const newCheckout = await evaluateForEvent(event, "new-checkout");
@@ -112,18 +112,18 @@ export async function load(event) {
 ```
 
 `evaluateForEvent` builds the context from the request: `user_id` from the `user_id` cookie,
-`anonymous_id` from the `otto_flags_anonymous_id` cookie, `session_id` from the `session_id` cookie,
+`anonymous_id` from the `savvagent_flags_anonymous_id` cookie, `session_id` from the `session_id` cookie,
 and `language` from `Accept-Language`. Percentage rollouts bucket on the user id, so make sure it
 reaches the evaluation. To pass your own, use `isEnabled("new-checkout", { user_id: ... })`. The
 other server exports are `evaluate(flagKey, context)` (full result), `withFlag(flagKey, callback,
 context)`, `trackError(flagKey, error, context)`, `getEventContext(event, overrides)` and
 `getServerClient()`.
 
-In a component (client side), with the stores from `@otto-flags/svelte`:
+In a component (client side), with the stores from `@savvagent/flags-svelte`:
 
 ```svelte
 <script>
-  import { createFlag } from "@otto-flags/sveltekit";
+  import { createFlag } from "@savvagent/flags-sveltekit";
 
   const newCheckout = createFlag("new-checkout", { defaultValue: false });
 </script>
@@ -132,7 +132,7 @@ In a component (client side), with the stores from `@otto-flags/svelte`:
 ```
 
 Also exported from the main entry point: `createFlagStore` (value, loading, error, result),
-`createUserIdStore`, `trackErrorClient`, `getOttoFlags`, `setEnvironment` and `getEnvironment`.
+`createUserIdStore`, `trackErrorClient`, `getSavvagentFlags`, `setEnvironment` and `getEnvironment`.
 
 ## Notes
 
