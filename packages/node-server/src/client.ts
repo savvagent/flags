@@ -30,7 +30,7 @@ function isValidFlagKey(key: unknown): boolean {
 }
 
 /**
- * Otto Flags Server Client for feature flag evaluation with AI-powered error detection
+ * Savvagent Flags Server Client for feature flag evaluation with AI-powered error detection
  */
 export class FlagClient {
   private config: Required<FlagClientConfig>;
@@ -56,7 +56,7 @@ export class FlagClient {
       cacheTtl: config.cacheTtl || 60000,
       enableTelemetry: config.enableTelemetry ?? true,
       defaults: config.defaults || {},
-      onError: config.onError || ((error) => console.error('[Otto Flags]', error)),
+      onError: config.onError || ((error) => console.error('[Savvagent Flags]', error)),
       timeout: config.timeout || 5000,
     };
 
@@ -80,13 +80,13 @@ export class FlagClient {
         this.config.baseUrl,
         this.config.apiKey,
         (connected) => {
-          console.log(`[Otto Flags] Real-time: ${connected ? 'connected' : 'disconnected'}`);
+          console.log(`[Savvagent Flags] Real-time: ${connected ? 'connected' : 'disconnected'}`);
         }
       );
 
       // Subscribe to all flag updates to invalidate cache
       this.realtime.subscribe('*', (event) => {
-        console.log(`[Otto Flags] Flag ${event.type}: ${event.flagKey}`);
+        console.log(`[Savvagent Flags] Flag ${event.type}: ${event.flagKey}`);
         this.cache.invalidate(event.flagKey);
       });
 
@@ -341,7 +341,7 @@ export class FlagClient {
    */
   subscribe(flagKey: string, callback: () => void): () => void {
     if (!this.realtime) {
-      console.warn('[Otto Flags] Real-time updates are disabled');
+      console.warn('[Savvagent Flags] Real-time updates are disabled');
       return () => {};
     }
 

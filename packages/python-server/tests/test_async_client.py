@@ -6,8 +6,8 @@ import httpx
 import pytest
 import respx
 
-from otto_flags import AsyncFlagClient, FlagClientConfig, FlagContext
-from otto_flags.exceptions import InvalidAPIKeyError, InvalidFlagKeyError
+from savvagent_flags import AsyncFlagClient, FlagClientConfig, FlagContext
+from savvagent_flags.exceptions import InvalidAPIKeyError, InvalidFlagKeyError
 from tests.conftest import server_body
 
 

@@ -1,21 +1,21 @@
-# @otto-flags/mcp-newrelic
+# @savvagent/flags-mcp-newrelic
 
-New Relic MCP integration for Otto Flags - Connect feature flags with New Relic APM and monitoring.
+New Relic MCP integration for Savvagent Flags - Connect feature flags with New Relic APM and monitoring.
 
 ## Installation
 
 ```bash
-npm install @otto-flags/mcp-newrelic
+npm install @savvagent/flags-mcp-newrelic
 # or
-pnpm add @otto-flags/mcp-newrelic
+pnpm add @savvagent/flags-mcp-newrelic
 ```
 
 ## Quick Start
 
 ```typescript
 import express from 'express';
-import { NewRelicMCPServer } from '@otto-flags/mcp-newrelic';
-import { createHttpHandler } from '@otto-flags/mcp-sdk';
+import { NewRelicMCPServer } from '@savvagent/flags-mcp-newrelic';
+import { createHttpHandler } from '@savvagent/flags-mcp-sdk';
 
 const app = express();
 app.use(express.json());

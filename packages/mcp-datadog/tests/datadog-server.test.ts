@@ -3,7 +3,7 @@
  */
 
 import { DatadogMCPServer, DatadogConfig } from '../src/datadog-server';
-import { JsonRpcRequest } from '@otto-flags/mcp-sdk';
+import { JsonRpcRequest } from '@savvagent/flags-mcp-sdk';
 
 // Mock axios
 jest.mock('axios', () => ({

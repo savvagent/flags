@@ -1,7 +1,7 @@
 {
-  "name": "@otto-flags/sdk",
+  "name": "@savvagent/flags-sdk",
   "version": "1.1.0",
-  "description": "Otto Flags TypeScript/JavaScript SDK for feature flags with AI-powered error detection",
+  "description": "Savvagent Flags TypeScript/JavaScript SDK for feature flags with AI-powered error detection",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
   "keywords": [
     "feature-flags",
     "feature-toggles",
-    "otto-flags",
+    "savvagent-flags",
     "ai",
     "error-detection",
     "typescript"
@@ -37,13 +37,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/savvagent/otto-flags",
+    "url": "https://github.com/savvagent/flags",
     "directory": "packages/typescript"
   },
   "bugs": {
-    "url": "https://github.com/savvagent/otto-flags/issues"
+    "url": "https://github.com/savvagent/flags/issues"
   },
-  "homepage": "https://github.com/savvagent/otto-flags/tree/main/packages/typescript#readme",
+  "homepage": "https://github.com/savvagent/flags/tree/main/packages/typescript#readme",
   "publishConfig": {
     "access": "public"
   },

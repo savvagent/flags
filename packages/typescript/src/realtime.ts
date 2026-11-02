@@ -79,7 +79,7 @@ export class RealtimeService {
 
       onopen: async (response) => {
         if (response.ok) {
-          console.log('[Otto Flags] Real-time connection established');
+          console.log('[Savvagent Flags] Real-time connection established');
           this.reconnectAttempts = 0;
           this.reconnectDelay = 1000;
           this.connected = true;
@@ -87,11 +87,11 @@ export class RealtimeService {
         } else if (response.status === 401 || response.status === 403) {
           // Auth failed - don't retry
           this.authFailed = true;
-          console.error(`[Otto Flags] SSE authentication failed (${response.status}). Check your API key. Reconnection disabled.`);
+          console.error(`[Savvagent Flags] SSE authentication failed (${response.status}). Check your API key. Reconnection disabled.`);
           // Throwing FatalError prevents fetchEventSource from retrying
           throw new FatalError(`SSE authentication failed: ${response.status}`);
         } else {
-          console.error(`[Otto Flags] SSE connection failed: ${response.status}`);
+          console.error(`[Savvagent Flags] SSE connection failed: ${response.status}`);
           throw new RetriableError(`SSE connection failed: ${response.status}`);
         }
       },
@@ -105,13 +105,13 @@ export class RealtimeService {
         if (this.authFailed) {
           throw err; // Stop retrying
         }
-        console.error('[Otto Flags] SSE connection error:', err);
+        console.error('[Savvagent Flags] SSE connection error:', err);
         this.handleDisconnect();
         // Don't throw - let fetchEventSource retry (unless it's auth failure)
       },
 
       onclose: () => {
-        console.log('[Otto Flags] SSE connection closed');
+        console.log('[Savvagent Flags] SSE connection closed');
         if (!this.authFailed) {
           this.handleDisconnect();
         }
@@ -119,7 +119,7 @@ export class RealtimeService {
     }).catch((error) => {
       // Connection was aborted or failed permanently
       if (error.name !== 'AbortError' && !(error instanceof FatalError)) {
-        console.error('[Otto Flags] SSE connection error:', error);
+        console.error('[Savvagent Flags] SSE connection error:', error);
         if (!this.authFailed) {
           this.handleDisconnect();
         }
@@ -168,7 +168,7 @@ export class RealtimeService {
         flagListeners.forEach((listener) => listener(updateEvent));
       }
     } catch (error) {
-      console.error('[Otto Flags] Failed to parse SSE message:', error);
+      console.error('[Savvagent Flags] Failed to parse SSE message:', error);
     }
   }
 
@@ -186,7 +186,7 @@ export class RealtimeService {
 
     // Don't attempt reconnect if auth has failed
     if (this.authFailed) {
-      console.warn('[Otto Flags] Authentication failed. Reconnection disabled.');
+      console.warn('[Savvagent Flags] Authentication failed. Reconnection disabled.');
       return;
     }
 
@@ -196,13 +196,13 @@ export class RealtimeService {
       const exponentialDelay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1);
       const delay = Math.min(exponentialDelay, this.maxReconnectDelay);
 
-      console.log(`[Otto Flags] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
+      console.log(`[Savvagent Flags] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
 
       setTimeout(() => {
         this.connect();
       }, delay);
     } else {
-      console.warn('[Otto Flags] Max reconnection attempts reached. Connection will not be retried automatically.');
+      console.warn('[Savvagent Flags] Max reconnection attempts reached. Connection will not be retried automatically.');
     }
   }
 

@@ -1,8 +1,8 @@
 {
-  "name": "@otto-flags/react",
+  "name": "@savvagent/flags-react",
   "version": "1.1.0",
-  "description": "React SDK for Otto Flags feature flags",
-  "author": "Otto Flags",
+  "description": "React SDK for Savvagent Flags feature flags",
+  "author": "Savvagent Flags",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -28,7 +28,7 @@
     "react": ">=16.8.0"
   },
   "dependencies": {
-    "@otto-flags/sdk": "workspace:*"
+    "@savvagent/flags-sdk": "workspace:*"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.9.1",
@@ -47,7 +47,7 @@
     "typescript": "^5.9.3"
   },
   "keywords": [
-    "otto-flags",
+    "savvagent-flags",
     "feature-flags",
     "react",
     "hooks",
@@ -55,13 +55,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/savvagent/otto-flags",
+    "url": "https://github.com/savvagent/flags",
     "directory": "packages/react"
   },
   "bugs": {
-    "url": "https://github.com/savvagent/otto-flags/issues"
+    "url": "https://github.com/savvagent/flags/issues"
   },
-  "homepage": "https://github.com/savvagent/otto-flags/tree/main/packages/react#readme",
+  "homepage": "https://github.com/savvagent/flags/tree/main/packages/react#readme",
   "publishConfig": {
     "access": "public"
   }

@@ -1,22 +1,22 @@
-//! Example Axum server that evaluates Otto Flags with the Rust server SDK.
+//! Example Axum server that evaluates Savvagent Flags with the Rust server SDK.
 //!
 //! Configuration comes from the environment (see `Settings::from_env`):
-//! `OTTO_FLAGS_SDK_KEY` (required: the app's server key `srv_...`, or its client key `sdk_...`),
-//! `OTTO_FLAGS_API_URL`, `OTTO_FLAGS_ENVIRONMENT`, and `PORT`; `RUST_LOG` sets the log filter.
+//! `SAVVAGENT_FLAGS_SDK_KEY` (required: the app's server key `srv_...`, or its client key `sdk_...`),
+//! `SAVVAGENT_FLAGS_API_URL`, `SAVVAGENT_FLAGS_ENVIRONMENT`, and `PORT`; `RUST_LOG` sets the log filter.
 
 use axum::{
     extract::{Query, State},
     routing::{get, post},
     Json, Router,
 };
-use otto_flags::{Config, Context, FlagClient};
+use savvagent_flags::{Config, Context, FlagClient};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::net::SocketAddr;
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-/// The production Otto Flags API, used when `OTTO_FLAGS_API_URL` is not set.
+/// The production Savvagent Flags API, used when `SAVVAGENT_FLAGS_API_URL` is not set.
 const DEFAULT_API_URL: &str = "https://flags.savvagent.com";
 const DEFAULT_ENVIRONMENT: &str = "development";
 const DEFAULT_PORT: u16 = 8083;
@@ -49,8 +49,8 @@ impl Settings {
     /// rejects keys it does not accept.
     fn from_env(lookup: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
         let var = |name: &str| lookup(name).filter(|v| !v.is_empty());
-        let sdk_key = var("OTTO_FLAGS_SDK_KEY")
-            .ok_or("OTTO_FLAGS_SDK_KEY is not set; use the app's server key (srv_...)")?;
+        let sdk_key = var("SAVVAGENT_FLAGS_SDK_KEY")
+            .ok_or("SAVVAGENT_FLAGS_SDK_KEY is not set; use the app's server key (srv_...)")?;
         let port = match var("PORT") {
             Some(p) => p
                 .parse()
@@ -59,8 +59,8 @@ impl Settings {
         };
         Ok(Self {
             sdk_key,
-            api_url: var("OTTO_FLAGS_API_URL").unwrap_or_else(|| DEFAULT_API_URL.into()),
-            environment: var("OTTO_FLAGS_ENVIRONMENT")
+            api_url: var("SAVVAGENT_FLAGS_API_URL").unwrap_or_else(|| DEFAULT_API_URL.into()),
+            environment: var("SAVVAGENT_FLAGS_ENVIRONMENT")
                 .unwrap_or_else(|| DEFAULT_ENVIRONMENT.into()),
             port,
         })
@@ -120,7 +120,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| {
-                "rust_server_example=info,otto_flags=info,tower_http=info".into()
+                "rust_server_example=info,savvagent_flags=info,tower_http=info".into()
             }),
         )
         .with(tracing_subscriber::fmt::layer())
@@ -133,11 +133,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         |config, (key, value)| config.with_default(*key, *value),
     );
     // Format the error so a rejected key prints the SDK's message, not its `Debug` form.
-    let flags =
-        FlagClient::new(config).map_err(|e| format!("cannot create the Otto Flags client: {e}"))?;
+    let flags = FlagClient::new(config)
+        .map_err(|e| format!("cannot create the Savvagent Flags client: {e}"))?;
 
     tracing::info!(
-        "Otto Flags API URL: {} (environment: {})",
+        "Savvagent Flags API URL: {} (environment: {})",
         settings.api_url,
         settings.environment
     );
@@ -262,16 +262,16 @@ mod tests {
     #[test]
     fn sdk_key_is_required() {
         let err = Settings::from_env(lookup(&[])).unwrap_err();
-        assert!(err.contains("OTTO_FLAGS_SDK_KEY"), "{err}");
+        assert!(err.contains("SAVVAGENT_FLAGS_SDK_KEY"), "{err}");
     }
 
     #[test]
     fn an_empty_variable_counts_as_unset() {
-        assert!(Settings::from_env(lookup(&[("OTTO_FLAGS_SDK_KEY", "")])).is_err());
+        assert!(Settings::from_env(lookup(&[("SAVVAGENT_FLAGS_SDK_KEY", "")])).is_err());
         let settings = Settings::from_env(lookup(&[
-            ("OTTO_FLAGS_SDK_KEY", "sdk_abc"),
-            ("OTTO_FLAGS_API_URL", ""),
-            ("OTTO_FLAGS_ENVIRONMENT", ""),
+            ("SAVVAGENT_FLAGS_SDK_KEY", "sdk_abc"),
+            ("SAVVAGENT_FLAGS_API_URL", ""),
+            ("SAVVAGENT_FLAGS_ENVIRONMENT", ""),
             ("PORT", ""),
         ]))
         .unwrap();
@@ -282,7 +282,8 @@ mod tests {
 
     #[test]
     fn defaults_to_production_development_and_port_8083() {
-        let settings = Settings::from_env(lookup(&[("OTTO_FLAGS_SDK_KEY", "sdk_abc")])).unwrap();
+        let settings =
+            Settings::from_env(lookup(&[("SAVVAGENT_FLAGS_SDK_KEY", "sdk_abc")])).unwrap();
         assert_eq!(
             settings,
             Settings {
@@ -297,9 +298,9 @@ mod tests {
     #[test]
     fn every_variable_is_honoured() {
         let settings = Settings::from_env(lookup(&[
-            ("OTTO_FLAGS_SDK_KEY", "sdk_abc"),
-            ("OTTO_FLAGS_API_URL", "http://localhost:8080"),
-            ("OTTO_FLAGS_ENVIRONMENT", "staging"),
+            ("SAVVAGENT_FLAGS_SDK_KEY", "sdk_abc"),
+            ("SAVVAGENT_FLAGS_API_URL", "http://localhost:8080"),
+            ("SAVVAGENT_FLAGS_ENVIRONMENT", "staging"),
             ("PORT", "9000"),
         ]))
         .unwrap();
@@ -310,15 +311,19 @@ mod tests {
 
     #[test]
     fn a_server_key_is_accepted() {
-        let settings = Settings::from_env(lookup(&[("OTTO_FLAGS_SDK_KEY", "srv_abc")])).unwrap();
+        let settings =
+            Settings::from_env(lookup(&[("SAVVAGENT_FLAGS_SDK_KEY", "srv_abc")])).unwrap();
         assert_eq!(settings.sdk_key, "srv_abc");
         assert!(FlagClient::new(Config::new(&settings.sdk_key)).is_ok());
     }
 
     #[test]
     fn a_bad_port_is_an_error() {
-        let err = Settings::from_env(lookup(&[("OTTO_FLAGS_SDK_KEY", "sdk_abc"), ("PORT", "x")]))
-            .unwrap_err();
+        let err = Settings::from_env(lookup(&[
+            ("SAVVAGENT_FLAGS_SDK_KEY", "sdk_abc"),
+            ("PORT", "x"),
+        ]))
+        .unwrap_err();
         assert!(err.contains("PORT"), "{err}");
     }
 

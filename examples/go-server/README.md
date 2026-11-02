@@ -1,12 +1,12 @@
-# Otto Flags Go Server Example
+# Savvagent Flags Go Server Example
 
-Example Go application demonstrating how to use the Otto Flags Go Server SDK with Gin framework.
+Example Go application demonstrating how to use the Savvagent Flags Go Server SDK with Gin framework.
 
 ## Features
 
 - Go 1.21+
 - Gin web framework
-- Otto Flags Go Server SDK
+- Savvagent Flags Go Server SDK
 - RESTful API endpoints
 - Feature-gated functionality
 - Goroutine-safe concurrent access
@@ -28,8 +28,8 @@ Example Go application demonstrating how to use the Otto Flags Go Server SDK wit
 
 2. **Configure environment variables:**
    ```bash
-   export OTTO_FLAGS_API_URL=http://localhost:8080
-   export OTTO_FLAGS_SDK_KEY=your-sdk-key-here
+   export SAVVAGENT_FLAGS_API_URL=http://localhost:8080
+   export SAVVAGENT_FLAGS_SDK_KEY=your-sdk-key-here
    export PORT=8082
    ```
 
@@ -94,13 +94,13 @@ import (
     "os"
 
     "github.com/gin-gonic/gin"
-    ottoflags "github.com/savvagent/otto-flags/packages/go-server"
+    savvagentflags "github.com/savvagent/flags/packages/go-server"
 )
 
 func main() {
-    client, err := ottoflags.NewClient(ottoflags.Config{
-        APIKey:  os.Getenv("OTTO_FLAGS_SDK_KEY"),
-        BaseURL: os.Getenv("OTTO_FLAGS_API_URL"),
+    client, err := savvagentflags.NewClient(savvagentflags.Config{
+        APIKey:  os.Getenv("SAVVAGENT_FLAGS_SDK_KEY"),
+        BaseURL: os.Getenv("SAVVAGENT_FLAGS_API_URL"),
     })
     if err != nil {
         log.Fatal(err)
@@ -112,7 +112,7 @@ func main() {
     r.GET("/api/features", func(c *gin.Context) {
         userId := c.Query("userId")
 
-        isEnabled := client.IsEnabled("new-feature", &ottoflags.Context{
+        isEnabled := client.IsEnabled("new-feature", &savvagentflags.Context{
             UserID: userId,
             Attributes: map[string]interface{}{
                 "plan": "pro",
@@ -133,5 +133,5 @@ func main() {
 
 - [Go Documentation](https://go.dev/doc/)
 - [Gin Framework](https://gin-gonic.com/)
-- [Otto Flags Go SDK Documentation](../../packages/go-server/README.md)
+- [Savvagent Flags Go SDK Documentation](../../packages/go-server/README.md)
 - [SDK Integration Guide](../../docs/SDK-INTEGRATION.md)

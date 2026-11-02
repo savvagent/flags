@@ -1,4 +1,4 @@
-package ottoflags
+package savvagentflags
 
 // The flag-change stream against a test server speaking the documented contract
 // (docs/SDK-DEVELOPER-GUIDE.md, Real-time Updates): GET /api/flags/stream with the client's key,

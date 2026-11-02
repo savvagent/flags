@@ -1,6 +1,6 @@
-# @otto-flags/node-server
+# @savvagent/flags-node-server
 
-Official Node.js Server SDK for Otto Flags - AI-powered feature flags with automatic error detection.
+Official Node.js Server SDK for Savvagent Flags - AI-powered feature flags with automatic error detection.
 
 ## Features
 
@@ -14,17 +14,17 @@ Official Node.js Server SDK for Otto Flags - AI-powered feature flags with autom
 ## Installation
 
 ```bash
-npm install @otto-flags/node-server
+npm install @savvagent/flags-node-server
 # or
-yarn add @otto-flags/node-server
+yarn add @savvagent/flags-node-server
 # or
-pnpm add @otto-flags/node-server
+pnpm add @savvagent/flags-node-server
 ```
 
 ## Quick Start
 
 ```typescript
-import { FlagClient } from '@otto-flags/node-server';
+import { FlagClient } from '@savvagent/flags-node-server';
 
 // Initialize the client
 const client = new FlagClient({
@@ -62,7 +62,7 @@ const client = new FlagClient({
     'feature-b': true,
   },
   onError: (error) => {
-    console.error('Otto Flags error:', error);
+    console.error('Savvagent Flags error:', error);
   },
 });
 ```
@@ -192,7 +192,7 @@ Evaluate a feature flag and return detailed results.
 const result = await client.evaluate('my-flag', { user_id: '123' });
 // Returns: { key, value, reason, metadata? }
 // metadata: { version?, scope? } as sent by the server, on evaluated and cached results
-// (flagId, description and variant are never sent by the otto-flags server)
+// (flagId, description and variant are never sent by the savvagent-flags server)
 ```
 
 ##### isEnabled(flagKey, context?)
@@ -254,7 +254,7 @@ client.close();
 
 ```typescript
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
-import { FlagClient } from '@otto-flags/node-server';
+import { FlagClient } from '@savvagent/flags-node-server';
 
 @Injectable()
 export class FlagsService implements OnModuleDestroy {
@@ -262,7 +262,7 @@ export class FlagsService implements OnModuleDestroy {
 
   constructor() {
     this.client = new FlagClient({
-      apiKey: process.env.OTTO_FLAGS_API_KEY,
+      apiKey: process.env.SAVVAGENT_FLAGS_API_KEY,
       applicationId: process.env.APP_ID,
     });
   }
@@ -283,6 +283,6 @@ MIT
 
 ## Support
 
-- Documentation: https://github.com/savvagent/otto-flags#readme
-- Issues: https://github.com/savvagent/otto-flags/issues
+- Documentation: https://github.com/savvagent/flags#readme
+- Issues: https://github.com/savvagent/flags/issues
 - Email: support@savvagent.com

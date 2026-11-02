@@ -1,10 +1,10 @@
 /**
- * Otto Flags PagerDuty MCP Server
+ * Savvagent Flags PagerDuty MCP Server
  * Pull-based MCP server that exposes PagerDuty incident management via JSON-RPC 2.0 tools
  */
 
 import axios, { AxiosInstance } from 'axios';
-import { MCPServer, MCPServerConfig } from '@otto-flags/mcp-sdk';
+import { MCPServer, MCPServerConfig } from '@savvagent/flags-mcp-sdk';
 
 /**
  * PagerDuty configuration options

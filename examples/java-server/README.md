@@ -1,13 +1,13 @@
-# Otto Flags Java Server Example
+# Savvagent Flags Java Server Example
 
-Example Spring Boot application demonstrating how to use the Otto Flags Java Server SDK.
+Example Spring Boot application demonstrating how to use the Savvagent Flags Java Server SDK.
 
 ## Features
 
 - Spring Boot 3.2
 - Java 17
 - Maven build
-- Otto Flags Java Server SDK
+- Savvagent Flags Java Server SDK
 - RESTful API endpoints
 - Feature-gated functionality
 - In-memory caching
@@ -23,9 +23,9 @@ Example Spring Boot application demonstrating how to use the Otto Flags Java Ser
 
    Create `application.properties` with your credentials:
    ```properties
-   ottoFlags.api-url=http://localhost:8080
-   ottoFlags.sdk-key=your-sdk-key-here
-   ottoFlags.environment=development
+   savvagentFlags.api-url=http://localhost:8080
+   savvagentFlags.sdk-key=your-sdk-key-here
+   savvagentFlags.environment=development
    server.port=8081
    ```
 
@@ -91,18 +91,18 @@ Uses the `advanced-processing` flag to determine processing method.
 @RestController
 @RequestMapping("/api")
 public class FeatureController {
-    private final OttoFlagsClient ottoFlags;
+    private final SavvagentFlagsClient savvagentFlags;
 
     @Autowired
-    public FeatureController(OttoFlagsClient ottoFlags) {
-        this.ottoFlags = ottoFlags;
+    public FeatureController(SavvagentFlagsClient savvagentFlags) {
+        this.savvagentFlags = savvagentFlags;
     }
 
     @GetMapping("/features")
     public ResponseEntity<Map<String, Object>> getFeatures(
         @RequestParam String userId
     ) {
-        boolean isEnabled = ottoFlags.isEnabled("new-feature",
+        boolean isEnabled = savvagentFlags.isEnabled("new-feature",
             EvaluationContext.builder()
                 .userId(userId)
                 .attribute("plan", "pro")
@@ -120,5 +120,5 @@ public class FeatureController {
 ## Learn More
 
 - [Spring Boot Documentation](https://spring.io/projects/spring-boot)
-- [Otto Flags Java SDK Documentation](../../packages/java-server/README.md)
+- [Savvagent Flags Java SDK Documentation](../../packages/java-server/README.md)
 - [SDK Integration Guide](../../docs/SDK-INTEGRATION.md)

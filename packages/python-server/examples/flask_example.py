@@ -1,11 +1,11 @@
 """
-Flask Example for Otto Flags SDK
+Flask Example for Savvagent Flags SDK
 
-This example demonstrates how to use the Otto Flags SDK with Flask,
+This example demonstrates how to use the Savvagent Flags SDK with Flask,
 including module-level client initialization and request context extraction.
 
 Requirements:
-    pip install otto_flags flask
+    pip install savvagent_flags flask
 
 Run:
     python examples/flask_example.py
@@ -16,14 +16,14 @@ import os
 
 from flask import Flask, g, jsonify, request
 
-from otto_flags import FlagClient, FlagClientConfig, FlagContext
+from savvagent_flags import FlagClient, FlagClientConfig, FlagContext
 
 app = Flask(__name__)
 
 # Initialize client at module level (singleton pattern)
 config = FlagClientConfig(
-    api_key=os.getenv("OTTO_FLAGS_API_KEY", "sdk_your_key_here"),
-    application_id=os.getenv("OTTO_FLAGS_APP_ID"),
+    api_key=os.getenv("SAVVAGENT_FLAGS_API_KEY", "sdk_your_key_here"),
+    application_id=os.getenv("SAVVAGENT_FLAGS_APP_ID"),
     enable_realtime=True,
 )
 client = FlagClient(config)
@@ -53,7 +53,7 @@ def before_request():
 @app.route("/")
 def root():
     """Health check endpoint."""
-    return jsonify({"status": "ok", "service": "otto-flags-flask-example"})
+    return jsonify({"status": "ok", "service": "savvagent-flags-flask-example"})
 
 
 @app.route("/api/features/<user_id>")

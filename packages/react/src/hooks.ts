@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { FlagContext, FlagEvaluationResult } from '@otto-flags/sdk';
-import { useOttoFlags } from './context';
+import { FlagContext, FlagEvaluationResult } from '@savvagent/flags-sdk';
+import { useSavvagentFlags } from './context';
 
 /**
  * Deep comparison for context objects to avoid unnecessary re-renders
@@ -106,7 +106,7 @@ export function useFlag(
   flagKey: string,
   options: UseFlagOptions = {}
 ): UseFlagResult {
-  const { client, isReady, defaultContext } = useOttoFlags();
+  const { client, isReady, defaultContext } = useSavvagentFlags();
   const {
     context,
     defaultValue = false,
@@ -244,7 +244,7 @@ export function useWithFlag(
   callback: () => void | Promise<void>,
   options: UseFlagOptions = {}
 ): void {
-  const { client, isReady } = useOttoFlags();
+  const { client, isReady } = useSavvagentFlags();
   const { context } = options;
 
   useEffect(() => {
@@ -253,7 +253,7 @@ export function useWithFlag(
     }
 
     client.withFlag(flagKey, callback, context).catch((error) => {
-      console.error(`[Otto Flags] Error in withFlag callback for ${flagKey}:`, error);
+      console.error(`[Savvagent Flags] Error in withFlag callback for ${flagKey}:`, error);
       options.onError?.(error);
     });
   }, [client, isReady, flagKey, callback, context, options]);
@@ -282,7 +282,7 @@ export function useWithFlag(
  * ```
  */
 export function useUser() {
-  const { client } = useOttoFlags();
+  const { client } = useSavvagentFlags();
   const [userId, setUserIdState] = useState<string | null>(() => client?.getUserId() || null);
   const [anonymousId, setAnonymousIdState] = useState<string | null>(() => client?.getAnonymousId() || null);
 
@@ -353,7 +353,7 @@ export function useUser() {
  * ```
  */
 export function useTrackError(flagKey: string, context?: FlagContext) {
-  const { client } = useOttoFlags();
+  const { client } = useSavvagentFlags();
 
   return useCallback(
     (error: Error) => {
@@ -386,7 +386,7 @@ export function useTrackError(flagKey: string, context?: FlagContext) {
  * ```
  */
 export function useEnvironment() {
-  const { client } = useOttoFlags();
+  const { client } = useSavvagentFlags();
   const [environment, setEnvironmentState] = useState<string>(
     client?.getEnvironment() || 'production'
   );
@@ -489,7 +489,7 @@ export function useFlags(
   flagKeys: string[],
   options: UseFlagsOptions = {}
 ): UseFlagsResult {
-  const { client, isReady, defaultContext } = useOttoFlags();
+  const { client, isReady, defaultContext } = useSavvagentFlags();
   const {
     context,
     defaultValues,

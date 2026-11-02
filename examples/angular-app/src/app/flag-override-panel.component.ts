@@ -2,16 +2,16 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { OttoFlagsService, FlagDefinition } from '@otto-flags/angular';
+import { SavvagentFlagsService, FlagDefinition } from '@savvagent/flags-angular';
 
-const STORAGE_KEY = 'otto_flags_local_overrides';
+const STORAGE_KEY = 'savvagent_flags_local_overrides';
 
 /**
  * Flag Override Panel Component
  * Developer tool for locally overriding feature flag values.
  * Per SDK Developer Guide: Client-side overrides for testing/debugging.
  *
- * This component uses the OttoFlagsService's built-in override methods,
+ * This component uses the SavvagentFlagsService's built-in override methods,
  * which are applied at the evaluation level (before cache/API).
  */
 @Component({
@@ -145,14 +145,14 @@ export class FlagOverridePanelComponent implements OnInit, OnDestroy {
   loading = false;
   error: string | null = null;
 
-  constructor(private ottoFlags: OttoFlagsService) {}
+  constructor(private savvagentFlags: SavvagentFlagsService) {}
 
   ngOnInit(): void {
     // Load overrides from localStorage and apply to client on mount
     this.loadStoredOverrides();
 
     // Subscribe to override changes from the client
-    const client = this.ottoFlags.flagClient;
+    const client = this.savvagentFlags.flagClient;
     if (client) {
       client.onOverrideChange(() => {
         this.overrides = client.getOverrides();
@@ -173,7 +173,7 @@ export class FlagOverridePanelComponent implements OnInit, OnDestroy {
     if (event.ctrlKey && event.shiftKey && event.key === 'F') {
       event.preventDefault();
       this.isOpen = !this.isOpen;
-      if (this.isOpen && this.ottoFlags.isReady) {
+      if (this.isOpen && this.savvagentFlags.isReady) {
         this.fetchFlags();
       }
     }
@@ -194,7 +194,7 @@ export class FlagOverridePanelComponent implements OnInit, OnDestroy {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsedOverrides = JSON.parse(stored) as Record<string, boolean>;
-        this.ottoFlags.setOverrides(parsedOverrides);
+        this.savvagentFlags.setOverrides(parsedOverrides);
         this.overrides = parsedOverrides;
       }
     } catch (e) {
@@ -222,7 +222,7 @@ export class FlagOverridePanelComponent implements OnInit, OnDestroy {
    */
   openPanel(): void {
     this.isOpen = true;
-    if (this.ottoFlags.isReady) {
+    if (this.savvagentFlags.isReady) {
       this.fetchFlags();
     }
   }
@@ -242,7 +242,7 @@ export class FlagOverridePanelComponent implements OnInit, OnDestroy {
     this.error = null;
 
     try {
-      this.flags = await this.ottoFlags.getAllFlags('development');
+      this.flags = await this.savvagentFlags.getAllFlags('development');
     } catch (e) {
       this.error = 'Failed to fetch flags';
       console.error('[FlagOverridePanel] Error fetching flags:', e);
@@ -255,8 +255,8 @@ export class FlagOverridePanelComponent implements OnInit, OnDestroy {
    * Set an override for a flag
    */
   setOverride(flagKey: string, value: boolean): void {
-    this.ottoFlags.setOverride(flagKey, value);
-    this.overrides = this.ottoFlags.getOverrides();
+    this.savvagentFlags.setOverride(flagKey, value);
+    this.overrides = this.savvagentFlags.getOverrides();
     this.saveOverrides();
   }
 
@@ -264,8 +264,8 @@ export class FlagOverridePanelComponent implements OnInit, OnDestroy {
    * Clear an override for a flag
    */
   clearOverride(flagKey: string): void {
-    this.ottoFlags.clearOverride(flagKey);
-    this.overrides = this.ottoFlags.getOverrides();
+    this.savvagentFlags.clearOverride(flagKey);
+    this.overrides = this.savvagentFlags.getOverrides();
     this.saveOverrides();
   }
 
@@ -273,7 +273,7 @@ export class FlagOverridePanelComponent implements OnInit, OnDestroy {
    * Clear all overrides
    */
   clearAllOverrides(): void {
-    this.ottoFlags.clearAllOverrides();
+    this.savvagentFlags.clearAllOverrides();
     this.overrides = {};
     this.saveOverrides();
   }
@@ -282,7 +282,7 @@ export class FlagOverridePanelComponent implements OnInit, OnDestroy {
    * Check if a flag is overridden
    */
   isOverridden(flagKey: string): boolean {
-    return this.ottoFlags.hasOverride(flagKey);
+    return this.savvagentFlags.hasOverride(flagKey);
   }
 
   /**

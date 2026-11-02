@@ -6,8 +6,8 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
-import { OttoFlagsProvider } from '@otto-flags/remix';
-import type { FlagClientConfig, DefaultFlagContext } from '@otto-flags/remix';
+import { SavvagentFlagsProvider } from '@savvagent/flags-remix';
+import type { FlagClientConfig, DefaultFlagContext } from '@savvagent/flags-remix';
 import stylesheet from './styles.css?url';
 
 export const links: LinksFunction = () => [
@@ -19,7 +19,7 @@ export default function App() {
   const config: FlagClientConfig = {
     // SDK API key (starts with sdk_) - safe to embed in client-side code
     apiKey: 'sdk_dev_a832ae4e55ece86995858755a843ec45',
-    // Base URL for the Otto Flags API
+    // Base URL for the Savvagent Flags API
     baseUrl: 'http://localhost:8080',
     // Application ID for application-scoped flags
     applicationId: 'f8209ef5-a661-4f46-8b84-4c855a97d5ef',
@@ -37,7 +37,7 @@ export default function App() {
     },
     // Custom error handler
     onError: (error) => {
-      console.error('[App] Otto Flags error:', error);
+      console.error('[App] Savvagent Flags error:', error);
     },
   };
 
@@ -69,9 +69,9 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <OttoFlagsProvider config={config} defaultContext={defaultContext}>
+        <SavvagentFlagsProvider config={config} defaultContext={defaultContext}>
           <Outlet />
-        </OttoFlagsProvider>
+        </SavvagentFlagsProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

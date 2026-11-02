@@ -1,6 +1,6 @@
-# Otto Flags Rust Server Example
+# Savvagent Flags Rust Server Example
 
-Example Axum server that evaluates Otto Flags with the Otto Flags Rust Server SDK
+Example Axum server that evaluates Savvagent Flags with the Savvagent Flags Rust Server SDK
 (`packages/rust-server`, used here as a path dependency).
 
 ## What it shows
@@ -18,7 +18,7 @@ Example Axum server that evaluates Otto Flags with the Otto Flags Rust Server SD
 ## Prerequisites
 
 - Stable Rust and Cargo
-- An Otto Flags app and its server key (`srv_...`). An agent creates the app and gets its keys over
+- An Savvagent Flags app and its server key (`srv_...`). An agent creates the app and gets its keys over
   MCP (`create_app`); the flags this example reads are `new-ui`, `beta-features`,
   `advanced-analytics`, and `advanced-processing`. A flag that does not exist falls back to the
   example's default, which is off for all four.
@@ -27,19 +27,19 @@ Example Axum server that evaluates Otto Flags with the Otto Flags Rust Server SD
 
 | Variable | Required | Default | Meaning |
 |---|---|---|---|
-| `OTTO_FLAGS_SDK_KEY` | yes | | The app's server key (`srv_...`, recommended: it is secret, and its telemetry drives auto-rollback) or its public client key (`sdk_...`) |
-| `OTTO_FLAGS_API_URL` | no | `https://flags.savvagent.com` | Otto Flags API base URL |
-| `OTTO_FLAGS_ENVIRONMENT` | no | `development` | Environment flags are evaluated in |
+| `SAVVAGENT_FLAGS_SDK_KEY` | yes | | The app's server key (`srv_...`, recommended: it is secret, and its telemetry drives auto-rollback) or its public client key (`sdk_...`) |
+| `SAVVAGENT_FLAGS_API_URL` | no | `https://flags.savvagent.com` | Savvagent Flags API base URL |
+| `SAVVAGENT_FLAGS_ENVIRONMENT` | no | `development` | Environment flags are evaluated in |
 | `PORT` | no | `8083` | Port the example listens on |
-| `RUST_LOG` | no | `rust_server_example=info,otto_flags=info,tower_http=info` | Log filter |
+| `RUST_LOG` | no | `rust_server_example=info,savvagent_flags=info,tower_http=info` | Log filter |
 
 A variable set to an empty string counts as unset. The server exits with an error if
-`OTTO_FLAGS_SDK_KEY` is missing or the SDK rejects it, or if `PORT` is not a port number.
+`SAVVAGENT_FLAGS_SDK_KEY` is missing or the SDK rejects it, or if `PORT` is not a port number.
 
 ## Run
 
 ```bash
-export OTTO_FLAGS_SDK_KEY=srv_your_server_key_here
+export SAVVAGENT_FLAGS_SDK_KEY=srv_your_server_key_here
 cargo run --release
 ```
 
@@ -96,12 +96,12 @@ Evaluates `advanced-processing` for the user (`anonymous` when `userId` is omitt
 
 ```rust
 use axum::{extract::State, routing::get, Router};
-use otto_flags::{Config, Context, FlagClient};
+use savvagent_flags::{Config, Context, FlagClient};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // The base URL defaults to https://flags.savvagent.com; `with_base_url` overrides it.
-    let config = Config::new(std::env::var("OTTO_FLAGS_SDK_KEY")?).with_default("new-ui", false);
+    let config = Config::new(std::env::var("SAVVAGENT_FLAGS_SDK_KEY")?).with_default("new-ui", false);
     let flags = FlagClient::new(config)?;
 
     let app = Router::new()
@@ -129,7 +129,7 @@ async fn index(State(flags): State<FlagClient>) -> &'static str {
 
 ## Learn More
 
-- [Otto Flags Rust SDK](../../packages/rust-server/README.md)
+- [Savvagent Flags Rust SDK](../../packages/rust-server/README.md)
 - [SDK Developer Guide](../../docs/SDK-DEVELOPER-GUIDE.md)
 - [Axum](https://github.com/tokio-rs/axum)
 - [Tokio](https://tokio.rs/)

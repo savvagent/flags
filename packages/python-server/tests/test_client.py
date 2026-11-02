@@ -7,8 +7,8 @@ import httpx
 import pytest
 import respx
 
-from otto_flags import FlagClient, FlagClientConfig, FlagContext
-from otto_flags.exceptions import InvalidAPIKeyError, InvalidFlagKeyError
+from savvagent_flags import FlagClient, FlagClientConfig, FlagContext
+from savvagent_flags.exceptions import InvalidAPIKeyError, InvalidFlagKeyError
 from tests.conftest import mock_flag_response, mock_flags_list_response, server_body
 
 
@@ -247,7 +247,7 @@ class TestOverrides:
     @respx.mock
     def test_config_override_merge(self, client: FlagClient, mock_api: respx.MockRouter) -> None:
         """Test merging configuration override."""
-        from otto_flags import ConfigOverrideOptions
+        from savvagent_flags import ConfigOverrideOptions
 
         mock_flag_response(
             mock_api,

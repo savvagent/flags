@@ -230,7 +230,9 @@ impl Telemetry {
             return;
         }
         if !crate::client::is_valid_flag_key(&report.flag_key) {
-            tracing::debug!("Otto Flags telemetry: error report for an invalid flag key dropped");
+            tracing::debug!(
+                "Savvagent Flags telemetry: error report for an invalid flag key dropped"
+            );
             return;
         }
         let mut event = json!({
@@ -320,7 +322,7 @@ impl Telemetry {
         };
         if dropped > 0 {
             tracing::warn!(
-                "Otto Flags telemetry queue was full; dropped {} events",
+                "Savvagent Flags telemetry queue was full; dropped {} events",
                 dropped
             );
         }
@@ -333,7 +335,7 @@ impl Telemetry {
             return;
         }
         let Some(url) = self.url(kind) else {
-            tracing::warn!("Otto Flags telemetry not sent: invalid base_url");
+            tracing::warn!("Savvagent Flags telemetry not sent: invalid base_url");
             return;
         };
         let mut batches = batches(events).into_iter();
@@ -351,7 +353,7 @@ impl Telemetry {
             match sent {
                 Ok(response) if response.status().is_success() => {}
                 Ok(response) => tracing::warn!(
-                    "Otto Flags telemetry: {} {} not sent (status {})",
+                    "Savvagent Flags telemetry: {} {} not sent (status {})",
                     count,
                     kind.name(),
                     response.status()
@@ -360,7 +362,7 @@ impl Telemetry {
                     // The server is unreachable or slow: don't wait a timeout per batch.
                     let rest: usize = batches.by_ref().map(|b| b.len()).sum();
                     tracing::warn!(
-                        "Otto Flags telemetry: {} {} not sent ({})",
+                        "Savvagent Flags telemetry: {} {} not sent ({})",
                         count + rest,
                         kind.name(),
                         e.without_url()

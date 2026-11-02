@@ -2,7 +2,7 @@
 
 **Last Updated:** November 2024
 
-This document describes Otto Flags's dynamic configuration capabilities for feature flags and compares them with industry leaders like Split.io and Harness.
+This document describes Savvagent Flags's dynamic configuration capabilities for feature flags and compares them with industry leaders like Split.io and Harness.
 
 ---
 
@@ -72,7 +72,7 @@ renderCheckout({
 
 ## Current Capabilities
 
-### What Otto Flags Currently Supports
+### What Savvagent Flags Currently Supports
 
 #### 1. Environment-Specific Configurations ✅
 
@@ -390,7 +390,7 @@ console.log(config);
 
 ---
 
-### Otto Flags (Current State)
+### Savvagent Flags (Current State)
 
 **Capabilities:**
 - ✅ Boolean flags (enabled/disabled)
@@ -546,7 +546,7 @@ FlagEvaluationResponse {
 The SDK returns response fields aligned with the API (see [SDK-DEVELOPER-GUIDE.md](./SDK-DEVELOPER-GUIDE.md)):
 
 ```typescript
-// @otto-flags/client-web
+// @savvagent/flags-client-web
 
 interface FlagEvaluationResult {
   key: string;                    // The flag key
@@ -1225,7 +1225,7 @@ if (user.projectCount >= limits.maxProjects) {
 ---
 
 **Questions or feedback?**
-- GitHub Issues: https://github.com/savvagent/ottoFlags/issues
+- GitHub Issues: https://github.com/savvagent/flags/issues
 - Email: support@savvagent.com
 
 **Last Updated:** November 2024

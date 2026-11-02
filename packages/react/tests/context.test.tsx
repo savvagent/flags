@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { OttoFlagsProvider, useOttoFlags } from '../src/context';
-import { FlagClient } from '@otto-flags/sdk';
+import { SavvagentFlagsProvider, useSavvagentFlags } from '../src/context';
+import { FlagClient } from '@savvagent/flags-sdk';
 
 // Mock the FlagClient
-jest.mock('@otto-flags/sdk', () => ({
+jest.mock('@savvagent/flags-sdk', () => ({
   FlagClient: jest.fn().mockImplementation(() => ({
     close: jest.fn(),
     evaluate: jest.fn(),
@@ -13,14 +13,14 @@ jest.mock('@otto-flags/sdk', () => ({
   })),
 }));
 
-describe('OttoFlagsProvider', () => {
+describe('SavvagentFlagsProvider', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('should initialize and provide client instance', async () => {
     const TestComponent = () => {
-      const { client, isReady } = useOttoFlags();
+      const { client, isReady } = useSavvagentFlags();
       return (
         <div>
           <div data-testid="is-ready">{isReady ? 'ready' : 'not-ready'}</div>
@@ -30,9 +30,9 @@ describe('OttoFlagsProvider', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -45,7 +45,7 @@ describe('OttoFlagsProvider', () => {
 
   it('should provide default context values', async () => {
     const TestComponent = () => {
-      const { defaultContext } = useOttoFlags();
+      const { defaultContext } = useSavvagentFlags();
       return (
         <div>
           <div data-testid="user-id">{defaultContext.user_id || 'none'}</div>
@@ -56,7 +56,7 @@ describe('OttoFlagsProvider', () => {
     };
 
     render(
-      <OttoFlagsProvider
+      <SavvagentFlagsProvider
         config={{ apiKey: 'test-key' }}
         defaultContext={{
           userId: 'user-123',
@@ -65,7 +65,7 @@ describe('OttoFlagsProvider', () => {
         }}
       >
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -77,7 +77,7 @@ describe('OttoFlagsProvider', () => {
 
   it('should convert camelCase context keys to snake_case', async () => {
     const TestComponent = () => {
-      const { defaultContext } = useOttoFlags();
+      const { defaultContext } = useSavvagentFlags();
       return (
         <div>
           <div data-testid="org-id">{defaultContext.organization_id || 'none'}</div>
@@ -88,7 +88,7 @@ describe('OttoFlagsProvider', () => {
     };
 
     render(
-      <OttoFlagsProvider
+      <SavvagentFlagsProvider
         config={{ apiKey: 'test-key' }}
         defaultContext={{
           organizationId: 'org-789',
@@ -97,7 +97,7 @@ describe('OttoFlagsProvider', () => {
         }}
       >
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -109,7 +109,7 @@ describe('OttoFlagsProvider', () => {
 
   it('should include custom attributes in default context', async () => {
     const TestComponent = () => {
-      const { defaultContext } = useOttoFlags();
+      const { defaultContext } = useSavvagentFlags();
       return (
         <div data-testid="attributes">
           {JSON.stringify(defaultContext.attributes)}
@@ -118,14 +118,14 @@ describe('OttoFlagsProvider', () => {
     };
 
     render(
-      <OttoFlagsProvider
+      <SavvagentFlagsProvider
         config={{ apiKey: 'test-key' }}
         defaultContext={{
           attributes: { plan: 'pro', beta: true },
         }}
       >
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -146,13 +146,13 @@ describe('OttoFlagsProvider', () => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key', onError: mockOnError }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key', onError: mockOnError }}>
         <div>Test</div>
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(
-      '[Otto Flags] Failed to initialize client:',
+      '[Savvagent Flags] Failed to initialize client:',
       mockError
     );
     expect(mockOnError).toHaveBeenCalledWith(mockError);
@@ -170,9 +170,9 @@ describe('OttoFlagsProvider', () => {
     }));
 
     const { unmount } = render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <div>Test</div>
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -194,9 +194,9 @@ describe('OttoFlagsProvider', () => {
     }));
 
     const { rerender } = render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key-1' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key-1' }}>
         <div>Test</div>
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -204,9 +204,9 @@ describe('OttoFlagsProvider', () => {
     });
 
     rerender(
-      <OttoFlagsProvider config={{ apiKey: 'test-key-2' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key-2' }}>
         <div>Test</div>
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -225,9 +225,9 @@ describe('OttoFlagsProvider', () => {
     }));
 
     const { rerender } = render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key', baseUrl: 'https://api1.example.com' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key', baseUrl: 'https://api1.example.com' }}>
         <div>Test</div>
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -238,9 +238,9 @@ describe('OttoFlagsProvider', () => {
     });
 
     rerender(
-      <OttoFlagsProvider config={{ apiKey: 'test-key', baseUrl: 'https://api2.example.com' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key', baseUrl: 'https://api2.example.com' }}>
         <div>Test</div>
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -249,17 +249,17 @@ describe('OttoFlagsProvider', () => {
   });
 });
 
-describe('useOttoFlags', () => {
+describe('useSavvagentFlags', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('should provide default context when used outside provider', () => {
-    // Note: Due to the default context value, useOttoFlags doesn't actually throw
+    // Note: Due to the default context value, useSavvagentFlags doesn't actually throw
     // when used outside a provider. It returns the default context with null client.
     // This is actually a design consideration - it allows for graceful degradation.
     const TestComponent = () => {
-      const { client, isReady } = useOttoFlags();
+      const { client, isReady } = useSavvagentFlags();
       return (
         <div>
           <div data-testid="client">{client ? 'has-client' : 'no-client'}</div>
@@ -276,7 +276,7 @@ describe('useOttoFlags', () => {
 
   it('should provide context values within provider', async () => {
     const TestComponent = () => {
-      const context = useOttoFlags();
+      const context = useSavvagentFlags();
       return (
         <div>
           <div data-testid="has-client">{context.client ? 'yes' : 'no'}</div>
@@ -289,9 +289,9 @@ describe('useOttoFlags', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {

@@ -1,18 +1,18 @@
 {
-  "name": "@otto-flags/angular",
+  "name": "@savvagent/flags-angular",
   "version": "1.1.0",
-  "description": "Angular SDK for Otto Flags feature flags",
-  "author": "Otto Flags",
+  "description": "Angular SDK for Savvagent Flags feature flags",
+  "author": "Savvagent Flags",
   "license": "MIT",
-  "main": "./dist/fesm2022/otto-flags-angular.mjs",
-  "module": "./dist/fesm2022/otto-flags-angular.mjs",
+  "main": "./dist/fesm2022/savvagent-flags-angular.mjs",
+  "module": "./dist/fesm2022/savvagent-flags-angular.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "esm2022": "./dist/esm2022/otto-flags-angular.mjs",
-      "esm": "./dist/esm2022/otto-flags-angular.mjs",
-      "default": "./dist/fesm2022/otto-flags-angular.mjs"
+      "esm2022": "./dist/esm2022/savvagent-flags-angular.mjs",
+      "esm": "./dist/esm2022/savvagent-flags-angular.mjs",
+      "default": "./dist/fesm2022/savvagent-flags-angular.mjs"
     },
     "./package.json": {
       "default": "./package.json"
@@ -24,7 +24,7 @@
     "rxjs": ">=7.0.0"
   },
   "dependencies": {
-    "@otto-flags/sdk": "workspace:*",
+    "@savvagent/flags-sdk": "workspace:*",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
@@ -54,7 +54,7 @@
     "format": "prettier --write \"src/**/*.ts\""
   },
   "keywords": [
-    "otto-flags",
+    "savvagent-flags",
     "feature-flags",
     "angular",
     "service",
@@ -62,13 +62,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/savvagent/otto-flags",
+    "url": "https://github.com/savvagent/flags",
     "directory": "packages/angular"
   },
   "bugs": {
-    "url": "https://github.com/savvagent/otto-flags/issues"
+    "url": "https://github.com/savvagent/flags/issues"
   },
-  "homepage": "https://github.com/savvagent/otto-flags/tree/main/packages/angular#readme",
+  "homepage": "https://github.com/savvagent/flags/tree/main/packages/angular#readme",
   "publishConfig": {
     "access": "public"
   },

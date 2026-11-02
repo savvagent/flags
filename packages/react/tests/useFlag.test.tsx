@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
-import { OttoFlagsProvider } from '../src/context';
+import { SavvagentFlagsProvider } from '../src/context';
 import { useFlag } from '../src/hooks';
-import { FlagClient, FlagEvaluationResult } from '@otto-flags/sdk';
+import { FlagClient, FlagEvaluationResult } from '@savvagent/flags-sdk';
 
 // Mock the FlagClient
 const mockEvaluate = jest.fn();
@@ -10,7 +10,7 @@ const mockSubscribe = jest.fn();
 const mockOnOverrideChange = jest.fn();
 const mockClose = jest.fn();
 
-jest.mock('@otto-flags/sdk', () => ({
+jest.mock('@savvagent/flags-sdk', () => ({
   FlagClient: jest.fn().mockImplementation(() => ({
     close: mockClose,
     evaluate: mockEvaluate,
@@ -47,9 +47,9 @@ describe('useFlag', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -77,9 +77,9 @@ describe('useFlag', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     expect(screen.getByTestId('value')).toHaveTextContent('true');
@@ -103,7 +103,7 @@ describe('useFlag', () => {
     };
 
     render(
-      <OttoFlagsProvider
+      <SavvagentFlagsProvider
         config={{ apiKey: 'test-key' }}
         defaultContext={{
           environment: 'production',
@@ -111,7 +111,7 @@ describe('useFlag', () => {
         }}
       >
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -147,9 +147,9 @@ describe('useFlag', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -181,9 +181,9 @@ describe('useFlag', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -215,9 +215,9 @@ describe('useFlag', () => {
     };
 
     const { getByText } = render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -253,9 +253,9 @@ describe('useFlag', () => {
     };
 
     const { unmount } = render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -282,9 +282,9 @@ describe('useFlag', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -318,9 +318,9 @@ describe('useFlag', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -357,9 +357,9 @@ describe('useFlag', () => {
     };
 
     const { unmount } = render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -395,9 +395,9 @@ describe('useFlag', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -434,9 +434,9 @@ describe('useFlag', () => {
     };
 
     render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     expect(screen.getByTestId('value')).toHaveTextContent('false');
@@ -461,9 +461,9 @@ describe('useFlag', () => {
     };
 
     const { rerender } = render(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent userId="user-1" />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {
@@ -474,9 +474,9 @@ describe('useFlag', () => {
     });
 
     rerender(
-      <OttoFlagsProvider config={{ apiKey: 'test-key' }}>
+      <SavvagentFlagsProvider config={{ apiKey: 'test-key' }}>
         <TestComponent userId="user-2" />
-      </OttoFlagsProvider>
+      </SavvagentFlagsProvider>
     );
 
     await waitFor(() => {

@@ -1,10 +1,10 @@
 /**
- * Otto Flags Datadog MCP Server
+ * Savvagent Flags Datadog MCP Server
  * Pull-based MCP server that exposes Datadog APM, metrics, and monitoring data via JSON-RPC 2.0 tools
  */
 
 import axios, { AxiosInstance } from 'axios';
-import { MCPServer, MCPServerConfig } from '@otto-flags/mcp-sdk';
+import { MCPServer, MCPServerConfig } from '@savvagent/flags-mcp-sdk';
 
 /**
  * Datadog configuration options

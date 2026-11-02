@@ -1,8 +1,8 @@
 {
-  "name": "@otto-flags/vue",
+  "name": "@savvagent/flags-vue",
   "version": "1.1.0",
-  "description": "Vue SDK for Otto Flags feature flags with Composition API",
-  "author": "Otto Flags",
+  "description": "Vue SDK for Savvagent Flags feature flags with Composition API",
+  "author": "Savvagent Flags",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -28,7 +28,7 @@
     "vue": ">=3.0.0"
   },
   "dependencies": {
-    "@otto-flags/sdk": "workspace:*"
+    "@savvagent/flags-sdk": "workspace:*"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.18.0",
@@ -42,7 +42,7 @@
     "vue": "^3.5.25"
   },
   "keywords": [
-    "otto-flags",
+    "savvagent-flags",
     "feature-flags",
     "vue",
     "composables",
@@ -51,13 +51,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/savvagent/otto-flags",
+    "url": "https://github.com/savvagent/flags",
     "directory": "packages/vue"
   },
   "bugs": {
-    "url": "https://github.com/savvagent/otto-flags/issues"
+    "url": "https://github.com/savvagent/flags/issues"
   },
-  "homepage": "https://github.com/savvagent/otto-flags/tree/main/packages/vue#readme",
+  "homepage": "https://github.com/savvagent/flags/tree/main/packages/vue#readme",
   "publishConfig": {
     "access": "public"
   }

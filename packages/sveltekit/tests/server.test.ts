@@ -1,5 +1,5 @@
 /**
- * Tests for @otto-flags/sveltekit server-side functionality
+ * Tests for @savvagent/flags-sveltekit server-side functionality
  *
  * This test suite verifies:
  * - Server client initialization and singleton pattern
@@ -31,13 +31,13 @@ class MockFlagClient {
 }
 
 // Mock the FlagClient before importing server module
-vi.mock('@otto-flags/sdk', () => {
+vi.mock('@savvagent/flags-sdk', () => {
   return {
     FlagClient: vi.fn(MockFlagClient),
   };
 });
 
-describe('@otto-flags/sveltekit/server - Server-side functionality', () => {
+describe('@savvagent/flags-sveltekit/server - Server-side functionality', () => {
   // Reset modules between tests to ensure clean state
   beforeEach(async () => {
     vi.resetModules();
@@ -50,7 +50,7 @@ describe('@otto-flags/sveltekit/server - Server-side functionality', () => {
   describe('initSvelteKitServer', () => {
     it('should initialize the server client with config', async () => {
       const { initSvelteKitServer } = await import('../src/server');
-      const { FlagClient } = await import('@otto-flags/sdk');
+      const { FlagClient } = await import('@savvagent/flags-sdk');
 
       const config = {
         apiKey: 'test-api-key',
@@ -80,7 +80,7 @@ describe('@otto-flags/sveltekit/server - Server-side functionality', () => {
 
     it('should accept all valid FlagClientConfig properties', async () => {
       const { initSvelteKitServer } = await import('../src/server');
-      const { FlagClient } = await import('@otto-flags/sdk');
+      const { FlagClient } = await import('@savvagent/flags-sdk');
 
       const config = {
         apiKey: 'test-api-key',
@@ -148,7 +148,7 @@ describe('@otto-flags/sveltekit/server - Server-side functionality', () => {
       const mockEvent = {
         cookies: {
           get: vi.fn((key: string) => {
-            if (key === 'otto_flags_anonymous_id') return 'anon-456';
+            if (key === 'savvagent_flags_anonymous_id') return 'anon-456';
             return undefined;
           }),
         },
@@ -160,7 +160,7 @@ describe('@otto-flags/sveltekit/server - Server-side functionality', () => {
       const context = getEventContext(mockEvent);
 
       expect(context.anonymous_id).toBe('anon-456');
-      expect(mockEvent.cookies.get).toHaveBeenCalledWith('otto_flags_anonymous_id');
+      expect(mockEvent.cookies.get).toHaveBeenCalledWith('savvagent_flags_anonymous_id');
     });
 
     it('should extract session_id from cookies', async () => {

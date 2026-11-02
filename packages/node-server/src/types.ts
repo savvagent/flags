@@ -1,10 +1,10 @@
 /**
- * Otto Flags Node.js Server SDK Types
+ * Savvagent Flags Node.js Server SDK Types
  */
 
 /**
  * Configuration for initializing the FlagClient
- * Per SDK Developer Guide: https://github.com/savvagent/otto-flags/blob/main/docs/SDK-DEVELOPER-GUIDE.md
+ * Per SDK Developer Guide: https://github.com/savvagent/flags/blob/main/docs/SDK-DEVELOPER-GUIDE.md
  */
 export interface FlagClientConfig {
   /**
@@ -16,7 +16,7 @@ export interface FlagClientConfig {
   apiKey: string;
   /** Application ID for application-scoped flags (omit for enterprise flags only) */
   applicationId?: string;
-  /** Base URL for the Otto Flags API (default: production URL) */
+  /** Base URL for the Savvagent Flags API (default: production URL) */
   baseUrl?: string;
   /** Environment for flag evaluation (e.g., "development", "staging", "production", "beta"). Default: "production" */
   environment?: string;
@@ -36,7 +36,7 @@ export interface FlagClientConfig {
 
 /**
  * Context passed to flag evaluation
- * Per SDK Developer Guide: https://github.com/savvagent/otto-flags/blob/main/docs/SDK-DEVELOPER-GUIDE.md
+ * Per SDK Developer Guide: https://github.com/savvagent/flags/blob/main/docs/SDK-DEVELOPER-GUIDE.md
  */
 export interface FlagContext {
   /** User ID for targeted rollouts (logged-in users) - required for percentage rollouts */
@@ -77,11 +77,11 @@ export interface FlagEvaluationResult {
   reason: 'cached' | 'evaluated' | 'default' | 'error';
   /** Metadata about the flag */
   metadata?: {
-    /** Never sent by the otto-flags server; always undefined against it. */
+    /** Never sent by the savvagent-flags server; always undefined against it. */
     flagId?: string;
-    /** Never sent by the otto-flags server; always undefined against it. */
+    /** Never sent by the savvagent-flags server; always undefined against it. */
     description?: string;
-    /** Never sent by the otto-flags server; always undefined against it. */
+    /** Never sent by the savvagent-flags server; always undefined against it. */
     variant?: string;
     /** The flag's version the server evaluated, when it sends one. */
     version?: number;

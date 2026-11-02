@@ -1,6 +1,6 @@
-# Otto Flags Python Server Example
+# Savvagent Flags Python Server Example
 
-Example Python backend demonstrating how to use the Otto Flags SDK in a server environment with both FastAPI (async) and Flask (sync) implementations.
+Example Python backend demonstrating how to use the Savvagent Flags SDK in a server environment with both FastAPI (async) and Flask (sync) implementations.
 
 ## Features
 
@@ -36,9 +36,9 @@ Example Python backend demonstrating how to use the Otto Flags SDK in a server e
 
    Edit `.env`:
    ```bash
-   OTTO_FLAGS_API_KEY=sdk_your_key_here
-   OTTO_FLAGS_APP_ID=python-server-example
-   OTTO_FLAGS_API_URL=http://localhost:8080
+   SAVVAGENT_FLAGS_API_KEY=sdk_your_key_here
+   SAVVAGENT_FLAGS_APP_ID=python-server-example
+   SAVVAGENT_FLAGS_API_URL=http://localhost:8080
    PORT=8000
    ```
 
@@ -141,7 +141,7 @@ Example response:
 ### FastAPI with Async Client
 
 ```python
-from ottoFlags import AsyncFlagClient, FlagClientConfig, FlagContext
+from savvagentFlags import AsyncFlagClient, FlagClientConfig, FlagContext
 
 config = FlagClientConfig(api_key="sdk_your_key")
 
@@ -160,7 +160,7 @@ async with AsyncFlagClient(config) as client:
 ### Flask with Sync Client
 
 ```python
-from ottoFlags import FlagClient, FlagClientConfig, FlagContext
+from savvagentFlags import FlagClient, FlagClientConfig, FlagContext
 
 config = FlagClientConfig(api_key="sdk_your_key")
 client = FlagClient(config)
@@ -217,4 +217,4 @@ curl http://localhost:8000/api/experiment/user-123
 
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [Flask Documentation](https://flask.palletsprojects.com/)
-- [Otto Flags Python SDK](../../packages/python-server/README.md)
+- [Savvagent Flags Python SDK](../../packages/python-server/README.md)

@@ -1,20 +1,20 @@
 # SDK Integration Guide
 
-Complete guide for integrating Otto Flags SDK into your application.
+Complete guide for integrating Savvagent Flags SDK into your application.
 
-> **For SDK Developers:** If you're building a new SDK or integrating with the Otto Flags API directly, see the [SDK Developer Guide](./SDK-DEVELOPER-GUIDE.md) for API specifications, authentication details, and best practices.
+> **For SDK Developers:** If you're building a new SDK or integrating with the Savvagent Flags API directly, see the [SDK Developer Guide](./SDK-DEVELOPER-GUIDE.md) for API specifications, authentication details, and best practices.
 
 ## Installation
 
 ```bash
 # Using pnpm (recommended)
-pnpm add @otto-flags/sdk
+pnpm add @savvagent/flags-sdk
 
 # Using npm
-npm install @otto-flags/sdk
+npm install @savvagent/flags-sdk
 
 # Using yarn
-yarn add @otto-flags/sdk
+yarn add @savvagent/flags-sdk
 ```
 
 ## Quick Start
@@ -22,11 +22,11 @@ yarn add @otto-flags/sdk
 ### 1. Initialize the Client
 
 ```typescript
-import { FlagClient } from '@otto-flags/sdk';
+import { FlagClient } from '@savvagent/flags-sdk';
 
 // Create a single SDK instance at application startup (recommended)
 // Per SDK Developer Guide: Initialize once, create a single SDK instance
-const ottoFlags = new FlagClient({
+const savvagentFlags = new FlagClient({
   baseUrl: 'https://flags.savvagent.com',
   apiKey: 'sdk_your_key_here', // SDK keys start with 'sdk_' prefix
   applicationId: 'your-app-id', // For application-scoped flags
@@ -36,7 +36,7 @@ const ottoFlags = new FlagClient({
 });
 
 // Export for use throughout your application
-export default ottoFlags;
+export default savvagentFlags;
 ```
 
 > **API Key Types (per SDK Developer Guide):**
@@ -48,7 +48,7 @@ export default ottoFlags;
 ```typescript
 // Always include user context for consistent rollout behavior
 // Per SDK Developer Guide: Context fields for flag evaluation
-const isEnabled = await ottoFlags.isEnabled('new-feature', {
+const isEnabled = await savvagentFlags.isEnabled('new-feature', {
   user_id: 'user-123',           // Required for percentage rollouts
   anonymous_id: 'anon-456',      // Alternative for anonymous users
   session_id: 'session-789',     // Fallback identifier
@@ -81,7 +81,7 @@ interface FlagClientConfig {
   apiKey: string;              // SDK key (sdk_) or Server key (srv_) from dashboard
 
   // Optional
-  baseUrl?: string;            // Your Otto Flags API URL (default: https://flags.savvagent.com)
+  baseUrl?: string;            // Your Savvagent Flags API URL (default: https://flags.savvagent.com)
   applicationId?: string;      // Application ID for hierarchical flag lookup
 
   // Caching
@@ -113,15 +113,15 @@ interface FlagClientConfig {
 #### Using the React SDK (Recommended)
 
 ```typescript
-// Use the @otto-flags/react package for React applications
-import { OttoFlagsProvider, useFlag, useUser } from '@otto-flags/react';
-import type { FlagClientConfig, DefaultFlagContext } from '@otto-flags/react';
+// Use the @savvagent/flags-react package for React applications
+import { SavvagentFlagsProvider, useFlag, useUser } from '@savvagent/flags-react';
+import type { FlagClientConfig, DefaultFlagContext } from '@savvagent/flags-react';
 
 // App.tsx - Per SDK Developer Guide: Initialize once at app startup
 function App() {
   const config: FlagClientConfig = {
-    apiKey: process.env.NEXT_PUBLIC_OTTO_FLAGS_SDK_KEY!,
-    baseUrl: process.env.NEXT_PUBLIC_OTTO_FLAGS_API_URL,
+    apiKey: process.env.NEXT_PUBLIC_SAVVAGENT_FLAGS_SDK_KEY!,
+    baseUrl: process.env.NEXT_PUBLIC_SAVVAGENT_FLAGS_API_URL,
     enableRealtime: true,
     enableTelemetry: true,
   };
@@ -134,9 +134,9 @@ function App() {
   };
 
   return (
-    <OttoFlagsProvider config={config} defaultContext={defaultContext}>
+    <SavvagentFlagsProvider config={config} defaultContext={defaultContext}>
       <MyComponent />
-    </OttoFlagsProvider>
+    </SavvagentFlagsProvider>
   );
 }
 
@@ -157,13 +157,13 @@ function MyComponent() {
 ```typescript
 'use client';
 
-import { FlagClient } from '@otto-flags/sdk';
+import { FlagClient } from '@savvagent/flags-sdk';
 import { useEffect, useState } from 'react';
 
 // Per SDK Developer Guide: Create single instance
 const client = new FlagClient({
-  apiKey: process.env.NEXT_PUBLIC_OTTO_FLAGS_SDK_KEY!,
-  baseUrl: process.env.NEXT_PUBLIC_OTTO_FLAGS_API_URL,
+  apiKey: process.env.NEXT_PUBLIC_SAVVAGENT_FLAGS_SDK_KEY!,
+  baseUrl: process.env.NEXT_PUBLIC_SAVVAGENT_FLAGS_API_URL,
 });
 
 export default function MyComponent() {
@@ -186,15 +186,15 @@ export default function MyComponent() {
 
 ```typescript
 import express from 'express';
-import { FlagClient } from '@otto-flags/node-server';
+import { FlagClient } from '@savvagent/flags-node-server';
 
 const app = express();
 
 // Per SDK Developer Guide: Create single instance at startup
 // Server SDK accepts both sdk_ and srv_ keys
-const ottoFlags = new FlagClient({
-  apiKey: process.env.OTTO_FLAGS_SERVER_KEY!, // srv_ key for server-side
-  baseUrl: process.env.OTTO_FLAGS_API_URL,
+const savvagentFlags = new FlagClient({
+  apiKey: process.env.SAVVAGENT_FLAGS_SERVER_KEY!, // srv_ key for server-side
+  baseUrl: process.env.SAVVAGENT_FLAGS_API_URL,
   cacheTtl: 60000, // 1 minute
   enableRealtime: true,
   timeout: 5000, // 5 second timeout
@@ -204,7 +204,7 @@ app.get('/api/users/:userId', async (req, res) => {
   const { userId } = req.params;
 
   // Per SDK Developer Guide: Include context for targeting
-  const useNewEndpoint = await ottoFlags.isEnabled('new-user-endpoint', {
+  const useNewEndpoint = await savvagentFlags.isEnabled('new-user-endpoint', {
     user_id: userId,
     ip_address: req.ip, // Server-side only field
     user_agent: req.headers['user-agent'], // Server-side only field
@@ -221,7 +221,7 @@ app.get('/api/users/:userId', async (req, res) => {
 });
 
 // Per SDK Developer Guide: Clean shutdown
-process.on('SIGTERM', () => ottoFlags.close());
+process.on('SIGTERM', () => savvagentFlags.close());
 ```
 
 ### SvelteKit
@@ -229,7 +229,7 @@ process.on('SIGTERM', () => ottoFlags.close());
 ```svelte
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { FlagClient } from '@otto-flags/sdk';
+  import { FlagClient } from '@savvagent/flags-sdk';
 
   let newFeatureEnabled = $state(false);
   let loading = $state(true);
@@ -238,8 +238,8 @@ process.on('SIGTERM', () => ottoFlags.close());
   onMount(async () => {
     // Per SDK Developer Guide: Create single instance
     client = new FlagClient({
-      apiKey: import.meta.env.VITE_OTTO_FLAGS_SDK_KEY,
-      baseUrl: import.meta.env.VITE_OTTO_FLAGS_API_URL,
+      apiKey: import.meta.env.VITE_SAVVAGENT_FLAGS_SDK_KEY,
+      baseUrl: import.meta.env.VITE_SAVVAGENT_FLAGS_API_URL,
       enableRealtime: true,
     });
 
@@ -271,7 +271,7 @@ process.on('SIGTERM', () => ottoFlags.close());
 Enable Server-Sent Events for instant flag updates. Per SDK Developer Guide, the SDK uses `@microsoft/fetch-event-source` internally for header-based authentication (native EventSource doesn't support custom headers):
 
 ```typescript
-import { FlagClient } from '@otto-flags/sdk';
+import { FlagClient } from '@savvagent/flags-sdk';
 
 const client = new FlagClient({
   apiKey: 'sdk_your_key',
@@ -433,17 +433,17 @@ Per SDK Developer Guide, follow these best practices:
 Create a single SDK instance at application startup:
 
 ```typescript
-// lib/ottoFlags.ts
-import { FlagClient } from '@otto-flags/sdk';
+// lib/savvagentFlags.ts
+import { FlagClient } from '@savvagent/flags-sdk';
 
 // Good - single instance (per SDK Developer Guide)
-export const ottoFlags = new FlagClient({
-  apiKey: process.env.OTTO_FLAGS_SDK_KEY!,
-  baseUrl: process.env.OTTO_FLAGS_API_URL,
+export const savvagentFlags = new FlagClient({
+  apiKey: process.env.SAVVAGENT_FLAGS_SDK_KEY!,
+  baseUrl: process.env.SAVVAGENT_FLAGS_API_URL,
 });
 
 // Use everywhere
-import { ottoFlags } from '@/lib/ottoFlags';
+import { savvagentFlags } from '@/lib/savvagentFlags';
 ```
 
 ```typescript
@@ -472,12 +472,12 @@ Never hardcode API keys:
 
 ```bash
 # .env
-OTTO_FLAGS_API_URL=https://flags.savvagent.com
-OTTO_FLAGS_SDK_KEY=sdk_prod_xxx  # SDK keys use sdk_ prefix
+SAVVAGENT_FLAGS_API_URL=https://flags.savvagent.com
+SAVVAGENT_FLAGS_SDK_KEY=sdk_prod_xxx  # SDK keys use sdk_ prefix
 
 # .env.local (for frontend)
-NEXT_PUBLIC_OTTO_FLAGS_API_URL=https://flags.savvagent.com
-NEXT_PUBLIC_OTTO_FLAGS_SDK_KEY=sdk_prod_xxx
+NEXT_PUBLIC_SAVVAGENT_FLAGS_API_URL=https://flags.savvagent.com
+NEXT_PUBLIC_SAVVAGENT_FLAGS_SDK_KEY=sdk_prod_xxx
 ```
 
 ### 4. Enable Caching
@@ -486,8 +486,8 @@ Cache evaluations with TTL, invalidate on SSE events for instant updates (per SD
 
 ```typescript
 const client = new FlagClient({
-  apiKey: process.env.OTTO_FLAGS_SDK_KEY!,
-  baseUrl: process.env.OTTO_FLAGS_API_URL,
+  apiKey: process.env.SAVVAGENT_FLAGS_SDK_KEY!,
+  baseUrl: process.env.SAVVAGENT_FLAGS_API_URL,
   cacheTtl: 300000, // 5 minutes (per SDK Developer Guide)
   enableRealtime: true, // Invalidates cache on flag changes
 });
@@ -501,7 +501,7 @@ Per SDK Developer Guide: SSE is optional - the SDK should work without it:
 // SDK automatically handles SSE failures gracefully
 // If SSE connection fails, SDK continues working with cached values
 const client = new FlagClient({
-  apiKey: process.env.OTTO_FLAGS_SDK_KEY!,
+  apiKey: process.env.SAVVAGENT_FLAGS_SDK_KEY!,
   enableRealtime: true, // SSE enhances but isn't required
 });
 ```
@@ -515,7 +515,7 @@ Per SDK Developer Guide: Don't send telemetry on every evaluation - batch evalua
 // - Evaluations: batched and sent every 5 seconds
 // - Errors: sent immediately (critical telemetry)
 const client = new FlagClient({
-  apiKey: process.env.OTTO_FLAGS_SDK_KEY!,
+  apiKey: process.env.SAVVAGENT_FLAGS_SDK_KEY!,
   enableTelemetry: true, // Enabled by default
 });
 ```
@@ -635,6 +635,6 @@ See [SDK-DEVELOPER-GUIDE.md](./SDK-DEVELOPER-GUIDE.md) for complete API document
 
 ## Support
 
-- Documentation: https://github.com/savvagent/otto-flags#readme
-- GitHub Issues: https://github.com/yourusername/otto-flags/issues
-- Examples: https://github.com/yourusername/otto-flags/tree/main/examples
+- Documentation: https://github.com/savvagent/flags#readme
+- GitHub Issues: https://github.com/savvagent/flags/issues
+- Examples: https://github.com/savvagent/flags/tree/main/examples

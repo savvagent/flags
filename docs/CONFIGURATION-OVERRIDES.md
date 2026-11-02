@@ -6,7 +6,7 @@
 
 ## Overview
 
-Configuration overrides allow you to test different flag configurations and variations locally without making changes to your Otto Flags dashboard. This is especially useful for:
+Configuration overrides allow you to test different flag configurations and variations locally without making changes to your Savvagent Flags dashboard. This is especially useful for:
 
 - **Local Development**: Test different configurations while developing features
 - **QA Testing**: Verify behavior with various configurations without environment changes
@@ -20,7 +20,7 @@ Configuration overrides allow you to test different flag configurations and vari
 ### Node.js / TypeScript
 
 ```typescript
-import { FlagClient } from '@otto-flags/node-server';
+import { FlagClient } from '@savvagent/flags-node-server';
 
 // Create a single SDK instance at application startup
 const client = new FlagClient({
@@ -55,7 +55,7 @@ import (
 )
 
 func main() {
-    client, _ := ottoFlags.NewClient(ottoFlags.Config{
+    client, _ := savvagentFlags.NewClient(savvagentFlags.Config{
         APIKey: "sdk_dev_abc123",
     })
 
@@ -70,7 +70,7 @@ func main() {
     // Override with merge
     client.SetConfigOverride("payment-settings", map[string]interface{}{
         "gateway": "stripe_test",
-    }, &ottoFlags.ConfigOverrideOptions{Merge: true})
+    }, &savvagentFlags.ConfigOverrideOptions{Merge: true})
 
     // Override variation
     client.SetVariationOverride("search-algorithm", "variant_b")
@@ -83,7 +83,7 @@ func main() {
 ### Rust
 
 ```rust
-use otto_flags_sdk::{Config, ConfigOverrideOptions, FlagClient};
+use savvagent_flags::{Config, ConfigOverrideOptions, FlagClient};
 use serde_json::json;
 
 #[tokio::main]
@@ -121,7 +121,7 @@ async fn main() {
 ### Java
 
 ```java
-import com.savvagent.ottoflags.sdk.*;
+import com.savvagent.flags.sdk.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -156,13 +156,13 @@ public class Example {
 ### Android (Kotlin)
 
 ```kotlin
-import com.savvagent.ottoflags.sdk.*
+import com.savvagent.flags.sdk.*
 
-val config = OttoFlagsConfig(
+val config = SavvagentFlagsConfig(
     apiKey = "sdk_dev_abc123"  // SDK keys use 'sdk_' prefix
 )
 
-val client = OttoFlagsClient(config, context)
+val client = SavvagentFlagsClient(config, context)
 
 // Override configuration
 client.setConfigOverride("checkout-experience", mapOf(
@@ -185,10 +185,10 @@ val config = client.getConfig("checkout-experience", userContext).getOrNull()
 ### iOS (Swift)
 
 ```swift
-import OttoFlagsSDK
+import SavvagentFlagsSDK
 
-let config = OttoFlagsConfig(apiKey: "sdk_dev_abc123")  // SDK keys use 'sdk_' prefix
-let client = OttoFlagsClient(config: config)
+let config = SavvagentFlagsConfig(apiKey: "sdk_dev_abc123")  // SDK keys use 'sdk_' prefix
+let client = SavvagentFlagsClient(config: config)
 
 // Override configuration
 client.setConfigOverride(flagKey: "checkout-experience", config: [

@@ -14,7 +14,7 @@ at the top of each `crates/*/src/lib.rs`.
 ## Development Workflow
 
 ### Repo
-- slug: savvagent/otto-flags
+- slug: savvagent/flags
 - trunk: main
 - tracker: github
 - ticketless work: open-issue
@@ -30,7 +30,7 @@ at the top of each `crates/*/src/lib.rs`.
 - branch: <type>/<issue>-<slug>, type = feat | fix | docs | refactor | test | chore
 - commit: conventional commits, `<type>(<scope>): <imperative, lower-case>`; scope optional (e.g. `feat(sdk): …`); body explains why and ends `Fixes #N`
 - PR body must contain: Fixes #N
-- merge: gh pr merge <N> --repo savvagent/otto-flags --admin --squash
+- merge: gh pr merge <N> --repo savvagent/flags --admin --squash
 - after merge: git push origin --delete <branch>; git branch -D <branch>
 
 The `main` ruleset configures a merge queue that will not enqueue (its `required_deployments`
@@ -78,7 +78,7 @@ The pnpm gate lists exactly the pnpm workspace members (the `packages/*` and `ex
 a `package.json`); root `pnpm lint/build/test` cover `packages/*` only. Known-red gates pass on no
 new failures against an `origin/main` baseline; the PR that fixes one removes its entry.
 The Java and Swift gates are unverified here (no toolchain on the dev host); the Swift gate
-(`swift test`) is known red until savvagent/otto-flags#119 is verified fixed on a machine with
+(`swift test`) is known red until savvagent/flags#119 is verified fixed on a machine with
 a Swift toolchain (the fix is in, but has never been compiled), and the PR that confirms it
 removes this entry; the Go gate needs
 Go 1.21+. When a gate's
@@ -108,8 +108,8 @@ has reviewed or commented on any PR here (#3, #6, #8, #10).
 ### Ship
 - deploy: ci-auto
 - merge gate: on the PR's head SHA: `rust`, `docker-build`, `migrations-append-only` (CI workflow) succeeded; `Test` (SDKs workflow) succeeded when any changed file matches `packages/**`, `examples/**`, `package.json`, `pnpm-lock.yaml`, or `pnpm-workspace.yaml` (the workflow's own path filter); `Rust SDK` (Rust SDK workflow) succeeded when any changed file matches `packages/rust-server/**`, `rust-toolchain.toml`, or `.github/workflows/rust-sdk.yml`; plus every other check that ran on the head SHA (the ruleset requires none)
-- verify: the SHA proxy is the `deploy` job of the CI run for the merge SHA (`gh run list -R savvagent/otto-flags --workflow CI --commit <merge SHA> --json databaseId,status,conclusion`, then `gh run view <id> -R savvagent/otto-flags --json jobs`); `/readyz` does not report a SHA. Then `fly releases -a otto-flags` shows a new release; `fly status -a otto-flags` shows the `app` machines on it; `curl -s https://flags.savvagent.com/readyz` returns `{"status":"ready"}` (the first request may resume a suspended machine); `fly logs -a otto-flags --no-tail` shows `applying migrations`, `tenant isolation enforced as role "otto_app"`, `the otto platform accepted this service's credential`, and `declared usage meters` (without it no usage ships; see `docs/deploy/fly.md`, Metering); then exercise the changed surface read-only (`/mcp` tools via an MCP client, `whoami` first, or the changed `/api/...` route). A change outside `crates/`, `Dockerfile`, `fly.toml`, and the root `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml` (SDKs, examples, docs, workflows) redeploys unchanged server code: verify health only and state that the changed surface is not deployed. A machine failing `/readyz` fails the deploy: merged, not live. Do not assume Fly rolled it back: `fly status` must show no `app` machine left on the failed release (moving one back is a hand deploy, Rob's; `docs/deploy/fly.md`, When a migration fails). A previous release boots against a newer schema because `MIGRATOR` ignores migration versions it does not know (`crates/flags-core/src/migrate.rs`).
-- release: server: none (continuous deploy of every push to `main`). Changesets apply to pnpm packages only: a change to a published pnpm package (`packages/*` with a `package.json`) adds a changeset (`pnpm changeset`); docs- and test-only changes do not. npm publishing is not automated (`.github/workflows/release.yml` triggers on `master`, which does not exist) and no `@otto-flags/*` package is on npm, so a merged SDK change is merged, not published. The Rust crate (`packages/rust-server`, `otto-flags`), Go, Python, Java, iOS, and Android SDKs are not published (not on crates.io, PyPI, Maven Central, or the Go proxy); a release is a human decision (Rob). Do not bump their versions in a change PR. `flags_mcp::guide::SDK_REF` is the commit `sdk_guide`, `AGENTS.md` and `llms.txt` tell agents to install, so moving it is the SDKs' de facto release: a human decision (Rob), made in its own small PR after a merge that changes SDK code or a guide's claims about SDK behavior (procedure in the constant's doc comment).
+- verify: the SHA proxy is the `deploy` job of the CI run for the merge SHA (`gh run list -R savvagent/flags --workflow CI --commit <merge SHA> --json databaseId,status,conclusion`, then `gh run view <id> -R savvagent/flags --json jobs`); `/readyz` does not report a SHA. Then `fly releases -a otto-flags` shows a new release; `fly status -a otto-flags` shows the `app` machines on it; `curl -s https://flags.savvagent.com/readyz` returns `{"status":"ready"}` (the first request may resume a suspended machine); `fly logs -a otto-flags --no-tail` shows `applying migrations`, `tenant isolation enforced as role "otto_app"`, `the otto platform accepted this service's credential`, and `declared usage meters` (without it no usage ships; see `docs/deploy/fly.md`, Metering); then exercise the changed surface read-only (`/mcp` tools via an MCP client, `whoami` first, or the changed `/api/...` route). A change outside `crates/`, `Dockerfile`, `fly.toml`, and the root `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml` (SDKs, examples, docs, workflows) redeploys unchanged server code: verify health only and state that the changed surface is not deployed. A machine failing `/readyz` fails the deploy: merged, not live. Do not assume Fly rolled it back: `fly status` must show no `app` machine left on the failed release (moving one back is a hand deploy, Rob's; `docs/deploy/fly.md`, When a migration fails). A previous release boots against a newer schema because `MIGRATOR` ignores migration versions it does not know (`crates/flags-core/src/migrate.rs`).
+- release: server: none (continuous deploy of every push to `main`). Changesets apply to pnpm packages only: a change to a published pnpm package (`packages/*` with a `package.json`) adds a changeset (`pnpm changeset`); docs- and test-only changes do not. npm publishing is not automated (`.github/workflows/release.yml` triggers on `master`, which does not exist) and no `@savvagent/flags-*` package is on npm, so a merged SDK change is merged, not published. The Rust crate (`packages/rust-server`, `savvagent-flags`), Go, Python, Java, iOS, and Android SDKs are not published (not on crates.io, PyPI, Maven Central, or the Go proxy); a release is a human decision (Rob). Do not bump their versions in a change PR. `flags_mcp::guide::SDK_REF` is the commit `sdk_guide`, `AGENTS.md` and `llms.txt` tell agents to install, so moving it is the SDKs' de facto release: a human decision (Rob), made in its own small PR after a merge that changes SDK code or a guide's claims about SDK behavior (procedure in the constant's doc comment).
 - version files: packages/*/package.json, packages/rust-server/Cargo.toml, packages/python-server/pyproject.toml, packages/java-server/pom.xml, packages/android-sdk/build.gradle.kts
 
 ### Out-of-band
@@ -117,7 +117,7 @@ has reviewed or commented on any PR here (#3, #6, #8, #10).
 - New non-secret config key (agent, in the PR): `fly.toml` `[env]`, `.env.example`, and `crates/flags-server/src/config.rs`.
 - New secret (human: Rob, before merge): `fly secrets set -a otto-flags --stage NAME=…`; the PR updates `.env.example` and the secrets table in `docs/deploy/fly.md`.
 - New scope (human: Rob, before merge): the PR updates `flags_core::scopes::KNOWN`/`DEFAULT`; Rob re-runs the platform `savvagent-platform-server resource register …` from `docs/deploy/fly.md`.
-- otto-platform pin (agent, own PR): `savvagent-tenant` and `savvagent-resource` move to the same rev together.
+- platform pin (agent, own PR): `savvagent-tenant` and `savvagent-resource` move to the same rev together.
 - npm publish (human: Rob): not automated; see Ship > release.
 
 ### Human-only
@@ -203,7 +203,7 @@ crate module docs.
 - **Licensing:** `crates/` and repo-level files are AGPL-3.0-or-later (`LICENSE`, `NOTICE`);
   `packages/` and `examples/` are MIT, each package with its own `LICENSE` and
   `"license": "MIT"`. Never copy server code into an MIT package.
-- **otto-platform pin:** `savvagent-tenant` and `savvagent-resource` share one git rev in the root
+- **Platform pin:** `savvagent-tenant` and `savvagent-resource` share one git rev in the root
   `Cargo.toml`, bumped together and deliberately, never tracking a branch.
 
 ## Notes

@@ -1,14 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { createOverridesStore, getOttoFlags } from '@otto-flags/svelte';
-  import type { FlagDefinition } from '@otto-flags/sdk';
+  import { createOverridesStore, getSavvagentFlags } from '@savvagent/flags-svelte';
+  import type { FlagDefinition } from '@savvagent/flags-sdk';
 
   let isOpen = false;
   let flags: FlagDefinition[] = [];
   let loading = false;
   let error: string | null = null;
 
-  const client = getOttoFlags();
+  const client = getSavvagentFlags();
   const overrides = createOverridesStore();
 
   async function fetchFlags(retries = 3, delay = 1000) {

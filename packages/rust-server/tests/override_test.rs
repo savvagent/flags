@@ -1,4 +1,4 @@
-use otto_flags::{Config, ConfigOverrideOptions, FlagClient};
+use savvagent_flags::{Config, ConfigOverrideOptions, FlagClient};
 use serde_json::json;
 use wiremock::matchers::{method, path};
 use wiremock::{Mock, MockServer, ResponseTemplate};

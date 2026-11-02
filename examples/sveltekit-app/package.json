@@ -2,7 +2,7 @@
   "name": "sveltekit-example",
   "version": "0.0.3",
   "private": true,
-  "description": "Example SvelteKit app using Otto Flags SDK",
+  "description": "Example SvelteKit app using Savvagent Flags SDK",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@otto-flags/svelte": "workspace:*"
+    "@savvagent/flags-svelte": "workspace:*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",

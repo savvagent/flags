@@ -1,6 +1,6 @@
-# @otto-flags/mcp-dynatrace
+# @savvagent/flags-mcp-dynatrace
 
-Dynatrace MCP integration for Otto Flags. Exposes Dynatrace APM and monitoring data via MCP tools.
+Dynatrace MCP integration for Savvagent Flags. Exposes Dynatrace APM and monitoring data via MCP tools.
 
 ## Features
 
@@ -17,14 +17,14 @@ Dynatrace MCP integration for Otto Flags. Exposes Dynatrace APM and monitoring d
 ## Installation
 
 ```bash
-npm install @otto-flags/mcp-dynatrace
+npm install @savvagent/flags-mcp-dynatrace
 ```
 
 ## Quick Start
 
 ```typescript
-import { DynatraceMCPServer } from '@otto-flags/mcp-dynatrace';
-import { createHttpHandler } from '@otto-flags/mcp-sdk';
+import { DynatraceMCPServer } from '@savvagent/flags-mcp-dynatrace';
+import { createHttpHandler } from '@savvagent/flags-mcp-sdk';
 import express from 'express';
 
 const server = new DynatraceMCPServer(

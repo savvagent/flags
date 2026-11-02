@@ -1,10 +1,10 @@
 /**
- * Otto Flags Dynatrace MCP Server
+ * Savvagent Flags Dynatrace MCP Server
  * Pull-based MCP server that exposes Dynatrace APM and monitoring data via JSON-RPC 2.0 tools
  */
 
 import axios, { AxiosInstance } from 'axios';
-import { MCPServer, MCPServerConfig } from '@otto-flags/mcp-sdk';
+import { MCPServer, MCPServerConfig } from '@savvagent/flags-mcp-sdk';
 
 /**
  * Dynatrace configuration options

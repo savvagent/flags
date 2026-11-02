@@ -1,5 +1,5 @@
 /**
- * Comprehensive unit tests for @otto-flags/astro
+ * Comprehensive unit tests for @savvagent/flags-astro
  *
  * Note: These tests work with the singleton pattern used in the module.
  * The client instance persists across tests, which is intentional to test
@@ -17,7 +17,7 @@ const mockWithFlag = vi.fn();
 const mockTrackError = vi.fn();
 
 // Mock the FlagClient
-vi.mock('@otto-flags/sdk', () => {
+vi.mock('@savvagent/flags-sdk', () => {
   class MockFlagClient {
     close = mockClose;
     isEnabled = mockIsEnabled;
@@ -31,10 +31,10 @@ vi.mock('@otto-flags/sdk', () => {
   };
 });
 
-import { FlagClient } from '@otto-flags/sdk';
-import ottoFlags, {
-  initOttoFlags,
-  getOttoFlags,
+import { FlagClient } from '@savvagent/flags-sdk';
+import savvagentFlags, {
+  initSavvagentFlags,
+  getSavvagentFlags,
   getRequestContext,
   isEnabled,
   evaluate,
@@ -42,14 +42,14 @@ import ottoFlags, {
   trackError,
   evaluateForRequest,
   createFlagMiddleware,
-  type OttoFlagsIntegrationOptions,
+  type SavvagentFlagsIntegrationOptions,
   type FlagMiddlewareConfig,
 } from '../src/index';
 
-describe('@otto-flags/astro', () => {
+describe('@savvagent/flags-astro', () => {
   // Initialize client once before all tests
   beforeAll(() => {
-    initOttoFlags({
+    initSavvagentFlags({
       apiKey: 'sdk_test_key',
       applicationId: 'test-app',
     });
@@ -57,24 +57,24 @@ describe('@otto-flags/astro', () => {
 
   describe('Astro Integration', () => {
     it('should export a function that returns an Astro integration', () => {
-      const options: OttoFlagsIntegrationOptions = {
+      const options: SavvagentFlagsIntegrationOptions = {
         config: {
           apiKey: 'sdk_test_key',
           applicationId: 'test-app',
         },
       };
 
-      const integration = ottoFlags(options);
+      const integration = savvagentFlags(options);
 
       expect(integration).toBeDefined();
-      expect(integration.name).toBe('@otto-flags/astro');
+      expect(integration.name).toBe('@savvagent/flags-astro');
       expect(integration.hooks).toBeDefined();
       expect(integration.hooks['astro:config:setup']).toBeDefined();
       expect(integration.hooks['astro:build:done']).toBeDefined();
     });
 
     it('should initialize FlagClient in astro:config:setup hook', () => {
-      const options: OttoFlagsIntegrationOptions = {
+      const options: SavvagentFlagsIntegrationOptions = {
         config: {
           apiKey: 'sdk_test_key',
           applicationId: 'test-app',
@@ -82,25 +82,25 @@ describe('@otto-flags/astro', () => {
         },
       };
 
-      const integration = ottoFlags(options);
+      const integration = savvagentFlags(options);
       integration.hooks['astro:config:setup']!();
 
       // Just verify the integration sets up correctly
-      expect(integration.name).toBe('@otto-flags/astro');
+      expect(integration.name).toBe('@savvagent/flags-astro');
       expect(integration.hooks['astro:config:setup']).toBeDefined();
     });
 
     it('should cleanup client in astro:build:done hook', () => {
       mockClose.mockClear();
 
-      const options: OttoFlagsIntegrationOptions = {
+      const options: SavvagentFlagsIntegrationOptions = {
         config: {
           apiKey: 'sdk_test_key',
           applicationId: 'test-app',
         },
       };
 
-      const integration = ottoFlags(options);
+      const integration = savvagentFlags(options);
       integration.hooks['astro:config:setup']!();
       integration.hooks['astro:build:done']!();
 
@@ -108,14 +108,14 @@ describe('@otto-flags/astro', () => {
     });
   });
 
-  describe('initOttoFlags', () => {
+  describe('initSavvagentFlags', () => {
     it('should initialize and return FlagClient', () => {
       const config = {
         apiKey: 'sdk_test_key_2',
         applicationId: 'test-app-2',
       };
 
-      const client = initOttoFlags(config);
+      const client = initSavvagentFlags(config);
 
       expect(client).toBeDefined();
       expect(client.isEnabled).toBeDefined();
@@ -123,9 +123,9 @@ describe('@otto-flags/astro', () => {
     });
   });
 
-  describe('getOttoFlags', () => {
+  describe('getSavvagentFlags', () => {
     it('should return client if initialized', () => {
-      const client = getOttoFlags();
+      const client = getSavvagentFlags();
 
       expect(client).toBeDefined();
       expect(client.isEnabled).toBeDefined();
@@ -136,7 +136,7 @@ describe('@otto-flags/astro', () => {
     it('should extract context from request headers and cookies', () => {
       const request = new Request('https://example.com', {
         headers: {
-          'cookie': 'user_id=user123; otto_flags_anonymous_id=anon456; session_id=sess789',
+          'cookie': 'user_id=user123; savvagent_flags_anonymous_id=anon456; session_id=sess789',
           'accept-language': 'en-US,en;q=0.9',
         },
       });
@@ -399,7 +399,7 @@ describe('@otto-flags/astro', () => {
 
       const request = new Request('https://example.com', {
         headers: {
-          'cookie': 'user_id=user123; otto_flags_anonymous_id=anon456',
+          'cookie': 'user_id=user123; savvagent_flags_anonymous_id=anon456',
           'accept-language': 'en-US,en;q=0.9',
         },
       });
@@ -693,10 +693,10 @@ describe('@otto-flags/astro', () => {
   describe('Type Exports', () => {
     it('should export required types', () => {
       // This is a compile-time check, but we can verify the module exports
-      const moduleExports = Object.keys(ottoFlags);
+      const moduleExports = Object.keys(savvagentFlags);
 
       // The default export is a function, so we just verify it exists
-      expect(ottoFlags).toBeInstanceOf(Function);
+      expect(savvagentFlags).toBeInstanceOf(Function);
     });
   });
 
@@ -704,7 +704,7 @@ describe('@otto-flags/astro', () => {
     it('should support full integration lifecycle', () => {
       mockClose.mockClear();
 
-      const options: OttoFlagsIntegrationOptions = {
+      const options: SavvagentFlagsIntegrationOptions = {
         config: {
           apiKey: 'sdk_test_key',
           applicationId: 'test-app',
@@ -714,14 +714,14 @@ describe('@otto-flags/astro', () => {
       };
 
       // Create integration
-      const integration = ottoFlags(options);
-      expect(integration.name).toBe('@otto-flags/astro');
+      const integration = savvagentFlags(options);
+      expect(integration.name).toBe('@savvagent/flags-astro');
 
       // Setup
       integration.hooks['astro:config:setup']!();
 
       // Use client
-      const client = getOttoFlags();
+      const client = getSavvagentFlags();
       expect(client).toBeDefined();
 
       // Build done

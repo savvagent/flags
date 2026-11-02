@@ -1,6 +1,6 @@
-# Otto Flags Angular Example
+# Savvagent Flags Angular Example
 
-This example demonstrates how to use the `@otto-flags/angular` SDK in an Angular application.
+This example demonstrates how to use the `@savvagent/flags-angular` SDK in an Angular application.
 
 ## Features
 
@@ -34,8 +34,8 @@ Edit `src/environments/environment.ts`:
 ```typescript
 export const environment = {
   production: false,
-  ottoFlagsApiUrl: 'http://localhost:8080',
-  ottoFlagsSdkKey: 'sdk_your_actual_key',
+  savvagentFlagsApiUrl: 'http://localhost:8080',
+  savvagentFlagsSdkKey: 'sdk_your_actual_key',
 };
 ```
 
@@ -64,7 +64,7 @@ src/
 ├── environments/
 │   ├── environment.ts             # Development config
 │   └── environment.prod.ts        # Production config
-├── main.ts                        # Bootstrap with OttoFlagsModule
+├── main.ts                        # Bootstrap with SavvagentFlagsModule
 ├── index.html                     # HTML entry point
 └── styles.css                     # Global styles
 ```
@@ -73,15 +73,15 @@ src/
 
 ### Module Configuration
 
-The SDK is configured in `main.ts` using `OttoFlagsModule.forRoot()`:
+The SDK is configured in `main.ts` using `SavvagentFlagsModule.forRoot()`:
 
 ```typescript
-import { OttoFlagsModule } from '@otto-flags/angular';
+import { SavvagentFlagsModule } from '@savvagent/flags-angular';
 
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      OttoFlagsModule.forRoot({
+      SavvagentFlagsModule.forRoot({
         config: {
           apiKey: 'sdk_...',
           applicationId: 'your-app-id',
@@ -102,14 +102,14 @@ bootstrapApplication(AppComponent, {
 Use `flag$()` for reactive flag values with automatic updates:
 
 ```typescript
-import { OttoFlagsService, FlagObservableResult } from '@otto-flags/angular';
+import { SavvagentFlagsService, FlagObservableResult } from '@savvagent/flags-angular';
 
 @Component({...})
 export class MyComponent {
-  constructor(private ottoFlags: OttoFlagsService) {}
+  constructor(private savvagentFlags: SavvagentFlagsService) {}
 
   ngOnInit() {
-    this.ottoFlags.flag$('my-feature', { defaultValue: false })
+    this.savvagentFlags.flag$('my-feature', { defaultValue: false })
       .subscribe((result: FlagObservableResult) => {
         console.log('Flag value:', result.value);
         console.log('Loading:', result.loading);
@@ -124,7 +124,7 @@ export class MyComponent {
 Use `flagValue$()` when you only need the boolean value:
 
 ```typescript
-isEnabled$ = this.ottoFlags.flagValue$('my-feature');
+isEnabled$ = this.savvagentFlags.flagValue$('my-feature');
 
 // In template
 <button *ngIf="isEnabled$ | async">New Button</button>
@@ -136,13 +136,13 @@ The SDK supports local overrides for development:
 
 ```typescript
 // Set an override
-this.ottoFlags.setOverride('my-feature', true);
+this.savvagentFlags.setOverride('my-feature', true);
 
 // Clear an override
-this.ottoFlags.clearOverride('my-feature');
+this.savvagentFlags.clearOverride('my-feature');
 
 // Clear all overrides
-this.ottoFlags.clearAllOverrides();
+this.savvagentFlags.clearAllOverrides();
 ```
 
 ### Flag Override Panel
@@ -151,5 +151,5 @@ Press `Ctrl+Shift+F` to open the flag override panel for easy debugging.
 
 ## Learn More
 
-- [Otto Flags Angular SDK Documentation](../../packages/angular/README.md)
+- [Savvagent Flags Angular SDK Documentation](../../packages/angular/README.md)
 - [SDK Developer Guide](../../docs/SDK-DEVELOPER-GUIDE.md)

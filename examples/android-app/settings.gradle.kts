@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "OttoFlagsExample"
+rootProject.name = "SavvagentFlagsExample"
 include(":app")
 
 // Include the SDK as a local module for development

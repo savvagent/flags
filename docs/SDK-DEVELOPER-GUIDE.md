@@ -1,13 +1,13 @@
-# Otto Flags SDK Developer Guide
+# Savvagent Flags SDK Developer Guide
 
-This guide is for developers building SDKs that integrate with the Otto Flags feature flag platform. It covers the API endpoints, authentication, real-time updates, and best practices.
+This guide is for developers building SDKs that integrate with the Savvagent Flags feature flag platform. It covers the API endpoints, authentication, real-time updates, and best practices.
 
-> **Note:** For official SDKs and examples, see the [otto-flags repository](https://github.com/savvagent/otto-flags).
+> **Note:** For official SDKs and examples, see the [savvagent/flags repository](https://github.com/savvagent/flags).
 
 > **Wiring an existing SDK into a project?** An agent connected over MCP should call
 > `sdk_guide(language, app?)`; otherwise read [`/llms.txt`](../llms.txt) or
 > [`AGENTS.md`](../AGENTS.md). SDKs are installed from a pinned commit of
-> savvagent/otto-flags. This document is the REST contract those SDKs implement.
+> savvagent/flags. This document is the REST contract those SDKs implement.
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ This guide is for developers building SDKs that integrate with the Otto Flags fe
 
 ## Authentication
 
-Otto Flags uses two types of API keys:
+Savvagent Flags uses two types of API keys:
 
 | Key Type | Prefix | Use Case | Security Level |
 |----------|--------|----------|----------------|
@@ -252,7 +252,7 @@ Same structure as `/api/sdk/flags`, but only includes flags with `scope: "enterp
 #### SDK Implementation Example
 
 ```javascript
-class OttoFlagsClient {
+class SavvagentFlagsClient {
   async getAllFlags(environment = 'development') {
     const response = await fetch(
       `${this.baseUrl}/api/sdk/flags?environment=${environment}`,
@@ -366,7 +366,7 @@ const reconnect = (attempt) => {
 
 ### Telemetry
 
-SDKs should report evaluation metrics and errors back to Otto Flags for analytics.
+SDKs should report evaluation metrics and errors back to Savvagent Flags for analytics.
 
 Report telemetry with the key the SDK already holds: a server SDK sends it with its server key
 (`srv_`), a browser or mobile SDK with the public client key (`sdk_`). The examples below show a
@@ -466,7 +466,7 @@ format is unchanged: `environment` was already accepted.
 
 ## Backend Performance Features
 
-The Otto Flags backend includes several performance optimizations that benefit SDK integrations:
+The Savvagent Flags backend includes several performance optimizations that benefit SDK integrations:
 
 ### Database Connection Pool
 
@@ -648,12 +648,12 @@ Create a single SDK instance at application startup:
 
 ```javascript
 // Good
-const client = new OttoFlagsClient({ apiKey: 'sdk_xxx' });
+const client = new SavvagentFlagsClient({ apiKey: 'sdk_xxx' });
 export default client;
 
 // Bad - creates multiple connections
 function getFlag(key) {
-  const client = new OttoFlagsClient({ apiKey: 'sdk_xxx' });
+  const client = new SavvagentFlagsClient({ apiKey: 'sdk_xxx' });
   return client.isEnabled(key);
 }
 ```
@@ -751,6 +751,6 @@ process.on('SIGTERM', () => client.destroy());
 
 ## Related Documentation
 
-- [ADMIN-UI-DOGFOODING.md](./ADMIN-UI-DOGFOODING.md) - How the admin UI uses Otto Flags flags internally
+- [ADMIN-UI-DOGFOODING.md](./ADMIN-UI-DOGFOODING.md) - How the admin UI uses Savvagent Flags flags internally
 - [PRD.md](./PRD.md) - Product requirements and feature overview
-- External: [otto-flags](https://github.com/savvagent/otto-flags) - Official SDK implementations
+- External: [savvagent/flags](https://github.com/savvagent/flags) - Official SDK implementations

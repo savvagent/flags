@@ -1,5 +1,5 @@
 /**
- * Otto Flags SDK Types
+ * Savvagent Flags SDK Types
  */
 
 /**
@@ -10,7 +10,7 @@ export interface FlagClientConfig {
   apiKey: string;
   /** Application ID for application-scoped flags (omit for enterprise flags only) */
   applicationId?: string;
-  /** Base URL for the Otto Flags API (default: production URL) */
+  /** Base URL for the Savvagent Flags API (default: production URL) */
   baseUrl?: string;
   /** Environment for flag evaluation (e.g., "development", "staging", "production", "beta"). Default: "production" */
   environment?: string;
@@ -38,7 +38,7 @@ export interface FlagClientConfig {
 
 /**
  * Context passed to flag evaluation
- * Per SDK Developer Guide: https://github.com/savvagent/otto-flags/blob/main/docs/SDK-DEVELOPER-GUIDE.md
+ * Per SDK Developer Guide: https://github.com/savvagent/flags/blob/main/docs/SDK-DEVELOPER-GUIDE.md
  */
 export interface FlagContext {
   /** User ID for targeted rollouts (logged-in users) - required for percentage rollouts */

@@ -1,11 +1,11 @@
 'use client';
 
-import { OttoFlagsProvider } from '@otto-flags/nextjs/client';
-import type { FlagClientConfig, DefaultFlagContext } from '@otto-flags/nextjs/client';
+import { SavvagentFlagsProvider } from '@savvagent/flags-nextjs/client';
+import type { FlagClientConfig, DefaultFlagContext } from '@savvagent/flags-nextjs/client';
 import './globals.css';
 
 // Storage key for local overrides (must match FlagOverridePanel)
-const OVERRIDE_STORAGE_KEY = 'otto_flags_local_overrides';
+const OVERRIDE_STORAGE_KEY = 'savvagent_flags_local_overrides';
 
 /**
  * Load overrides from localStorage for initial SDK configuration.
@@ -25,7 +25,7 @@ function loadInitialOverrides(): Record<string, boolean> {
 }
 
 /**
- * Root Layout with OttoFlagsProvider
+ * Root Layout with SavvagentFlagsProvider
  * Per SDK Developer Guide: Initialize once, create a single SDK instance at application startup
  */
 export default function RootLayout({
@@ -38,9 +38,9 @@ export default function RootLayout({
   // Per SDK Developer Guide: FlagClientConfig with proper authentication
   const config: FlagClientConfig = {
     // SDK API key (starts with sdk_) - safe to embed in client-side code
-    apiKey: process.env.NEXT_PUBLIC_OTTO_FLAGS_SDK_KEY || 'sdk_your_key_here',
-    // Base URL for the Otto Flags API
-    baseUrl: process.env.NEXT_PUBLIC_OTTO_FLAGS_API_URL || 'http://localhost:8080',
+    apiKey: process.env.NEXT_PUBLIC_SAVVAGENT_FLAGS_SDK_KEY || 'sdk_your_key_here',
+    // Base URL for the Savvagent Flags API
+    baseUrl: process.env.NEXT_PUBLIC_SAVVAGENT_FLAGS_API_URL || 'http://localhost:8080',
     // Application ID for application-scoped flags
     applicationId: 'f8209ef5-a661-4f46-8b84-4c855a97d5ef',
     // Enable real-time updates via SSE (default: true)
@@ -57,7 +57,7 @@ export default function RootLayout({
     },
     // Custom error handler
     onError: (error) => {
-      console.error('[App] Otto Flags error:', error);
+      console.error('[App] Savvagent Flags error:', error);
     },
   };
 
@@ -84,9 +84,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <OttoFlagsProvider config={config} defaultContext={defaultContext} initialOverrides={initialOverrides}>
+        <SavvagentFlagsProvider config={config} defaultContext={defaultContext} initialOverrides={initialOverrides}>
           {children}
-        </OttoFlagsProvider>
+        </SavvagentFlagsProvider>
       </body>
     </html>
   );

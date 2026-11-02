@@ -1,13 +1,13 @@
-# Otto Flags Svelte Example
+# Savvagent Flags Svelte Example
 
-Example Svelte application demonstrating how to use the Otto Flags Svelte SDK with stores.
+Example Svelte application demonstrating how to use the Savvagent Flags Svelte SDK with stores.
 
 ## Features
 
 - Svelte 4 with reactive stores
 - TypeScript
 - Vite for fast development
-- Otto Flags Svelte stores (`featureFlag`, `ottoFlagsContext`)
+- Savvagent Flags Svelte stores (`featureFlag`, `savvagentFlagsContext`)
 - Real-time feature flag updates
 - Hot module replacement
 
@@ -25,8 +25,8 @@ Example Svelte application demonstrating how to use the Otto Flags Svelte SDK wi
 
    Edit `.env.local`:
    ```bash
-   VITE_OTTO_FLAGS_API_URL=http://localhost:8080
-   VITE_OTTO_FLAGS_SDK_KEY=your-sdk-key-here
+   VITE_SAVVAGENT_FLAGS_API_URL=http://localhost:8080
+   VITE_SAVVAGENT_FLAGS_SDK_KEY=your-sdk-key-here
    ```
 
 3. **Run the development server:**
@@ -42,7 +42,7 @@ Example Svelte application demonstrating how to use the Otto Flags Svelte SDK wi
 
 ```svelte
 <script lang="ts">
-  import { featureFlag } from '@otto-flags/svelte';
+  import { featureFlag } from '@savvagent/flags-svelte';
 
   const newFeature = featureFlag('new-feature', {
     userId: 'user-123',
@@ -66,11 +66,11 @@ Example Svelte application demonstrating how to use the Otto Flags Svelte SDK wi
 
 ```svelte
 <script lang="ts">
-  import { setOttoFlagsContext } from '@otto-flags/svelte';
+  import { setSavvagentFlagsContext } from '@savvagent/flags-svelte';
 
-  setOttoFlagsContext({
-    apiUrl: import.meta.env.VITE_OTTO_FLAGS_API_URL,
-    sdkKey: import.meta.env.VITE_OTTO_FLAGS_SDK_KEY,
+  setSavvagentFlagsContext({
+    apiUrl: import.meta.env.VITE_SAVVAGENT_FLAGS_API_URL,
+    sdkKey: import.meta.env.VITE_SAVVAGENT_FLAGS_SDK_KEY,
   });
 </script>
 
@@ -80,5 +80,5 @@ Example Svelte application demonstrating how to use the Otto Flags Svelte SDK wi
 ## Learn More
 
 - [Svelte Documentation](https://svelte.dev/)
-- [Otto Flags Svelte SDK Documentation](../../packages/svelte/README.md)
+- [Savvagent Flags Svelte SDK Documentation](../../packages/svelte/README.md)
 - [SDK Integration Guide](../../docs/SDK-INTEGRATION.md)

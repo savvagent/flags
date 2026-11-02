@@ -1,11 +1,11 @@
-# @otto-flags/remix
+# @savvagent/flags-remix
 
-Remix SDK for Otto Flags with support for loaders, actions, and client-side hooks.
+Remix SDK for Savvagent Flags with support for loaders, actions, and client-side hooks.
 
 ## Installation
 
 ```bash
-npm install @otto-flags/remix
+npm install @savvagent/flags-remix
 ```
 
 ## Quick Start
@@ -14,11 +14,11 @@ npm install @otto-flags/remix
 
 ```tsx
 // app/root.tsx
-import { initRemixClient } from '@otto-flags/remix';
+import { initRemixClient } from '@savvagent/flags-remix';
 
 initRemixClient({
-  apiKey: process.env.OTTO_FLAGS_API_KEY!,
-  applicationId: process.env.OTTO_FLAGS_APP_ID,
+  apiKey: process.env.SAVVAGENT_FLAGS_API_KEY!,
+  applicationId: process.env.SAVVAGENT_FLAGS_APP_ID,
 });
 
 export default function App() {
@@ -36,7 +36,7 @@ export default function App() {
 
 ```tsx
 // app/routes/dashboard.tsx
-import { isEnabled } from '@otto-flags/remix';
+import { isEnabled } from '@savvagent/flags-remix';
 import { LoaderFunctionArgs, json } from '@remix-run/node';
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -56,7 +56,7 @@ export default function Dashboard() {
 ### 3. Use in actions
 
 ```tsx
-import { trackError } from '@otto-flags/remix';
+import { trackError } from '@savvagent/flags-remix';
 import { ActionFunctionArgs, json } from '@remix-run/node';
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -75,7 +75,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 ```tsx
 // app/routes/feature.tsx
-import { useFlag } from '@otto-flags/remix';
+import { useFlag } from '@savvagent/flags-remix';
 
 export default function Feature() {
   const { value, loading } = useFlag('client-feature');
@@ -112,9 +112,9 @@ Track errors with flag context.
 
 ### Client-Side
 
-All hooks from `@otto-flags/react` are available:
+All hooks from `@savvagent/flags-react` are available:
 - `useFlag(flagKey, options)`
-- `useOttoFlags()`
+- `useSavvagentFlags()`
 - `useUser()`
 - `useTrackError(flagKey, context)`
 
@@ -123,7 +123,7 @@ All hooks from `@otto-flags/react` are available:
 ### User-Targeted Feature
 
 ```tsx
-import { isEnabled, getRequestContext } from '@otto-flags/remix';
+import { isEnabled, getRequestContext } from '@savvagent/flags-remix';
 import { LoaderFunctionArgs } from '@remix-run/node';
 
 export async function loader({ request }: LoaderFunctionArgs) {

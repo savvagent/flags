@@ -4,7 +4,7 @@ import time
 
 import pytest
 
-from otto_flags import AsyncFlagCache, FlagCache
+from savvagent_flags import AsyncFlagCache, FlagCache
 
 
 class TestFlagCache:

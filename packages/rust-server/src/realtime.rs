@@ -218,7 +218,7 @@ pub(crate) fn invalidation_for(event: &SseEvent) -> Option<Invalidation> {
             let key = changed_flag_key(&event.data);
             if key.is_none() {
                 tracing::debug!(
-                    "Otto Flags stream: {} event without a valid flag key skipped: {:?}",
+                    "Savvagent Flags stream: {} event without a valid flag key skipped: {:?}",
                     event.event,
                     event
                         .data
@@ -381,7 +381,7 @@ async fn run(client: Weak<Inner>, shutdown: Arc<Notify>, target: StreamTarget) {
             delay = delay.max(retry_after.min(MAX_RETRY_AFTER));
         }
         attempt = attempt.saturating_add(1);
-        tracing::debug!("Otto Flags stream: reconnecting in {:?}", delay);
+        tracing::debug!("Savvagent Flags stream: reconnecting in {:?}", delay);
         tokio::select! {
             _ = tokio::time::sleep(delay) => {}
             _ = shutdown.notified() => return,
@@ -401,12 +401,15 @@ async fn connection(target: &StreamTarget) -> Ended {
     let mut response = match tokio::time::timeout(target.header_timeout, request).await {
         Ok(Ok(response)) => response,
         Ok(Err(e)) => {
-            tracing::warn!("Otto Flags stream: connect failed ({})", e.without_url());
+            tracing::warn!(
+                "Savvagent Flags stream: connect failed ({})",
+                e.without_url()
+            );
             return Ended::Unreachable;
         }
         Err(_) => {
             tracing::warn!(
-                "Otto Flags stream: no response within {:?}; reconnecting",
+                "Savvagent Flags stream: no response within {:?}; reconnecting",
                 target.header_timeout
             );
             return Ended::Unreachable;
@@ -416,11 +419,14 @@ async fn connection(target: &StreamTarget) -> Ended {
     if !status.is_success() {
         if status == StatusCode::UNAUTHORIZED {
             tracing::error!(
-                "Otto Flags stream: the API key was rejected (status {})",
+                "Savvagent Flags stream: the API key was rejected (status {})",
                 status
             );
         } else {
-            tracing::warn!("Otto Flags stream: connect refused (status {})", status);
+            tracing::warn!(
+                "Savvagent Flags stream: connect refused (status {})",
+                status
+            );
         }
         let retry_after = response
             .headers()
@@ -441,7 +447,7 @@ async fn connection(target: &StreamTarget) -> Ended {
         // A captive portal or a proxy's error page: reading it as events would idle until
         // the timeout and then log a successful connection.
         tracing::warn!(
-            "Otto Flags stream: the response is not text/event-stream (status {}); not using it",
+            "Savvagent Flags stream: the response is not text/event-stream (status {}); not using it",
             status
         );
         return Ended::Refused {
@@ -449,7 +455,7 @@ async fn connection(target: &StreamTarget) -> Ended {
             retry_after: None,
         };
     }
-    tracing::info!("Otto Flags stream: connected");
+    tracing::info!("Savvagent Flags stream: connected");
     let since = Instant::now();
     let mut parser = SseParser::default();
     loop {
@@ -458,23 +464,23 @@ async fn connection(target: &StreamTarget) -> Ended {
                 Ok(events) => events.iter().for_each(|e| handle(&target.cache, e)),
                 Err(TooLarge) => {
                     tracing::warn!(
-                        "Otto Flags stream: an event exceeded {} bytes; reconnecting",
+                        "Savvagent Flags stream: an event exceeded {} bytes; reconnecting",
                         MAX_EVENT_BYTES
                     );
                     break;
                 }
             },
             Ok(Ok(None)) => {
-                tracing::debug!("Otto Flags stream: closed by the server");
+                tracing::debug!("Savvagent Flags stream: closed by the server");
                 break;
             }
             Ok(Err(e)) => {
-                tracing::debug!("Otto Flags stream: read failed ({})", e.without_url());
+                tracing::debug!("Savvagent Flags stream: read failed ({})", e.without_url());
                 break;
             }
             Err(_) => {
                 tracing::debug!(
-                    "Otto Flags stream: nothing received for {:?}; reconnecting",
+                    "Savvagent Flags stream: nothing received for {:?}; reconnecting",
                     IDLE_TIMEOUT
                 );
                 break;

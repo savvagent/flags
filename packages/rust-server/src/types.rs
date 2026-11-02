@@ -11,7 +11,7 @@ pub struct Config {
     /// Application ID for application-scoped flags
     pub application_id: Option<String>,
 
-    /// Base URL for the Otto Flags API
+    /// Base URL for the Savvagent Flags API
     pub base_url: String,
 
     /// Enable real-time flag updates via SSE
@@ -20,7 +20,7 @@ pub struct Config {
     /// Cache TTL duration
     pub cache_ttl: Duration,
 
-    /// Report evaluations and errors to Otto Flags (see `FlagClient::track_error`)
+    /// Report evaluations and errors to Savvagent Flags (see `FlagClient::track_error`)
     pub enable_telemetry: bool,
 
     /// Default flag values when evaluation fails
@@ -126,7 +126,7 @@ impl Config {
     }
 
     /// Set a flag's default from an environment variable, read once now, for a service moving
-    /// from env-var flags: "when otto-flags cannot be reached, use what the variable says".
+    /// from env-var flags: "when savvagent-flags cannot be reached, use what the variable says".
     ///
     /// Accepted values, ignoring case and surrounding whitespace, are `1`, `true`, `yes`, `on`
     /// and `0`, `false`, `no`, `off`. An unset variable is ignored silently (in production it is
@@ -135,7 +135,7 @@ impl Config {
     /// or the built-in `false`, stays in place.
     ///
     /// ```
-    /// use otto_flags::Config;
+    /// use savvagent_flags::Config;
     ///
     /// std::env::set_var("OTTO_DOC_NEW_CHECKOUT", "true");
     /// let config = Config::new("sdk_key").with_default_env("new-checkout", "OTTO_DOC_NEW_CHECKOUT");
@@ -152,7 +152,7 @@ impl Config {
                 let parsed = parse_bool(&raw);
                 if parsed.is_none() {
                     tracing::warn!(
-                        "Otto Flags: environment variable {:?} is not a boolean; ignoring it",
+                        "Savvagent Flags: environment variable {:?} is not a boolean; ignoring it",
                         var
                     );
                 }
@@ -161,7 +161,7 @@ impl Config {
             Err(std::env::VarError::NotPresent) => None,
             Err(std::env::VarError::NotUnicode(_)) => {
                 tracing::warn!(
-                    "Otto Flags: environment variable {:?} is not valid Unicode; ignoring it",
+                    "Savvagent Flags: environment variable {:?} is not valid Unicode; ignoring it",
                     var
                 );
                 None
@@ -312,7 +312,7 @@ pub struct Metadata {
 /// `FlagClient::track_error`. Text is truncated to the server's limits (type 200, message
 /// 2 000, stack trace 8 000 characters).
 ///
-/// The message and stack trace are stored by Otto Flags (14 days) and shown to the agents that
+/// The message and stack trace are stored by Savvagent Flags (14 days) and shown to the agents that
 /// manage your flags: keep end-user data (emails, ids, query values) out of them.
 #[derive(Debug, Clone)]
 #[non_exhaustive]

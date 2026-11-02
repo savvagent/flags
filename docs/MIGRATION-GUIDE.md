@@ -42,9 +42,9 @@ Update to the latest version:
 
 **Node.js:**
 ```bash
-npm install @otto-flags/node-server@latest
+npm install @savvagent/flags-node-server@latest
 # or
-yarn upgrade @otto-flags/node-server
+yarn upgrade @savvagent/flags-node-server
 ```
 
 **Go:**
@@ -55,14 +55,14 @@ go get -u github.com/savvagent/go-server@latest
 **Rust:**
 ```toml
 [dependencies]
-otto-flags-sdk = "2.0"
+savvagent-flags-sdk = "2.0"
 ```
 
 **Java:**
 ```xml
 <dependency>
-    <groupId>com.savvagent.ottoflags</groupId>
-    <artifactId>otto-flags-sdk</artifactId>
+    <groupId>com.savvagent.flags</groupId>
+    <artifactId>savvagent-flags-sdk</artifactId>
     <version>2.0.0</version>
 </dependency>
 ```
@@ -352,7 +352,7 @@ print("\(variation.variation) \(variation.enabled)")
 
 ### Adding Configuration to Existing Flags
 
-1. **Navigate to your flag** in the Otto Flags dashboard
+1. **Navigate to your flag** in the Savvagent Flags dashboard
 2. **Click "Add Configuration"** under environment settings
 3. **Enter JSON configuration:**
 
@@ -571,7 +571,7 @@ In dashboard:
 ### 3. Downgrade SDK (if needed)
 
 ```bash
-npm install @otto-flags/node-server@1.x
+npm install @savvagent/flags-node-server@1.x
 ```
 
 But this shouldn't be necessary - v2.0 is fully backward compatible.
@@ -727,8 +727,8 @@ const config = await client.getConfig<MyConfig>('flag');
 - [SDK-DEVELOPER-GUIDE.md](./SDK-DEVELOPER-GUIDE.md) - Official API specification
 - [Dynamic Configuration Guide](./DYNAMIC-CONFIGURATION-GUIDE.md)
 - [SDK Integration Guide](./SDK-INTEGRATION.md)
-- [Community Forum](https://github.com/savvagent/otto-flags/discussions)
-- [Report Issues](https://github.com/savvagent/otto-flags/issues)
+- [Community Forum](https://github.com/savvagent/flags/discussions)
+- [Report Issues](https://github.com/savvagent/flags/issues)
 - support@savvagent.com
 
 ---

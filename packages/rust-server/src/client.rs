@@ -14,7 +14,7 @@ use std::time::{Duration, Instant, SystemTime};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
-pub enum OttoFlagsError {
+pub enum SavvagentFlagsError {
     #[error("Invalid API key: must start with 'sdk_' (client key) or 'srv_' (server key)")]
     InvalidApiKey,
 
@@ -129,7 +129,7 @@ async fn read_capped(mut response: reqwest::Response, cap: usize) -> Result<Vec<
     }
 }
 
-/// Otto Flags FlagClient for server-side feature flag evaluation
+/// Savvagent Flags FlagClient for server-side feature flag evaluation
 #[derive(Clone)]
 pub struct FlagClient {
     config: Arc<Config>,
@@ -147,11 +147,11 @@ pub struct FlagClient {
 
 impl FlagClient {
     /// Create a new FlagClient with the given configuration
-    pub fn new(config: Config) -> Result<Self, OttoFlagsError> {
+    pub fn new(config: Config) -> Result<Self, SavvagentFlagsError> {
         // Validate API key: the public client key or the secret server key, which the SDK
         // guide recommends for server-side SDKs (and whose telemetry drives auto-rollback).
         if !(config.api_key.starts_with("sdk_") || config.api_key.starts_with("srv_")) {
-            return Err(OttoFlagsError::InvalidApiKey);
+            return Err(SavvagentFlagsError::InvalidApiKey);
         }
 
         // The server key is a secret: warn when it would cross the network in clear text.
@@ -160,7 +160,7 @@ impl FlagClient {
                 let loopback = matches!(url.host_str(), Some("localhost" | "127.0.0.1" | "[::1]"));
                 if url.scheme() != "https" && !loopback {
                     tracing::warn!(
-                        "Otto Flags: the server key will be sent over {}; use an https base_url",
+                        "Savvagent Flags: the server key will be sent over {}; use an https base_url",
                         url.scheme()
                     );
                 }
@@ -170,7 +170,7 @@ impl FlagClient {
         let http_client = HttpClient::builder()
             .timeout(config.timeout)
             .build()
-            .map_err(OttoFlagsError::RequestFailed)?;
+            .map_err(SavvagentFlagsError::RequestFailed)?;
 
         let cache = Cache::new(config.cache_ttl);
         let backoff = Backoff::new(config.failure_cooldown);
@@ -188,7 +188,7 @@ impl FlagClient {
                 // A redirect is a refused attempt, not a reason to send the key elsewhere.
                 .redirect(reqwest::redirect::Policy::none())
                 .build()
-                .map_err(OttoFlagsError::RequestFailed)?;
+                .map_err(SavvagentFlagsError::RequestFailed)?;
             match stream_url(&config.base_url) {
                 Some(url) => Some(StreamTarget {
                     cache: cache.clone(),
@@ -199,7 +199,7 @@ impl FlagClient {
                 }),
                 None => {
                     tracing::warn!(
-                        "Otto Flags: base_url is not a valid URL; real-time updates are off"
+                        "Savvagent Flags: base_url is not a valid URL; real-time updates are off"
                     );
                     None
                 }
@@ -212,7 +212,7 @@ impl FlagClient {
             realtime.ensure_started(target);
         }
 
-        tracing::info!("Otto Flags FlagClient initialized");
+        tracing::info!("Savvagent Flags FlagClient initialized");
 
         Ok(Self {
             config: Arc::new(config),
@@ -242,7 +242,7 @@ impl FlagClient {
     /// host where the TLS backend fails to initialise).
     ///
     /// ```
-    /// use otto_flags::FlagClient;
+    /// use savvagent_flags::FlagClient;
     ///
     /// let client = FlagClient::static_flags([("new-checkout", true)]);
     /// assert!(client.is_enabled_cached("new-checkout", None));
@@ -285,7 +285,7 @@ impl FlagClient {
         &self,
         flag_key: &str,
         context: Option<Context>,
-    ) -> Result<EvaluationResult, OttoFlagsError> {
+    ) -> Result<EvaluationResult, SavvagentFlagsError> {
         // A key no flag can have would only change which endpoint the request (and its SDK
         // key) reaches; it gets its default without a request.
         if !is_valid_flag_key(flag_key) {
@@ -532,11 +532,13 @@ impl FlagClient {
 
     /// `<base_url>/api/flags/<key>/evaluate`, with the key as one encoded path segment and any
     /// path prefix in `base_url` kept.
-    fn evaluate_url(&self, flag_key: &str) -> Result<reqwest::Url, OttoFlagsError> {
+    fn evaluate_url(&self, flag_key: &str) -> Result<reqwest::Url, SavvagentFlagsError> {
         let mut url = reqwest::Url::parse(&self.config.base_url)
-            .map_err(|e| OttoFlagsError::ApiError(format!("invalid base_url: {e}")))?;
+            .map_err(|e| SavvagentFlagsError::ApiError(format!("invalid base_url: {e}")))?;
         url.path_segments_mut()
-            .map_err(|()| OttoFlagsError::ApiError("invalid base_url: cannot be a base".into()))?
+            .map_err(|()| {
+                SavvagentFlagsError::ApiError("invalid base_url: cannot be a base".into())
+            })?
             .pop_if_empty()
             .extend(["api", "flags", flag_key, "evaluate"]);
         Ok(url)
@@ -584,7 +586,7 @@ impl FlagClient {
     /// value in `evaluate` either).
     ///
     /// ```
-    /// use otto_flags::{Config, FlagClient};
+    /// use savvagent_flags::{Config, FlagClient};
     ///
     /// let client = FlagClient::new(Config::new("sdk_key").with_default("new-banner", true)).unwrap();
     /// // Nothing is cached yet, so this is the configured default.
@@ -626,7 +628,7 @@ impl FlagClient {
         &self,
         flag_key: &str,
         context: Option<Context>,
-    ) -> Result<Option<serde_json::Value>, OttoFlagsError> {
+    ) -> Result<Option<serde_json::Value>, SavvagentFlagsError> {
         let result = self.evaluate(flag_key, context).await?;
 
         if !result.value {
@@ -643,7 +645,7 @@ impl FlagClient {
         &self,
         flag_key: &str,
         context: Option<Context>,
-    ) -> Result<VariationResult, OttoFlagsError> {
+    ) -> Result<VariationResult, SavvagentFlagsError> {
         let result = self.evaluate(flag_key, context).await?;
 
         let variation = result.variation.unwrap_or_else(|| "control".to_string());
@@ -665,7 +667,7 @@ impl FlagClient {
         self.cache.clear();
     }
 
-    fn get_default_result(&self, flag_key: &str) -> Result<EvaluationResult, OttoFlagsError> {
+    fn get_default_result(&self, flag_key: &str) -> Result<EvaluationResult, SavvagentFlagsError> {
         let default_value = self.config.defaults.get(flag_key).copied().unwrap_or(false);
 
         Ok(EvaluationResult {
@@ -685,14 +687,14 @@ impl FlagClient {
         flag_key: impl Into<String>,
         config: serde_json::Value,
         options: Option<ConfigOverrideOptions>,
-    ) -> Result<(), OttoFlagsError> {
+    ) -> Result<(), SavvagentFlagsError> {
         let flag_key = flag_key.into();
         let opts = options.unwrap_or_default();
 
         // Validate JSON structure
         if opts.validate {
             serde_json::to_string(&config).map_err(|e| {
-                OttoFlagsError::ApiError(format!(
+                SavvagentFlagsError::ApiError(format!(
                     "Invalid configuration for flag '{}': {}",
                     flag_key, e
                 ))

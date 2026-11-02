@@ -4,7 +4,7 @@
 
 import { SplunkMCPServer, SplunkConfig } from '../src';
 
-describe('@otto-flags/mcp-splunk exports', () => {
+describe('@savvagent/flags-mcp-splunk exports', () => {
   it('should export SplunkMCPServer', () => {
     expect(SplunkMCPServer).toBeDefined();
   });

@@ -1,17 +1,17 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { OttoFlagsService, OttoFlagsConfig, OTTO_FLAGS_CONFIG } from './service';
+import { SavvagentFlagsService, SavvagentFlagsConfig, SAVVAGENT_FLAGS_CONFIG } from './service';
 
 /**
- * Angular module for Otto Flags feature flags.
+ * Angular module for Savvagent Flags feature flags.
  *
  * @example
  * ```typescript
  * // app.module.ts
- * import { OttoFlagsModule } from '@otto-flags/angular';
+ * import { SavvagentFlagsModule } from '@savvagent/flags-angular';
  *
  * @NgModule({
  *   imports: [
- *     OttoFlagsModule.forRoot({
+ *     SavvagentFlagsModule.forRoot({
  *       config: {
  *         apiKey: 'sdk_your_api_key',
  *         baseUrl: 'https://flags.savvagent.com'
@@ -30,12 +30,12 @@ import { OttoFlagsService, OttoFlagsConfig, OTTO_FLAGS_CONFIG } from './service'
  * @example
  * ```typescript
  * // For standalone components (Angular 14+)
- * import { OttoFlagsModule } from '@otto-flags/angular';
+ * import { SavvagentFlagsModule } from '@savvagent/flags-angular';
  *
  * bootstrapApplication(AppComponent, {
  *   providers: [
  *     importProvidersFrom(
- *       OttoFlagsModule.forRoot({
+ *       SavvagentFlagsModule.forRoot({
  *         config: { apiKey: 'sdk_...' }
  *       })
  *     )
@@ -44,24 +44,24 @@ import { OttoFlagsService, OttoFlagsConfig, OTTO_FLAGS_CONFIG } from './service'
  * ```
  */
 @NgModule({
-  providers: [OttoFlagsService]
+  providers: [SavvagentFlagsService]
 })
-export class OttoFlagsModule {
+export class SavvagentFlagsModule {
   /**
-   * Configure the Otto Flags module with API key and default context.
+   * Configure the Savvagent Flags module with API key and default context.
    *
-   * @param ottoFlagsConfig - Configuration including API key and optional default context
+   * @param savvagentFlagsConfig - Configuration including API key and optional default context
    * @returns Module with providers
    */
-  static forRoot(ottoFlagsConfig: OttoFlagsConfig): ModuleWithProviders<OttoFlagsModule> {
+  static forRoot(savvagentFlagsConfig: SavvagentFlagsConfig): ModuleWithProviders<SavvagentFlagsModule> {
     return {
-      ngModule: OttoFlagsModule,
+      ngModule: SavvagentFlagsModule,
       providers: [
         {
-          provide: OTTO_FLAGS_CONFIG,
-          useValue: ottoFlagsConfig
+          provide: SAVVAGENT_FLAGS_CONFIG,
+          useValue: savvagentFlagsConfig
         },
-        OttoFlagsService
+        SavvagentFlagsService
       ]
     };
   }

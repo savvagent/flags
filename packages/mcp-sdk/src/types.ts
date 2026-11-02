@@ -1,5 +1,5 @@
 /**
- * Otto Flags MCP SDK Types
+ * Savvagent Flags MCP SDK Types
  * Core type definitions for MCP (Model Context Protocol) JSON-RPC 2.0 integrations
  */
 

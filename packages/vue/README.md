@@ -1,11 +1,11 @@
-# @otto-flags/vue
+# @savvagent/flags-vue
 
-Vue 3 SDK for Otto Flags with Composition API composables.
+Vue 3 SDK for Savvagent Flags with Composition API composables.
 
 ## Installation
 
 ```bash
-npm install @otto-flags/vue
+npm install @savvagent/flags-vue
 ```
 
 ## Quick Start
@@ -13,12 +13,12 @@ npm install @otto-flags/vue
 ```vue
 <script setup>
 import { createApp } from 'vue';
-import { OttoFlagsPlugin, useFlag } from '@otto-flags/vue';
+import { SavvagentFlagsPlugin, useFlag } from '@savvagent/flags-vue';
 import App from './App.vue';
 
 // Install plugin
 const app = createApp(App);
-app.use(OttoFlagsPlugin, {
+app.use(SavvagentFlagsPlugin, {
   apiKey: 'sdk_...',
   applicationId: 'your-app-id',
 });
@@ -32,7 +32,7 @@ app.mount('#app');
 
 ```vue
 <script setup>
-import { useFlag } from '@otto-flags/vue';
+import { useFlag } from '@savvagent/flags-vue';
 
 const { value: isEnabled, loading } = useFlag('new-feature', {
   context: { user_id: user.value?.id },
@@ -48,7 +48,7 @@ const { value: isEnabled, loading } = useFlag('new-feature', {
 </template>
 ```
 
-### `useOttoFlags()`
+### `useSavvagentFlags()`
 
 Get the client instance for advanced usage.
 
@@ -58,7 +58,7 @@ Manage user identification.
 
 ```vue
 <script setup>
-import { useUser } from '@otto-flags/vue';
+import { useUser } from '@savvagent/flags-vue';
 import { watch } from 'vue';
 
 const { setUserId } = useUser();

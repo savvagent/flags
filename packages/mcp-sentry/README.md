@@ -1,6 +1,6 @@
-# @otto-flags/mcp-sentry
+# @savvagent/flags-mcp-sentry
 
-Sentry MCP integration for Otto Flags. Exposes Sentry error data via MCP tools using StreamableHTTP transport with Bearer token authentication for AI-powered error analysis and correlation.
+Sentry MCP integration for Savvagent Flags. Exposes Sentry error data via MCP tools using StreamableHTTP transport with Bearer token authentication for AI-powered error analysis and correlation.
 
 ## Features
 
@@ -13,7 +13,7 @@ Sentry MCP integration for Otto Flags. Exposes Sentry error data via MCP tools u
 ## Installation
 
 ```bash
-npm install @otto-flags/mcp-sentry
+npm install @savvagent/flags-mcp-sentry
 ```
 
 ## Quick Start
@@ -21,8 +21,8 @@ npm install @otto-flags/mcp-sentry
 ### 1. Create Sentry MCP Server
 
 ```typescript
-import { SentryMCPServer } from '@otto-flags/mcp-sentry';
-import { createHttpHandler } from '@otto-flags/mcp-sdk';
+import { SentryMCPServer } from '@savvagent/flags-mcp-sentry';
+import { createHttpHandler } from '@savvagent/flags-mcp-sdk';
 import express from 'express';
 
 const server = new SentryMCPServer(
@@ -202,7 +202,7 @@ PORT=3000
 
 ### SentryMCPServer
 
-Extends `MCPServer` from `@otto-flags/mcp-sdk`.
+Extends `MCPServer` from `@savvagent/flags-mcp-sdk`.
 
 #### Constructor
 
@@ -218,9 +218,9 @@ new SentryMCPServer(config: MCPServerConfig, sentryConfig: SentryConfig)
 - `getTools()` - Get list of available tools
 - `handleRequest(request)` - Process JSON-RPC request
 
-## Otto Flags Integration
+## Savvagent Flags Integration
 
-When configuring this server in Otto Flags:
+When configuring this server in Savvagent Flags:
 
 1. Go to **Settings > MCP Integrations > Add Integration**
 2. Select **Sentry** as the server type
@@ -279,5 +279,5 @@ MIT
 
 ## Support
 
-- Documentation: [packages/mcp-sentry](https://github.com/savvagent/otto-flags/tree/main/packages/mcp-sentry)
-- Issues: [GitHub Issues](https://github.com/savvagent/otto-flags/issues)
+- Documentation: [packages/mcp-sentry](https://github.com/savvagent/flags/tree/main/packages/mcp-sentry)
+- Issues: [GitHub Issues](https://github.com/savvagent/flags/issues)

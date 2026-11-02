@@ -1,7 +1,7 @@
 {
-  "name": "@otto-flags/mcp-sdk",
+  "name": "@savvagent/flags-mcp-sdk",
   "version": "1.0.1",
-  "description": "Otto Flags MCP (Model Context Protocol) SDK - Base framework for building MCP integrations",
+  "description": "Savvagent Flags MCP (Model Context Protocol) SDK - Base framework for building MCP integrations",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -26,7 +26,7 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "otto-flags",
+    "savvagent-flags",
     "mcp",
     "model-context-protocol",
     "observability",
@@ -37,13 +37,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/savvagent/otto-flags",
+    "url": "https://github.com/savvagent/flags",
     "directory": "packages/mcp-sdk"
   },
   "bugs": {
-    "url": "https://github.com/savvagent/otto-flags/issues"
+    "url": "https://github.com/savvagent/flags/issues"
   },
-  "homepage": "https://github.com/savvagent/otto-flags/tree/main/packages/mcp-sdk#readme",
+  "homepage": "https://github.com/savvagent/flags/tree/main/packages/mcp-sdk#readme",
   "publishConfig": {
     "access": "public"
   },

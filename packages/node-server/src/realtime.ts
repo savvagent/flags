@@ -43,20 +43,20 @@ export class RealtimeService {
     });
 
     this.eventSource.onopen = () => {
-      console.log('[Otto Flags] Real-time connection established');
+      console.log('[Savvagent Flags] Real-time connection established');
       this.reconnectAttempts = 0;
       this.reconnectDelay = 1000;
       this.onConnectionChange(true);
     };
 
     this.eventSource.onerror = (error: unknown) => {
-      console.warn('[Otto Flags] SSE connection error:', error);
+      console.warn('[Savvagent Flags] SSE connection error:', error);
       this.handleDisconnect();
     };
 
     // Handle named events per SDK Developer Guide event types
     this.eventSource.addEventListener('connected', () => {
-      console.log('[Otto Flags] SSE connected event received');
+      console.log('[Savvagent Flags] SSE connected event received');
     });
 
     this.eventSource.addEventListener('heartbeat', () => {
@@ -99,7 +99,7 @@ export class RealtimeService {
       };
       this.notifySubscribers(updateEvent);
     } catch (error) {
-      console.warn('[Otto Flags] Error parsing SSE event:', error);
+      console.warn('[Savvagent Flags] Error parsing SSE event:', error);
     }
   }
 
@@ -120,13 +120,13 @@ export class RealtimeService {
       const exponentialDelay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1);
       const delay = Math.min(exponentialDelay, this.maxReconnectDelay);
 
-      console.log(`[Otto Flags] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
+      console.log(`[Savvagent Flags] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
 
       this.reconnectTimeout = setTimeout(() => {
         this.connect();
       }, delay);
     } else {
-      console.warn('[Otto Flags] Max reconnection attempts reached');
+      console.warn('[Savvagent Flags] Max reconnection attempts reached');
     }
   }
 

@@ -1,15 +1,15 @@
 [project]
-name = "otto-flags"
+name = "savvagent-flags"
 version = "1.1.0"
-description = "Otto Flags Python Server SDK for feature flags with AI-powered error detection"
+description = "Savvagent Flags Python Server SDK for feature flags with AI-powered error detection"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
-authors = [{ name = "Otto Flags" }]
+authors = [{ name = "Savvagent Flags" }]
 keywords = [
     "feature-flags",
     "feature-toggles",
-    "otto-flags",
+    "savvagent-flags",
     "ai",
     "error-detection",
     "python",
@@ -49,16 +49,16 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/savvagent/otto-flags/tree/main/packages/python-server"
-Repository = "https://github.com/savvagent/otto-flags"
-Issues = "https://github.com/savvagent/otto-flags/issues"
+Homepage = "https://github.com/savvagent/flags/tree/main/packages/python-server"
+Repository = "https://github.com/savvagent/flags"
+Issues = "https://github.com/savvagent/flags/issues"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/otto_flags"]
+packages = ["src/savvagent_flags"]
 
 [tool.hatch.build.targets.sdist]
 include = [

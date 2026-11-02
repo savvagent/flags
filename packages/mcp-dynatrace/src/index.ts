@@ -1,6 +1,6 @@
 /**
- * @otto-flags/mcp-dynatrace
- * Dynatrace MCP integration for Otto Flags
+ * @savvagent/flags-mcp-dynatrace
+ * Dynatrace MCP integration for Savvagent Flags
  */
 
 export { DynatraceMCPServer, DynatraceConfig } from './dynatrace-server';

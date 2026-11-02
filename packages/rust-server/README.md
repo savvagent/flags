@@ -1,6 +1,6 @@
-# Otto Flags Rust Server SDK
+# Savvagent Flags Rust Server SDK
 
-Official Rust Server SDK for Otto Flags - AI-powered feature flags with automatic error detection.
+Official Rust Server SDK for Savvagent Flags - AI-powered feature flags with automatic error detection.
 
 ## Features
 
@@ -23,14 +23,14 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-otto_flags = "0.1.0"
+savvagent_flags = "0.1.0"
 tokio = { version = "1.0", features = ["full"] }
 ```
 
 ## Quick Start
 
 ```rust
-use otto_flags::{Config, Context, FlagClient};
+use savvagent_flags::{Config, Context, FlagClient};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -65,7 +65,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ## Configuration
 
 ```rust
-use otto_flags::Config;
+use savvagent_flags::Config;
 use std::time::Duration;
 
 let config = Config::new("srv_your_server_key_here")
@@ -89,7 +89,7 @@ a `srv_` key to a browser or mobile app.
 
 ## Telemetry
 
-With telemetry on (the default), the SDK reports to Otto Flags, with the client's key:
+With telemetry on (the default), the SDK reports to Savvagent Flags, with the client's key:
 
 - **Evaluations**: one per lookup that got the server's answer (`reason` `"evaluated"` or
   `"cached"`): the flag key, the result, the variation, the context's `environment`, and a
@@ -98,7 +98,7 @@ With telemetry on (the default), the SDK reports to Otto Flags, with the client'
 - **Errors** you report with `track_error`, for errors raised while a flag was in play:
 
 ```rust
-use otto_flags::ErrorReport;
+use savvagent_flags::ErrorReport;
 
 match charge(&order).await {
     Ok(receipt) => receipt,
@@ -123,7 +123,7 @@ second; each request carries up to 1,000 events, so a busy process sends about o
 1,000 lookups. Call `client.flush().await` before the process exits (it also
 waits for a send already under way), or the last few seconds of events are lost.
 
-The error message and stack trace are stored by Otto Flags for 14 days and shown to the agents
+The error message and stack trace are stored by Savvagent Flags for 14 days and shown to the agents
 that manage your flags: keep end-user data (emails, ids, query values) out of them. A `srv_` key
 is secret: use an `https` `base_url` (the SDK warns otherwise). Telemetry never blocks or fails a lookup: if the
 queue is full (10,000 events per kind) new events are dropped, and a batch that cannot be sent is
@@ -135,7 +135,7 @@ logged at `warn` and dropped, not retried. Turn it off with `Config::with_teleme
 
 ```rust
 use actix_web::{web, App, HttpResponse, HttpServer};
-use otto_flags::{Config, Context, FlagClient};
+use savvagent_flags::{Config, Context, FlagClient};
 
 struct AppState {
     flag_client: FlagClient,
@@ -186,7 +186,7 @@ use axum::{
     routing::get,
     Router,
 };
-use otto_flags::{Config, Context, FlagClient};
+use savvagent_flags::{Config, Context, FlagClient};
 use std::sync::Arc;
 
 #[derive(Clone)]
@@ -231,7 +231,7 @@ async fn main() {
 
 ```rust
 use rocket::{State, get, launch, routes};
-use otto_flags::{Config, Context, FlagClient};
+use savvagent_flags::{Config, Context, FlagClient};
 
 #[get("/")]
 async fn index(client: &State<FlagClient>) -> String {
@@ -259,7 +259,7 @@ fn rocket() -> _ {
 ### Middleware Pattern
 
 ```rust
-use otto_flags::{Context, FlagClient};
+use savvagent_flags::{Context, FlagClient};
 
 async fn feature_middleware(
     client: &FlagClient,
@@ -279,7 +279,7 @@ async fn feature_middleware(
 ### With Custom Context
 
 ```rust
-use otto_flags::Context;
+use savvagent_flags::Context;
 use serde_json::json;
 
 let context = Context::new()
@@ -368,7 +368,7 @@ pub struct Metadata {
 
 ### Methods
 
-#### FlagClient::new(config: Config) -> Result<Self, OttoFlagsError>
+#### FlagClient::new(config: Config) -> Result<Self, SavvagentFlagsError>
 
 Creates a new FlagClient.
 
@@ -376,7 +376,7 @@ Creates a new FlagClient.
 let client = FlagClient::new(config)?;
 ```
 
-#### evaluate(&self, flag_key: &str, context: Option<Context>) -> Result<EvaluationResult, OttoFlagsError>
+#### evaluate(&self, flag_key: &str, context: Option<Context>) -> Result<EvaluationResult, SavvagentFlagsError>
 
 Evaluates a feature flag. Flag keys are 1-128 ASCII letters, digits, `-`, `_` and `.` (but not
 `.` or `..`), as the server requires; any other key returns its default with `reason: "error"`
@@ -482,7 +482,7 @@ if result.reason == "error" {
 }
 ```
 
-Only `FlagClient::new` returns `Err` in practice: `OttoFlagsError::InvalidApiKey` for a key that
+Only `FlagClient::new` returns `Err` in practice: `SavvagentFlagsError::InvalidApiKey` for a key that
 starts with neither `srv_` nor `sdk_`, or `RequestFailed` if the HTTP client cannot be built.
 
 ## Best Practices
@@ -520,7 +520,7 @@ MIT
 
 ## Support
 
-- Documentation: https://github.com/savvagent/otto-flags#readme
-- API Docs: https://docs.rs/otto-flags
-- Issues: https://github.com/savvagent/otto-flags/issues
+- Documentation: https://github.com/savvagent/flags#readme
+- API Docs: https://docs.rs/savvagent-flags
+- Issues: https://github.com/savvagent/flags/issues
 - Email: support@savvagent.com

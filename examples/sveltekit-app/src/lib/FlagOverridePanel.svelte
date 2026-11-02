@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import {
-    getOttoFlags,
+    getSavvagentFlags,
     createOverridesStore,
     createAllFlagsStore,
     type FlagDefinition,
-  } from '@otto-flags/svelte';
+  } from '@savvagent/flags-svelte';
 
   let isOpen = $state(false);
   let loading = $state(false);
@@ -13,7 +13,7 @@
   let flags = $state<FlagDefinition[]>([]);
 
   // Get client and create stores
-  let client: ReturnType<typeof getOttoFlags> | null = null;
+  let client: ReturnType<typeof getSavvagentFlags> | null = null;
   let overridesStore: ReturnType<typeof createOverridesStore> | null = null;
   let allFlagsStore: ReturnType<typeof createAllFlagsStore> | null = null;
 
@@ -23,7 +23,7 @@
 
   onMount(() => {
     try {
-      client = getOttoFlags();
+      client = getSavvagentFlags();
       overridesStore = createOverridesStore();
       allFlagsStore = createAllFlagsStore('development');
 

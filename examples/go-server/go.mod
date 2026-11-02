@@ -1,10 +1,10 @@
-module github.com/savvagent/otto-flags/examples/go-server
+module github.com/savvagent/flags/examples/go-server
 
 go 1.21
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/savvagent/otto-flags/packages/go-server v0.1.0
+	github.com/savvagent/flags/packages/go-server v0.1.0
 )
 
 require (
@@ -36,4 +36,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/savvagent/otto-flags/packages/go-server => ../../packages/go-server
+replace github.com/savvagent/flags/packages/go-server => ../../packages/go-server

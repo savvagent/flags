@@ -1,11 +1,11 @@
-# @otto-flags/svelte
+# @savvagent/flags-svelte
 
-Svelte SDK for Otto Flags with stores and real-time updates. Compatible with Svelte 4 and 5.
+Svelte SDK for Savvagent Flags with stores and real-time updates. Compatible with Svelte 4 and 5.
 
 ## Installation
 
 ```bash
-npm install @otto-flags/svelte
+npm install @savvagent/flags-svelte
 ```
 
 ## Quick Start
@@ -13,9 +13,9 @@ npm install @otto-flags/svelte
 ```svelte
 <!-- +layout.svelte -->
 <script>
-import { initOttoFlags } from '@otto-flags/svelte';
+import { initSavvagentFlags } from '@savvagent/flags-svelte';
 
-initOttoFlags({
+initSavvagentFlags({
   apiKey: 'sdk_...',
   applicationId: 'your-app-id',
 });
@@ -32,7 +32,7 @@ Full flag state with loading and error handling.
 
 ```svelte
 <script>
-import { createFlagStore } from '@otto-flags/svelte';
+import { createFlagStore } from '@savvagent/flags-svelte';
 
 const featureFlag = createFlagStore('new-feature', {
   context: { user_id: $user?.id },
@@ -56,7 +56,7 @@ Simple boolean store.
 
 ```svelte
 <script>
-import { createFlag } from '@otto-flags/svelte';
+import { createFlag } from '@savvagent/flags-svelte';
 
 const isEnabled = createFlag('new-feature');
 </script>
@@ -72,7 +72,7 @@ Manage user identification.
 
 ```svelte
 <script>
-import { createUserIdStore } from '@otto-flags/svelte';
+import { createUserIdStore } from '@savvagent/flags-svelte';
 
 const userId = createUserIdStore();
 
@@ -92,7 +92,7 @@ Track errors with flag context.
 
 ```svelte
 <script>
-import { trackError } from '@otto-flags/svelte';
+import { trackError } from '@savvagent/flags-svelte';
 
 async function handleAction() {
   try {

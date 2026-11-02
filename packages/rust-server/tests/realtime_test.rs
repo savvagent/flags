@@ -2,7 +2,7 @@
 //! (`docs/SDK-DEVELOPER-GUIDE.md`, Real-time Updates): `GET /api/flags/stream` with the client's
 //! key, `connected` on every connect, `flag.*` events naming the changed flag (#167).
 
-use otto_flags::{Config, FlagClient};
+use savvagent_flags::{Config, FlagClient};
 use serde_json::json;
 use std::future::Future;
 use std::time::Duration;
