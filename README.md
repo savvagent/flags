@@ -1,5 +1,12 @@
 # Savvagent Flags
 
+> [!IMPORTANT]
+> **This repository is archived and read-only.**
+> - SDKs (JavaScript/TypeScript, Python, Rust, Go, Java, iOS, Android, MCP integrations): [savvagent/flags-sdks](https://github.com/savvagent/flags-sdks)
+> - The flags service (`flags-api`, `flags-core`, `flags-mcp`, `flags-server`): [savvagent/savvagent-services](https://github.com/savvagent/savvagent-services)
+>
+> Open issues were moved to those repositories. Git dependencies pinned to commits here still resolve, but they get no further fixes; move them to `savvagent/flags-sdks`.
+
 Savvagent Flags (this repository, savvagent/flags) is a feature flag platform built for agentic coding agents to manage, not
 for humans to click through. **See [VISION.md](./VISION.md) for the full scope and
 vision** — the short version: flag *management* (create, target, roll out, roll back,
